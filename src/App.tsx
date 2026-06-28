@@ -1,20 +1,28 @@
+import { Suspense, lazy } from 'react'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import About from './components/About'
 import Expertise from './components/Expertise'
 import Experience from './components/Experience'
 import Projects from './components/Projects'
-import DashboardPreview from './components/DashboardPreview'
-import FinancialDiagnostic from './components/FinancialDiagnostic'
-import ControladoriaSystem from './components/ControladoriaSystem'
-import AIFinanceSection from './components/AIFinanceSection'
 import Skills from './components/Skills'
 import TechStack from './components/TechStack'
 import ResumeDownload from './components/ResumeDownload'
-import Contact from './components/Contact'
 import Footer from './components/Footer'
 import PrivacyBanner from './components/PrivacyBanner'
-import PrivacyPolicy from './components/PrivacyPolicy'
+
+// Lazy-loaded components
+const DashboardPreview = lazy(() => import('./components/DashboardPreview'))
+const FinancialDiagnostic = lazy(() => import('./components/FinancialDiagnostic'))
+const ControladoriaSystem = lazy(() => import('./components/ControladoriaSystem'))
+const AIFinanceSection = lazy(() => import('./components/AIFinanceSection'))
+const Contact = lazy(() => import('./components/Contact'))
+const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'))
+
+// Elegant fallback skeleton loader matching the app's dark/light segments
+const SectionSkeleton = () => (
+  <div className="my-12 h-64 w-full animate-pulse rounded-[32px] bg-slate-100/50 dark:bg-slate-900/10 border border-black/5" />
+)
 
 function App() {
   return (
@@ -29,17 +37,29 @@ function App() {
             <Expertise />
             <Experience />
             <Projects />
-            <DashboardPreview />
-            <FinancialDiagnostic />
-            <ControladoriaSystem />
-            <AIFinanceSection />
+            <Suspense fallback={<SectionSkeleton />}>
+              <DashboardPreview />
+            </Suspense>
+            <Suspense fallback={<SectionSkeleton />}>
+              <FinancialDiagnostic />
+            </Suspense>
+            <Suspense fallback={<SectionSkeleton />}>
+              <ControladoriaSystem />
+            </Suspense>
+            <Suspense fallback={<SectionSkeleton />}>
+              <AIFinanceSection />
+            </Suspense>
             <Skills />
             <TechStack />
             <ResumeDownload />
-            <Contact />
+            <Suspense fallback={<SectionSkeleton />}>
+              <Contact />
+            </Suspense>
           </section>
         </main>
-        <PrivacyPolicy />
+        <Suspense fallback={null}>
+          <PrivacyPolicy />
+        </Suspense>
         <Footer />
       </div>
     </div>
@@ -47,3 +67,4 @@ function App() {
 }
 
 export default App
+
