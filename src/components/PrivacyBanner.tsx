@@ -24,15 +24,15 @@ function PrivacyBanner() {
   }
 
   return (
-    <div className="fixed inset-x-4 bottom-4 z-[60] mx-auto max-w-6xl rounded-[24px] border border-cyan-400/20 bg-slate-950/95 p-4 shadow-glass backdrop-blur-xl sm:inset-x-6 sm:p-5">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+    <div className="fixed inset-x-4 bottom-4 z-[60] mx-auto max-w-6xl rounded-[24px] border border-black/10 bg-white/95 p-4 shadow-2xl backdrop-blur-xl sm:inset-x-6 sm:p-5">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex gap-3">
-          <div className="mt-0.5 rounded-2xl bg-cyan-500/10 p-2 text-cyan-300">
+          <div className="mt-0.5 rounded-2xl bg-[#0071e3]/10 p-2 text-[#0071e3] flex-shrink-0">
             <ShieldCheck className="h-5 w-5" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-white">Este site respeita a LGPD</p>
-            <p className="mt-1 max-w-2xl text-sm text-slate-300">
+            <p className="text-sm font-bold text-[#1d1d1f]">Este site respeita a LGPD</p>
+            <p className="mt-1 max-w-2xl text-xs text-[#6e6e73] leading-relaxed">
               Usamos apenas armazenamento local para lembrar sua escolha de consentimento. Não utilizamos cookies de marketing ou rastreamento para fins comerciais.
             </p>
           </div>
@@ -41,20 +41,20 @@ function PrivacyBanner() {
           <button
             type="button"
             onClick={() => saveConsent('declined')}
-            className="rounded-full border border-slate-700/70 px-4 py-2 text-sm text-slate-200 transition hover:border-slate-500 hover:bg-slate-900"
+            className="rounded-full border border-black/10 px-4 py-2 text-xs font-semibold text-[#424245] transition hover:bg-slate-100"
           >
             Recusar
           </button>
           <button
             type="button"
             onClick={() => saveConsent('accepted')}
-            className="rounded-full bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
+            className="rounded-full bg-[#0071e3] px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-[#2997ff]"
           >
             Aceitar
           </button>
           <a
             href="#privacidade"
-            className="inline-flex items-center gap-2 rounded-full border border-slate-700/70 px-4 py-2 text-sm text-slate-200 transition hover:border-slate-500 hover:bg-slate-900"
+            className="inline-flex items-center gap-2 rounded-full border border-black/10 px-4 py-2 text-xs font-semibold text-[#424245] transition hover:bg-slate-100"
           >
             Política
           </a>

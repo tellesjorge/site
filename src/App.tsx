@@ -1,70 +1,45 @@
 import { Suspense, lazy } from 'react'
-import Header from './components/Header'
-import Hero from './components/Hero'
-import About from './components/About'
-import Expertise from './components/Expertise'
-import Experience from './components/Experience'
-import Projects from './components/Projects'
-import Skills from './components/Skills'
-import TechStack from './components/TechStack'
-import ResumeDownload from './components/ResumeDownload'
-import Footer from './components/Footer'
-import PrivacyBanner from './components/PrivacyBanner'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import AppLayout from './components/layout/AppLayout'
 
-// Lazy-loaded components
-const DashboardPreview = lazy(() => import('./components/DashboardPreview'))
-const FinancialDiagnostic = lazy(() => import('./components/FinancialDiagnostic'))
-const ControladoriaSystem = lazy(() => import('./components/ControladoriaSystem'))
-const AIFinanceSection = lazy(() => import('./components/AIFinanceSection'))
-const Contact = lazy(() => import('./components/Contact'))
-const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'))
+// Lazy-loaded pages
+const HomePage = lazy(() => import('./pages/HomePage'))
+const ExecutiveProfilePage = lazy(() => import('./pages/ExecutiveProfilePage'))
+const ExperiencePage = lazy(() => import('./pages/ExperiencePage'))
+const AIDashboardsPage = lazy(() => import('./pages/AIDashboardsPage'))
+const ConsultingPage = lazy(() => import('./pages/ConsultingPage'))
+const ResumePage = lazy(() => import('./pages/ResumePage'))
+const ContactPage = lazy(() => import('./pages/ContactPage'))
 
-// Elegant fallback skeleton loader matching the app's dark/light segments
-const SectionSkeleton = () => (
-  <div className="my-12 h-64 w-full animate-pulse rounded-[32px] bg-slate-100/50 dark:bg-slate-900/10 border border-black/5" />
+// Elegant fallback screen for chunk transitions
+const PageLoader = () => (
+  <div className="mx-auto max-w-7xl px-6 py-24 sm:px-8 lg:px-10 flex flex-col gap-6 animate-pulse">
+    <div className="h-8 bg-slate-200/60 rounded-lg w-1/3" />
+    <div className="h-4 bg-slate-200/60 rounded-lg w-full" />
+    <div className="h-64 bg-slate-100/50 rounded-3xl w-full border border-black/5" />
+  </div>
 )
 
 function App() {
   return (
-    <div className="min-h-screen px-3 py-3 text-[#1d1d1f] sm:px-4 sm:py-4 lg:px-6 lg:py-6">
-      <div className="apple-shell mx-auto max-w-7xl overflow-hidden rounded-[40px] border border-black/5 bg-white/80 backdrop-blur-xl">
-        <PrivacyBanner />
-        <Header />
-        <main className="relative">
-          <Hero />
-          <section className="mx-auto max-w-7xl px-6 pb-24 pt-16 sm:px-8 lg:px-10">
-            <About />
-            <Expertise />
-            <Experience />
-            <Projects />
-            <Suspense fallback={<SectionSkeleton />}>
-              <DashboardPreview />
-            </Suspense>
-            <Suspense fallback={<SectionSkeleton />}>
-              <FinancialDiagnostic />
-            </Suspense>
-            <Suspense fallback={<SectionSkeleton />}>
-              <ControladoriaSystem />
-            </Suspense>
-            <Suspense fallback={<SectionSkeleton />}>
-              <AIFinanceSection />
-            </Suspense>
-            <Skills />
-            <TechStack />
-            <ResumeDownload />
-            <Suspense fallback={<SectionSkeleton />}>
-              <Contact />
-            </Suspense>
-          </section>
-        </main>
-        <Suspense fallback={null}>
-          <PrivacyPolicy />
-        </Suspense>
-        <Footer />
-      </div>
-    </div>
+    <BrowserRouter>
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          <Route path="/" element={<AppLayout />}>
+            <Route index element={<HomePage />} />
+            <Route path="perfil" element={<ExecutiveProfilePage />} />
+            <Route path="experiencia" element={<ExperiencePage />} />
+            <Route path="ia-dashboards" element={<AIDashboardsPage />} />
+            <Route path="consultoria" element={<ConsultingPage />} />
+            <Route path="curriculo" element={<ResumePage />} />
+            <Route path="contato" element={<ContactPage />} />
+          </Route>
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
   )
 }
 
 export default App
+
 

@@ -12,9 +12,9 @@ function TechStack() {
       className="mb-16"
     >
       <div className="mb-10 flex flex-col gap-4">
-        <p className="text-sm uppercase tracking-[0.28em] text-cyan-300">Sistemas e tecnologias</p>
-        <h2 className="text-3xl font-semibold text-white sm:text-4xl">Ferramentas da rotina financeira</h2>
-        <p className="max-w-2xl text-slate-400">
+        <p className="text-xs uppercase tracking-[0.28em] text-[#0071e3] font-semibold">Sistemas e tecnologias</p>
+        <h2 className="text-3xl font-semibold text-[#1d1d1f] sm:text-4xl">Ferramentas da Rotina Financeira</h2>
+        <p className="max-w-2xl text-sm leading-6 text-[#6e6e73]">
           Ecossistema de sistemas ERP, BI e desenvolvimento usados em controles, análises e automações.
         </p>
       </div>
@@ -23,12 +23,12 @@ function TechStack() {
           <motion.div
             key={tech}
             whileHover={{ y: -4 }}
-            className="rounded-[28px] border border-white/10 bg-surface2/90 p-5 text-center shadow-glass transition"
+            className="rounded-[28px] border border-black/5 bg-white p-5 text-center shadow-sm transition"
           >
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-3xl bg-cyan-500/10 text-cyan-300">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-3xl bg-[#0071e3]/10 text-[#0071e3]">
               <span className="text-lg font-semibold">{tech[0]}</span>
             </div>
-            <p className="text-sm font-semibold text-white">{tech}</p>
+            <p className="text-xs font-semibold text-[#1d1d1f]">{tech}</p>
           </motion.div>
         ))}
       </div>
