@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  font-family: 'SF Pro Display', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: #f5f5f7;
+  color: #1d1d1f;
+  --apple-blue: #0071e3;
+  --apple-blue-strong: #2997ff;
+  --apple-surface: #ffffff;
+  --apple-surface-soft: #f7f7f8;
+  --apple-border: rgba(0, 0, 0, 0.06);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, rgba(0, 113, 227, 0.12), transparent 32%), linear-gradient(135deg, #f5f5f7 0%, #ffffff 100%);
+  color: #1d1d1f;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at bottom right, rgba(41, 151, 255, 0.08), transparent 28%);
+  z-index: -1;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(0, 113, 227, 0.2);
+  color: #1d1d1f;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(229, 229, 234, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 113, 227, 0.35);
+  border-radius: 9999px;
+}
+
+section {
+  position: relative;
+}
+
+.apple-shell {
+  position: relative;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(248, 250, 255, 0.96));
+  box-shadow: 0 40px 120px rgba(15, 23, 42, 0.12);
+}
+
+.apple-card {
+  border: 1px solid var(--apple-border);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14px 45px rgba(15, 23, 42, 0.06);
+  backdrop-filter: blur(20px);
+}
+
+.apple-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 113, 227, 0.14);
+  background: rgba(0, 113, 227, 0.08);
+  color: #0071e3;
+  padding: 0.65rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.animation-fade {
+  animation: fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

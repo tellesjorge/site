@@ -1,0 +1,178 @@
+export const profile = {
+  name: 'Jorge Telles',
+  headline: 'Controller | FP&A | Controladoria | Gestão Financeira Estratégica | Business Partner | Power BI',
+  heroBadge: 'Controladoria + FP&A + IA + Dados',
+  subtitle:
+    'Executivo financeiro que conecta Controladoria, FP&A e Inteligência Financeira para decisões estratégicas, gestão de custos, estoque e rentabilidade em ambientes complexos.',
+  about:
+    'Executivo financeiro com atuação em Controladoria, FP&A e Gestão Financeira Estratégica, integrando finanças, operação e inteligência gerencial em ambientes de alta complexidade operacional.',
+  actions: {
+    resume: '/curriculo-jorge-telles.pdf',
+    whatsapp: 'https://wa.me/5511999999999?text=Olá%20Jorge%2C%20gostaria%20de%20conversar.',
+    linkedin: 'https://www.linkedin.com/in/jorgetelles/',
+  },
+  specialties: [
+    { title: 'Controladoria', description: 'Relatórios gerenciais, DRE, P&L e visibilidade financeira.', icon: 'ShieldCheck' },
+    { title: 'FP&A', description: 'Budget, forecast e análise de performance integrada.', icon: 'TrendingUp' },
+    { title: 'Custos e Margens', description: 'Avaliação de CMV, margem de contribuição e rentabilidade.', icon: 'PieChart' },
+    { title: 'Estoques e Inventário', description: 'Gestão de estoque, Kardex e auditoria de inventário.', icon: 'Package' },
+    { title: 'Importação e CMV', description: 'Controle de custos de importação e impacto no CMV.', icon: 'Globe' },
+    { title: 'Orçamento e Forecast', description: 'Processos orçamentários alinhados ao resultado.', icon: 'Calculator' },
+    { title: 'Indicadores e Dashboards', description: 'KPIs financeiros para decisões estratégicas.', icon: 'BarChart3' },
+    { title: 'Controles Internos', description: 'Governança, compliance fiscal e mitigação de riscos.', icon: 'Lock' },
+    { title: 'Gestão Financeira', description: 'Fluxo de caixa, OPEX, CAPEX e análise de capital.', icon: 'CreditCard' },
+    { title: 'Auditoria e Governança', description: 'Revisão de processos e controles contábeis.', icon: 'ClipboardCheck' },
+  ],
+  experience: [
+    {
+      role: 'Controller | FP&A | Controladoria',
+      company: 'Vitol Group',
+      period: 'Atuação recente',
+      summary:
+        'Atuação estratégica em controladoria, análise financeira, gestão de custos e apoio à tomada de decisão em ambiente de alto volume operacional e forte exigência de precisão.',
+      highlights: [
+        'Budget, Forecast, DRE Gerencial e análise de rentabilidade.',
+        'Power BI, dashboards gerenciais e apoio à gestão executiva.',
+        'Gestão de margem, pricing e controle financeiro integrado à operação.',
+      ],
+    },
+    {
+      role: 'Gerente de Controladoria',
+      company: 'Tradestar Group',
+      period: 'Atuação executiva',
+      summary:
+        'Liderança em finanças corporativas, controle de custos, performance financeira e estruturação de indicadores para o negócio.',
+      highlights: [
+        'Gestão financeira estratégica e apoio ao planejamento corporativo.',
+        'Medição de custos, margem e resultados por unidade de negócio.',
+        'Integração entre finanças, operação e tomada de decisão.',
+      ],
+    },
+    {
+      role: 'Coordenador Administrativo Financeiro',
+      company: 'JTB Contabilidade',
+      period: 'Estruturação financeira',
+      summary:
+        'Coordenação de processos financeiros, fluxo de caixa e controles administrativos em ambientes de alta complexidade.',
+      highlights: [
+        'Gestão de caixa, conciliações bancárias e automação de processos.',
+        'Auditoria de inventário e governança de estoques.',
+        'Integração entre contábil, fiscal, comercial e operação.',
+      ],
+    },
+    {
+      role: 'Contador',
+      company: 'JTB Contabilidade',
+      period: 'Base contábil',
+      summary:
+        'Atuação em contabilidade gerencial, fiscal e elaboração de controles internos.',
+      highlights: [
+        'Fechamento contábil e gerencial com foco em qualidade e conformidade.',
+        'Suporte a auditorias e rotinas fiscais.',
+        'Desenvolvimento de controles internos e dashboards de desempenho.',
+      ],
+    },
+  ],
+  projects: [
+    {
+      title: 'Auditoria de inventário com alto nível de acuracidade',
+      description: 'Revisão de processos e controle físico de estoques para redução de perdas e divergências.',
+    },
+    {
+      title: 'Análise de CMV em operações de importação',
+      description: 'Identificação de oportunidades de redução de custo e melhoria da margem bruta.',
+    },
+    {
+      title: 'Gestão de estoque em trânsito',
+      description: 'Visibilidade e controle de estoque em trânsito para melhor planejamento financeiro.',
+    },
+    {
+      title: 'Estruturação de indicadores financeiros',
+      description: 'Mapeamento e implantação de KPIs para monitoramento de performance.',
+    },
+    {
+      title: 'Revisão de processos de fechamento',
+      description: 'Melhoria do ciclo de fechamento gerencial e redução de retrabalho.',
+    },
+    {
+      title: 'Apoio à diretoria na tomada de decisão',
+      description: 'Relatórios estratégicos de resultado e recomendação de ações prioritárias.',
+    },
+  ],
+  metrics: [
+    { label: 'R$ XX milhões analisados em movimentações financeiras', value: 'XX milhões' },
+    { label: 'XX% de melhoria em processos de controle', value: 'XX%' },
+    { label: 'XX indicadores estruturados', value: 'XX' },
+    { label: 'XX relatórios gerenciais implantados', value: 'XX' },
+  ],
+  skills: {
+    hard: [
+      'Controladoria',
+      'FP&A',
+      'Budget',
+      'Forecast',
+      'DRE Gerencial',
+      'CMV',
+      'Fluxo de Caixa',
+      'Custos',
+      'Estoque',
+      'Auditoria',
+      'Indicadores',
+      'Power BI',
+      'Excel',
+      'Python',
+      'SQL',
+      'ERP',
+    ],
+    soft: [
+      'Liderança',
+      'Visão analítica',
+      'Comunicação executiva',
+      'Senso de dono',
+      'Pensamento crítico',
+      'Organização',
+      'Resolução de problemas',
+      'Estruturação de processos',
+      'Relacionamento interáreas',
+      'Suporte à tomada de decisão',
+    ],
+  },
+  technologies: [
+    'SAP',
+    'Protheus',
+    'Omie',
+    'MXM',
+    'Conexos',
+    'Power BI',
+    'Excel',
+    'Python',
+    'SQL',
+    'BigQuery',
+    'Streamlit',
+    'Django',
+    'React',
+    'Inteligência Artificial aplicada a negócios',
+    'Análise preditiva',
+    'Machine Learning conceitual aplicado a finanças',
+    'Dashboards automatizados',
+    'Modelagem de indicadores',
+    'Automação de rotinas financeiras',
+    'Integração de dados com ERP',
+  ],
+  dashboard: [
+    { label: 'Receita', value: 'R$ 24,8M', trend: '+12%' },
+    { label: 'Margem', value: '38,6%', trend: '+8%' },
+    { label: 'CMV', value: 'R$ 9,2M', trend: '-3%' },
+    { label: 'OPEX', value: 'R$ 2,4M', trend: '-6%' },
+    { label: 'EBITDA', value: 'R$ 5,3M', trend: '+15%' },
+    { label: 'Fluxo de Caixa', value: 'R$ 3,1M', trend: '+9%' },
+    { label: 'Aging', value: '48 dias', trend: '-5%' },
+    { label: 'Forecast', value: '95% accuracy', trend: '+4%' },
+  ],
+  contact: {
+    title: 'Disponível para oportunidades em Controladoria, FP&A e Finanças Corporativas',
+    description:
+      'Busco cargos estratégicos em Curitiba, PR, com interesse em atuar presencial, híbrido ou remoto, entregando governança, análise financeira e inteligência de dados.',
+  },
+  footer: 'Controladoria | FP&A | Finanças Corporativas',
+}
