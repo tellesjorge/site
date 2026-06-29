@@ -10,6 +10,8 @@ const AIDashboardsPage = lazy(() => import('./pages/AIDashboardsPage'))
 const ConsultingPage = lazy(() => import('./pages/ConsultingPage'))
 const ResumePage = lazy(() => import('./pages/ResumePage'))
 const ContactPage = lazy(() => import('./pages/ContactPage'))
+const ArticlesPage = lazy(() => import('./pages/ArticlesPage'))
+const ArticleDetailPage = lazy(() => import('./pages/ArticleDetailPage'))
 
 // Elegant fallback screen for chunk transitions
 const PageLoader = () => (
@@ -31,6 +33,8 @@ function App() {
             <Route path="experiencia" element={<ExperiencePage />} />
             <Route path="ia-dashboards" element={<AIDashboardsPage />} />
             <Route path="consultoria" element={<ConsultingPage />} />
+            <Route path="artigos" element={<ArticlesPage />} />
+            <Route path="artigos/:slug" element={<ArticleDetailPage />} />
             <Route path="curriculo" element={<ResumePage />} />
             <Route path="contato" element={<ContactPage />} />
           </Route>

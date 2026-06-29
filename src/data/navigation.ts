@@ -9,6 +9,7 @@ export const navigationItems: NavItem[] = [
   { label: 'Experiência', href: '/experiencia' },
   { label: 'IA & Dashboards', href: '/ia-dashboards' },
   { label: 'Consultoria', href: '/consultoria' },
+  { label: 'Artigos', href: '/artigos' },
   { label: 'Currículo', href: '/curriculo' },
   { label: 'Contato', href: '/contato' },
 ]
