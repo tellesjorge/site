@@ -8,7 +8,7 @@ export const profile = {
     'Executivo financeiro com atuação em Controladoria, FP&A e Gestão Financeira Estratégica, integrando finanças, operação e inteligência gerencial em ambientes de alta complexidade operacional.',
   actions: {
     resume: '/curriculo-jorge-telles.pdf',
-    whatsapp: 'https://wa.me/5511999999999?text=Olá%20Jorge%2C%20gostaria%20de%20conversar.',
+    whatsapp: 'https://wa.me/5541920056796?text=Olá%20Jorge%2C%20gostaria%20de%20conversar.',
     linkedin: 'https://www.linkedin.com/in/jorgetelles/',
   },
   specialties: [

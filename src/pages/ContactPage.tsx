@@ -41,7 +41,7 @@ export default function ContactPage() {
       `*E-mail:* ${formData.email}\n` +
       `*WhatsApp:* ${formData.whatsapp || 'Não informado'}`
     )
-    return `https://wa.me/5511999999999?text=${text}`
+    return `https://wa.me/5541920056796?text=${text}`
   }
 
   const getMailtoFallbackLink = () => {
