@@ -21,6 +21,7 @@ export default function ContactPage() {
   const [consent, setConsent] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
+  const [isSending, setIsSending] = useState(false)
 
   useEffect(() => {
     // Sync tab when search params change
@@ -32,7 +33,7 @@ export default function ContactPage() {
     }
   }, [searchParams])
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!consent) {
       setErrorMsg('Você precisa autorizar o tratamento de dados em conformidade com a LGPD.')
@@ -44,15 +45,50 @@ export default function ContactPage() {
     }
 
     setErrorMsg('')
-    setSubmitted(true)
-    // Local persistence of contact request for visual response
+    setIsSending(true)
+
     try {
-      const existing = window.localStorage.getItem('jorge-contact-leads')
-      const items = existing ? JSON.parse(existing) : []
-      items.unshift({ ...formData, tab: activeTab, date: new Date().toISOString() })
-      window.localStorage.setItem('jorge-contact-leads', JSON.stringify(items.slice(0, 10)))
-    } catch {
-      // ignore
+      const response = await fetch('https://formspree.io/telles.jorge@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          whatsapp: formData.whatsapp,
+          interest: activeTab === 'hire' ? 'Oportunidade Profissional' : 'Consultoria Empresarial',
+          interestType: formData.interestType,
+          message: formData.message,
+          _subject: `Lead Portfólio: [${activeTab === 'hire' ? 'Vaga' : 'Consultoria'}] ${formData.name}`
+        })
+      })
+
+      if (response.ok) {
+        setSubmitted(true)
+        // Local persistence of contact request for visual response
+        try {
+          const existing = window.localStorage.getItem('jorge-contact-leads')
+          const items = existing ? JSON.parse(existing) : []
+          items.unshift({ ...formData, tab: activeTab, date: new Date().toISOString() })
+          window.localStorage.setItem('jorge-contact-leads', JSON.stringify(items.slice(0, 10)))
+        } catch {
+          // ignore
+        }
+      } else {
+        const data = await response.json()
+        if (data.errors) {
+          setErrorMsg(data.errors.map((err: any) => err.message).join(', '))
+        } else {
+          setErrorMsg('Falha ao enviar mensagem. Por favor, tente falar direto por WhatsApp/E-mail.')
+        }
+      }
+    } catch (err) {
+      setErrorMsg('Erro de conexão ao enviar o formulário. Por favor, utilize os canais diretos.')
+    } finally {
+      setIsSending(false)
     }
   }
 
@@ -323,10 +359,20 @@ export default function ContactPage() {
 
                 <button
                   type="submit"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-[#0071e3] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#2997ff]"
+                  disabled={isSending}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-[#0071e3] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#2997ff] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Send className="h-4 w-4" />{' '}
-                  {activeTab === 'hire' ? 'Falar sobre oportunidade' : 'Solicitar diagnóstico'}
+                  {isSending ? (
+                    <>
+                      <span className="h-3 w-3 animate-spin rounded-full border border-white border-t-transparent" />
+                      <span>Enviando...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="h-4 w-4" />
+                      <span>{activeTab === 'hire' ? 'Falar sobre oportunidade' : 'Solicitar diagnóstico'}</span>
+                    </>
+                  )}
                 </button>
               </form>
             )}
