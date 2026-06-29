@@ -80,7 +80,19 @@ export default function ContactPage() {
       } else {
         const data = await response.json()
         if (data.errors) {
-          setErrorMsg(data.errors.map((err: any) => err.message).join(', '))
+          const translateError = (msg: string) => {
+            if (msg.toLowerCase().includes("isn't set up yet") || msg.toLowerCase().includes("not set up")) {
+              return 'O formulário ainda não foi ativado. Por favor, verifique a caixa de entrada (e pasta de Spam) do e-mail telles.jorge@gmail.com para clicar no link de ativação enviado pelo Formspree. Você também pode falar diretamente pelos canais de WhatsApp/LinkedIn ao lado.'
+            }
+            if (msg.toLowerCase().includes('is required')) {
+              return 'Campo obrigatório não preenchido.'
+            }
+            if (msg.toLowerCase().includes('email address')) {
+              return 'Endereço de e-mail corporativo inválido.'
+            }
+            return msg
+          }
+          setErrorMsg(data.errors.map((err: any) => translateError(err.message)).join(', '))
         } else {
           setErrorMsg('Falha ao enviar mensagem. Por favor, tente falar direto por WhatsApp/E-mail.')
         }
