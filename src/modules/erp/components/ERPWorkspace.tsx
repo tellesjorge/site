@@ -1,500 +1,657 @@
-import React, { useState } from 'react'
-import { Sparkles, FileText, CheckCircle, Database } from 'lucide-react'
-import ERPFileDropzone from './ERPFileDropzone'
-import ERPDocumentReader from './ERPDocumentReader'
-import ERPSpreadsheetReader from './ERPSpreadsheetReader'
-import ERPDashboardGrid from './ERPDashboardGrid'
-import ERPAIInsightsPanel from './ERPAIInsightsPanel'
-import { ParsedFile, ERPWidget, FinancialKPIs } from '../types/erp.types'
-import { defaultWidgets } from '../data/defaultWidgets'
-import { defaultKPIs } from '../data/sampleFinancialData'
-import { parsePdfText } from '../services/pdfService'
-import { readSpreadsheetFile, mapFinancialColumns, extractFinancialKPIs } from '../services/spreadsheetService'
-import { analyzeFinancialData, generateRecommendations } from '../services/aiAnalysisService'
+import React, { useState, useMemo } from 'react'
+import {
+  Sparkles,
+  TrendingUp,
+  Percent,
+  Activity,
+  ArrowDownRight,
+  DollarSign,
+  Clock,
+  Coins,
+  BarChart2,
+  Settings2,
+  RotateCcw,
+  AlertTriangle,
+  Award,
+  ShieldAlert,
+  Lightbulb
+} from 'lucide-react'
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  CartesianGrid
+} from 'recharts'
 
 export default function ERPWorkspace() {
-  const [file, setFile] = useState<ParsedFile | null>(null)
-  const [kpis, setKpis] = useState<FinancialKPIs>(defaultKPIs)
-  const [widgets, setWidgets] = useState<ERPWidget[]>(defaultWidgets)
-  
-  // Initialize AI analysis with default KPIs
-  const initialAnalysis = analyzeFinancialData(defaultKPIs)
-  const [analysis, setAnalysis] = useState(initialAnalysis)
-
-  // Simulation states for interactive What-If FP&A scenario planning
-  const [isSimulating, setIsSimulating] = useState(false)
+  // 1. Simulation states (dials controlled by the user)
   const [simRevenue, setSimRevenue] = useState(24800000)
-  const [simCmv, setSimCmv] = useState(61.29)
-  const [simOpex, setSimOpex] = useState(16.53)
+  const [simCmvPct, setSimCmvPct] = useState(61.3)
+  const [simOpexPct, setSimOpexPct] = useState(16.5)
+  const [simPmr, setSimPmr] = useState(45) // Collection Days
+  const [simPme, setSimPme] = useState(60) // Inventory Days
+  const [simPmp, setSimPmp] = useState(30) // Payment Days
   const [simCash, setSimCash] = useState(3100000)
-  const [simAging, setSimAging] = useState(12.5)
+  const [simAging, setSimAging] = useState(12.5) // PDD Inadimplência
 
-  // Centralized math recalibration for the simulation sliders
-  const recalculateKPIs = (
-    rev: number,
-    cmvPct: number,
-    opexPct: number,
-    csh: number,
-    ag: number
-  ) => {
-    const calculatedCmv = rev * (cmvPct / 100)
-    const calculatedOpex = rev * (opexPct / 100)
-    const calculatedMargin = rev > 0 ? ((rev - calculatedCmv - calculatedOpex) / rev) * 100 : 0
+  // 2. Formatters
+  const formatBRL = (val: number) => {
+    if (val >= 1000000) return `R$ ${(val / 1000000).toFixed(2)}M`
+    if (val >= 1000) return `R$ ${(val / 1000).toFixed(1)}k`
+    return `R$ ${val.toFixed(2)}`
+  }
 
-    const updatedKPIs: FinancialKPIs = {
-      revenue: rev,
-      cmv: calculatedCmv,
-      opex: calculatedOpex,
-      margin: calculatedMargin,
-      cash: csh,
-      aging: ag,
-      budget: 24000000, // Fixed R$ 24M budget for meta calculations
-      actual: rev
-    }
-
-    setKpis(updatedKPIs)
+  // 3. Computed FP&A Metrics
+  const computedMetrics = useMemo(() => {
+    const revenue = simRevenue
+    const cmv = revenue * (simCmvPct / 100)
+    const opex = revenue * (simOpexPct / 100)
+    const ebitda = revenue - cmv - opex
+    const margin = revenue > 0 ? (ebitda / revenue) * 100 : 0
     
-    const newAnalysis = analyzeFinancialData(updatedKPIs)
-    setAnalysis(newAnalysis)
+    // Cycle calculations
+    const operationalCycle = simPmr + simPme
+    const cashCycle = simPmr + simPme - simPmp
+    
+    // Working Capital Need (NCG)
+    // NCG formula: (Revenue / 360) * CCC
+    const ncg = (revenue / 360) * cashCycle
+    
+    // Bad debt write-off exposure
+    const pddExposure = revenue * (simAging / 100)
 
-    const formatBRL = (val: number) => {
-      if (val >= 1000000) return `R$ ${(val / 1000000).toFixed(2)}M`
-      if (val >= 1000) return `R$ ${(val / 1000).toFixed(1)}k`
-      return `R$ ${val.toFixed(2)}`
+    return {
+      revenue,
+      cmv,
+      opex,
+      ebitda,
+      margin,
+      operationalCycle,
+      cashCycle,
+      ncg,
+      pddExposure
+    }
+  }, [simRevenue, simCmvPct, simOpexPct, simPmr, simPme, simPmp, simAging])
+
+  // 4. Dynamic AI Insights Rule Engine
+  const aiAnalysis = useMemo(() => {
+    const { margin, cashCycle, ncg, pddExposure } = computedMetrics
+    const insights: Array<{
+      id: string
+      title: string
+      description: string
+      priority: 'high' | 'medium' | 'low'
+      category: 'risk' | 'opportunity' | 'bottleneck' | 'recommendation'
+    }> = []
+
+    // Rule 1: Margins
+    if (margin < 15) {
+      insights.push({
+        id: 'margin-critical',
+        title: 'Margem EBITDA Crítica',
+        description: `A margem operacional projetada de ${margin.toFixed(1)}% está muito baixa. Recomenda-se corte em OPEX ou revisão de custos de insumos (CMV).`,
+        priority: 'high',
+        category: 'risk'
+      })
+    } else if (margin >= 30) {
+      insights.push({
+        id: 'margin-strong',
+        title: 'Rentabilidade Saudável',
+        description: `Excelente margem EBITDA de ${margin.toFixed(1)}%. Permite planejar reinvestimentos ou distribuição de dividendos.`,
+        priority: 'low',
+        category: 'opportunity'
+      })
     }
 
-    // Refresh KPI metrics and statuses on dashboard cards
-    const updatedWidgets = widgets.map((w) => {
-      if (w.id === 'kpi-revenue') {
-        return { 
-          ...w, 
-          metric: formatBRL(rev), 
-          status: newAnalysis.kpiHealth.revenue,
-          text: rev >= 24000000 ? 'Faturamento superando a meta planejada.' : 'Faturamento abaixo da meta orçada.'
-        }
-      }
-      if (w.id === 'kpi-margin') {
-        return { 
-          ...w, 
-          metric: `${calculatedMargin.toFixed(2)}%`, 
-          status: newAnalysis.kpiHealth.margin,
-          text: calculatedMargin >= 35 ? 'Margem forte e rentabilidade sob controle.' : 'Margem comprometida, CMV e OPEX requerem corte.'
-        }
-      }
-      if (w.id === 'kpi-cmv') {
-        return { 
-          ...w, 
-          metric: `${cmvPct.toFixed(2)}%`, 
-          status: newAnalysis.kpiHealth.cmv,
-          text: cmvPct > 60 ? 'Custo de CMV crítico, renegociar contratos!' : 'CMV controlado e estável.'
-        }
-      }
-      if (w.id === 'kpi-opex') {
-        return { 
-          ...w, 
-          metric: formatBRL(calculatedOpex), 
-          status: newAnalysis.kpiHealth.opex,
-          text: opexPct > 25 ? 'Gargalo administrativo, OPEX elevado.' : 'OPEX mantido sob disciplina fiscal.'
-        }
-      }
-      if (w.id === 'kpi-cash') {
-        return { 
-          ...w, 
-          metric: formatBRL(csh), 
-          status: newAnalysis.kpiHealth.cash,
-          text: csh >= 2500000 ? 'Caixa saudável para alocação.' : 'Caixa sob risco de liquidez, esticar PMPs.'
-        }
-      }
-      if (w.id === 'kpi-aging') {
-        return { 
-          ...w, 
-          metric: `${ag.toFixed(2)}%`, 
-          status: newAnalysis.kpiHealth.aging,
-          text: ag > 10 ? 'Inadimplência alta, acelerar cobranças.' : 'Ciclo de recebimento sob controle.'
-        }
-      }
-      if (w.id === 'chart-budget') {
-        return {
-          ...w,
-          metric: `Realizado: ${formatBRL(rev)} / Orçado: R$ 24,0M`,
-          delta: `${((rev / 24000000) * 100).toFixed(1)}% Meta`
-        }
-      }
-      return w
-    })
-    setWidgets(updatedWidgets)
-  }
-
-  const handleToggleSimulation = (active: boolean) => {
-    setIsSimulating(active)
-    if (active) {
-      recalculateKPIs(simRevenue, simCmv, simOpex, simCash, simAging)
-    } else {
-      recalculateKPIs(
-        kpis.revenue,
-        kpis.revenue > 0 ? (kpis.cmv / kpis.revenue) * 100 : 61.29,
-        kpis.revenue > 0 ? (kpis.opex / kpis.revenue) * 100 : 16.53,
-        kpis.cash,
-        kpis.aging
-      )
-    }
-  }
-
-  const handleSliderChange = (
-    field: 'revenue' | 'cmv' | 'opex' | 'cash' | 'aging',
-    val: number
-  ) => {
-    let rev = simRevenue
-    let cmvVal = simCmv
-    let opexVal = simOpex
-    let csh = simCash
-    let ag = simAging
-
-    if (field === 'revenue') {
-      setSimRevenue(val)
-      rev = val
-    } else if (field === 'cmv') {
-      setSimCmv(val)
-      cmvVal = val
-    } else if (field === 'opex') {
-      setSimOpex(val)
-      opexVal = val
-    } else if (field === 'cash') {
-      setSimCash(val)
-      csh = val
-    } else if (field === 'aging') {
-      setSimAging(val)
-      ag = val
+    // Rule 2: Cash Conversion Cycle (CCC)
+    if (cashCycle > 60) {
+      insights.push({
+        id: 'ccc-slow',
+        title: 'Ciclo de Caixa Alongado',
+        description: `O ciclo está em ${cashCycle} dias. O caixa fica retido na operação por tempo excessivo, gerando pressão de liquidez.`,
+        priority: 'high',
+        category: 'bottleneck'
+      })
+    } else if (cashCycle < 0) {
+      insights.push({
+        id: 'ccc-negative',
+        title: 'Ciclo de Caixa Invertido',
+        description: `Ciclo de ${cashCycle} dias. Excelente! A operação é inteiramente financiada pelos prazos com fornecedores.`,
+        priority: 'low',
+        category: 'opportunity'
+      })
     }
 
-    recalculateKPIs(rev, cmvVal, opexVal, csh, ag)
-  }
+    // Rule 3: NCG / Capital de Giro
+    if (ncg > 1500000) {
+      insights.push({
+        id: 'ncg-high',
+        title: 'Necessidade de Giro Elevada',
+        description: `Necessidade de Capital de Giro estimada em ${formatBRL(ncg)}. Exige captação ou redução de prazos de recebimento (PMR).`,
+        priority: 'high',
+        category: 'risk'
+      })
+    }
 
+    // Rule 4: Inventory Days
+    if (simPme > 90) {
+      insights.push({
+        id: 'inventory-slow',
+        title: 'Giro de Estoque Lento',
+        description: `Estoque retido em média por ${simPme} dias. Alto risco de obsolescência e custo de armazenagem elevado.`,
+        priority: 'medium',
+        category: 'bottleneck'
+      })
+    }
+
+    // Rule 5: Collection Risk
+    if (simAging > 12) {
+      insights.push({
+        id: 'aging-pdd',
+        title: 'Risco de Inadimplência Alto',
+        description: `Taxa de ${simAging}% de atrasos de clientes eleva a PDD. Implemente análise de crédito mais rigorosa e cobrança ativa.`,
+        priority: 'medium',
+        category: 'recommendation'
+      })
+    }
+
+    const criticalCount = insights.filter((i) => i.priority === 'high').length
+    const warningCount = insights.filter((i) => i.priority === 'medium').length
+
+    let summary = 'A saúde financeira da operação está equilibrada. Ajuste as barras deslizantes para simular cenários de estresse de capital ou redução de custos.'
+    if (criticalCount > 0) {
+      summary = `Atenção: Detectados ${criticalCount} pontos críticos de alto impacto no capital de giro e margem. Recomenda-se ação corretiva imediata.`
+    } else if (warningCount > 0) {
+      summary = `Alerta: Identificadas oportunidades de otimização operacional em estoques ou cobrança para liberar caixa operacional.`
+    }
+
+    return {
+      insights,
+      summary
+    }
+  }, [computedMetrics, simPme, simAging])
+
+  // 5. Chart Data Generation
+  const chartDataDRE = useMemo(() => {
+    return [
+      { name: 'Receita', Realizado: Math.round(computedMetrics.revenue / 1000), Orcado: 24000 },
+      { name: 'CMV', Realizado: Math.round(computedMetrics.cmv / 1000), Orcado: 14800 },
+      { name: 'OPEX', Realizado: Math.round(computedMetrics.opex / 1000), Orcado: 4000 },
+      { name: 'EBITDA', Realizado: Math.round(computedMetrics.ebitda / 1000), Orcado: 5200 }
+    ]
+  }, [computedMetrics])
+
+  const chartDataCycles = useMemo(() => {
+    return [
+      { name: 'PMR (Clientes)', Dias: simPmr, fill: '#0071e3' },
+      { name: 'PME (Estoque)', Dias: simPme, fill: '#00c7be' },
+      { name: 'PMP (Forneced.)', Dias: simPmp, fill: '#ff9500' },
+      { name: 'Ciclo de Caixa', Dias: computedMetrics.cashCycle, fill: computedMetrics.cashCycle > 60 ? '#ff3b30' : computedMetrics.cashCycle > 30 ? '#ffcc00' : '#34c759' }
+    ]
+  }, [simPmr, simPme, simPmp, computedMetrics.cashCycle])
+
+  // 6. Reset function
   const resetSimulation = () => {
-    const defaultRev = file?.type === 'spreadsheet' ? kpis.revenue : 24800000
-    const defaultCmv = file?.type === 'spreadsheet' && kpis.revenue > 0 ? (kpis.cmv / kpis.revenue) * 100 : 61.29
-    const defaultOpex = file?.type === 'spreadsheet' && kpis.revenue > 0 ? (kpis.opex / kpis.revenue) * 100 : 16.53
-    const defaultCash = file?.type === 'spreadsheet' ? kpis.cash : 3100000
-    const defaultAging = file?.type === 'spreadsheet' ? kpis.aging : 12.5
-
-    setSimRevenue(defaultRev)
-    setSimCmv(defaultCmv)
-    setSimOpex(defaultOpex)
-    setSimCash(defaultCash)
-    setSimAging(defaultAging)
-
-    recalculateKPIs(defaultRev, defaultCmv, defaultOpex, defaultCash, defaultAging)
+    setSimRevenue(24800000)
+    setSimCmvPct(61.3)
+    setSimOpexPct(16.5)
+    setSimPmr(45)
+    setSimPme(60)
+    setSimPmp(30)
+    setSimCash(3100000)
+    setSimAging(12.5)
   }
 
-  const handleFileParsed = async (
-    rawFile: File,
-    type: 'pdf' | 'spreadsheet',
-    arrayBuffer: ArrayBuffer
-  ) => {
-    if (type === 'pdf') {
-      try {
-        const { text, pageCount } = await parsePdfText(arrayBuffer)
-        setFile({
-          name: rawFile.name,
-          type: 'pdf',
-          size: (rawFile.size / 1024 / 1024).toFixed(2) + ' MB',
-          text,
-          sheets: [],
-          selectedSheet: ''
-        })
-      } catch (err) {
-        console.error(err)
-      }
-    } else if (type === 'spreadsheet') {
-      try {
-        const { sheets, sheetData } = readSpreadsheetFile(arrayBuffer)
-        const selectedSheet = sheets[0] || ''
-        const rows = sheetData[selectedSheet] || []
-        
-        // Mapear colunas financeiras
-        const cols = mapFinancialColumns(rows)
-        // Extrair indicadores
-        const extracted = extractFinancialKPIs(rows, cols)
-
-        // Atualizar KPIs locais
-        const updatedKPIs: FinancialKPIs = {
-          ...kpis,
-          revenue: extracted.revenue || kpis.revenue,
-          cmv: extracted.cmv || kpis.cmv,
-          opex: extracted.opex || kpis.opex,
-          margin: extracted.margin || kpis.margin
-        }
-        setKpis(updatedKPIs)
-
-        // Sincronizar estados dos sliders de simulação com a planilha
-        setSimRevenue(updatedKPIs.revenue)
-        const cmvRatio = updatedKPIs.revenue > 0 ? (updatedKPIs.cmv / updatedKPIs.revenue) * 100 : 61.29
-        const opexRatio = updatedKPIs.revenue > 0 ? (updatedKPIs.opex / updatedKPIs.revenue) * 100 : 16.53
-        setSimCmv(cmvRatio)
-        setSimOpex(opexRatio)
-        setSimCash(updatedKPIs.cash)
-        setSimAging(updatedKPIs.aging)
-
-        // Recalcular Diagnóstico de IA
-        const newAnalysis = analyzeFinancialData(updatedKPIs)
-        setAnalysis(newAnalysis)
-
-        // Formatar valores para os widgets correspondentes
-        const formatBRL = (val: number) => {
-          if (val >= 1000000) return `R$ ${(val / 1000000).toFixed(2)}M`
-          if (val >= 1000) return `R$ ${(val / 1000).toFixed(1)}k`
-          return `R$ ${val.toFixed(2)}`
-        }
-
-        // Atualizar lista de widgets
-        const updatedWidgets = widgets.map((w) => {
-          if (w.id === 'kpi-revenue') {
-            return { ...w, metric: formatBRL(updatedKPIs.revenue), status: newAnalysis.kpiHealth.revenue }
-          }
-          if (w.id === 'kpi-margin') {
-            return { ...w, metric: `${updatedKPIs.margin.toFixed(2)}%`, status: newAnalysis.kpiHealth.margin }
-          }
-          if (w.id === 'kpi-cmv') {
-            const cmvPct = updatedKPIs.revenue > 0 ? (updatedKPIs.cmv / updatedKPIs.revenue) * 100 : 0
-            return { ...w, metric: `${cmvPct.toFixed(2)}%`, status: newAnalysis.kpiHealth.cmv }
-          }
-          if (w.id === 'kpi-opex') {
-            return { ...w, metric: formatBRL(updatedKPIs.opex), status: newAnalysis.kpiHealth.opex }
-          }
-          return w
-        })
-        setWidgets(updatedWidgets)
-
-        setFile({
-          name: rawFile.name,
-          type: 'spreadsheet',
-          size: (rawFile.size / 1024).toFixed(1) + ' KB',
-          data: rows,
-          sheets,
-          selectedSheet
-        })
-      } catch (err) {
-        console.error(err)
-      }
+  // Helper classes for priorities
+  const getPriorityClass = (priority: string) => {
+    switch (priority) {
+      case 'high': return 'bg-red-50 text-red-700 border-red-200'
+      case 'medium': return 'bg-amber-50 text-amber-700 border-amber-200'
+      default: return 'bg-slate-50 text-slate-600 border-slate-200'
     }
   }
 
-  const handleSheetChangeInReader = (sheetName: string) => {
-    // If we have sheet data already cached in the file, we can optionally recalculate.
-    // For demonstration, selecting tabs updates sheet view.
-  }
-
-  const clearWorkspace = () => {
-    setFile(null)
-    setKpis(defaultKPIs)
-    setWidgets(defaultWidgets)
-    setAnalysis(analyzeFinancialData(defaultKPIs))
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case 'bottleneck': return <AlertTriangle className="h-4 w-4 text-amber-500" />
+      case 'risk': return <ShieldAlert className="h-4 w-4 text-red-500" />
+      case 'opportunity': return <Award className="h-4 w-4 text-emerald-500" />
+      default: return <Lightbulb className="h-4 w-4 text-blue-500" />
+    }
   }
 
   return (
     <div className="space-y-8">
-      {/* File Dropper Workspace area */}
-      <div className="grid gap-6 lg:grid-cols-[1fr_minmax(320px,380px)]">
-        <div className="space-y-6">
-          <ERPFileDropzone onFileParsed={handleFileParsed} />
-
-          {file && file.type === 'pdf' && file.text && (
-            <ERPDocumentReader
-              fileName={file.name}
-              pageCount={file.sheets?.length || 1}
-              text={file.text}
-            />
-          )}
-
-          {file && file.type === 'spreadsheet' && file.sheets && (
-            <ERPSpreadsheetReader
-              fileName={file.name}
-              sheets={file.sheets}
-              sheetData={{ [file.selectedSheet || '']: file.data || [] }}
-              onSheetChanged={handleSheetChangeInReader}
-            />
-          )}
-        </div>
-
-        <div className="space-y-6">
-          <ERPAIInsightsPanel insights={analysis.insights} summary={analysis.summary} />
-        </div>
-      </div>
-
-      {/* Interactive Simulation Sliders Panel */}
-      <div className="rounded-[30px] border border-white/80 bg-white/70 p-6 shadow-[0_20px_50px_rgba(15,23,42,0.04)] backdrop-blur-xl space-y-5">
+      {/* 1. Simulation Dial Controls */}
+      <div className="rounded-[32px] border border-slate-100 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.02)] space-y-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-1">
             <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-              <Sparkles className="h-4.5 w-4.5 text-[#0071e3] animate-pulse" />
-              Simulador de Cenários & Planejamento (What-If)
+              <Settings2 className="h-4.5 w-4.5 text-[#0071e3] animate-pulse" />
+              Painel de Controles e Variáveis FP&A
             </h3>
             <p className="text-[11px] text-slate-500">
-              Ajuste as variáveis operacionais para recalibrar o DRE, margens e as recomendações de IA em tempo real.
+              Arraste os seletores para alterar o cenário operacional e recalcular a rentabilidade da operação.
             </p>
           </div>
           
-          <div className="flex items-center gap-4">
-            {isSimulating && (
-              <button
-                type="button"
-                onClick={resetSimulation}
-                className="text-xs text-[#0071e3] font-bold hover:underline"
-              >
-                Restaurar Padrão
-              </button>
-            )}
-            <label className="relative inline-flex cursor-pointer items-center">
-              <input
-                type="checkbox"
-                checked={isSimulating}
-                onChange={(e) => handleToggleSimulation(e.target.checked)}
-                className="peer sr-only"
-              />
-              <div className="peer h-5.5 w-10 rounded-full bg-slate-200 after:absolute after:top-[2px] after:left-[2px] after:h-4.5 after:w-4.5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-[#0071e3] peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none"></div>
-              <span className="ml-2 text-xs font-bold text-slate-700 select-none">Modo Simulação</span>
-            </label>
-          </div>
+          <button
+            type="button"
+            onClick={resetSimulation}
+            className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-800"
+          >
+            <RotateCcw className="h-3.5 w-3.5" /> Restaurar Baseline
+          </button>
         </div>
 
-        {isSimulating ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5 pt-3 border-t border-slate-100/60">
-            {/* Slider 1: Revenue */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-[11px]">
-                <span className="font-bold text-slate-600">Receita Realizada</span>
-                <span className="font-extrabold text-[#0071e3]">
-                  {simRevenue >= 1000000 ? `R$ ${(simRevenue / 1000000).toFixed(2)}M` : `R$ ${(simRevenue / 1000).toFixed(0)}k`}
-                </span>
-              </div>
-              <input
-                type="range"
-                min={1000000}
-                max={50000000}
-                step={100000}
-                value={simRevenue}
-                onChange={(e) => handleSliderChange('revenue', Number(e.target.value))}
-                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-[#0071e3]"
-              />
-              <div className="flex justify-between text-[9px] text-slate-400">
-                <span>R$ 1.0M</span>
-                <span>R$ 50.0M</span>
-              </div>
+        {/* Sliders Grid */}
+        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 pt-3 border-t border-slate-100/60">
+          {/* Slider 1: Revenue */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-[11px]">
+              <span className="font-bold text-slate-600">Receita Realizada (Anual)</span>
+              <span className="font-extrabold text-[#0071e3]">{formatBRL(simRevenue)}</span>
             </div>
-
-            {/* Slider 2: CMV % */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-[11px]">
-                <span className="font-bold text-slate-600">CMV / Custos</span>
-                <span className="font-extrabold text-[#0071e3]">{simCmv.toFixed(1)}%</span>
-              </div>
-              <input
-                type="range"
-                min={20}
-                max={75}
-                step={0.1}
-                value={simCmv}
-                onChange={(e) => handleSliderChange('cmv', Number(e.target.value))}
-                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-[#0071e3]"
-              />
-              <div className="flex justify-between text-[9px] text-slate-400">
-                <span>20%</span>
-                <span>75%</span>
-              </div>
-            </div>
-
-            {/* Slider 3: OPEX % */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-[11px]">
-                <span className="font-bold text-slate-600">OPEX / Despesas</span>
-                <span className="font-extrabold text-[#0071e3]">{simOpex.toFixed(1)}%</span>
-              </div>
-              <input
-                type="range"
-                min={5}
-                max={45}
-                step={0.1}
-                value={simOpex}
-                onChange={(e) => handleSliderChange('opex', Number(e.target.value))}
-                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-[#0071e3]"
-              />
-              <div className="flex justify-between text-[9px] text-slate-400">
-                <span>5%</span>
-                <span>45%</span>
-              </div>
-            </div>
-
-            {/* Slider 4: Cash */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-[11px]">
-                <span className="font-bold text-slate-600">Fluxo de Caixa</span>
-                <span className="font-extrabold text-[#0071e3]">
-                  {simCash >= 1000000 ? `R$ ${(simCash / 1000000).toFixed(2)}M` : `R$ ${(simCash / 1000).toFixed(0)}k`}
-                </span>
-              </div>
-              <input
-                type="range"
-                min={100000}
-                max={10000000}
-                step={100000}
-                value={simCash}
-                onChange={(e) => handleSliderChange('cash', Number(e.target.value))}
-                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-[#0071e3]"
-              />
-              <div className="flex justify-between text-[9px] text-slate-400">
-                <span>R$ 100k</span>
-                <span>R$ 10.0M</span>
-              </div>
-            </div>
-
-            {/* Slider 5: Aging */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-[11px]">
-                <span className="font-bold text-slate-600">Aging / PDD</span>
-                <span className="font-extrabold text-[#0071e3]">{simAging.toFixed(1)}%</span>
-              </div>
-              <input
-                type="range"
-                min={1}
-                max={25}
-                step={0.1}
-                value={simAging}
-                onChange={(e) => handleSliderChange('aging', Number(e.target.value))}
-                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-[#0071e3]"
-              />
-              <div className="flex justify-between text-[9px] text-slate-400">
-                <span>1%</span>
-                <span>25%</span>
-              </div>
+            <input
+              type="range"
+              min={1000000}
+              max={50000000}
+              step={200000}
+              value={simRevenue}
+              onChange={(e) => setSimRevenue(Number(e.target.value))}
+              className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-[#0071e3]"
+            />
+            <div className="flex justify-between text-[9px] text-slate-400 select-none">
+              <span>R$ 1M</span>
+              <span>R$ 50M</span>
             </div>
           </div>
-        ) : (
-          <div className="pt-3 border-t border-slate-100/60 text-center py-4">
-            <p className="text-xs text-slate-400">
-              Ative o <strong className="text-slate-500 font-semibold">Modo Simulação</strong> para habilitar as barras deslizantes e realizar simulações DRE.
-            </p>
+
+          {/* Slider 2: CMV % */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-[11px]">
+              <span className="font-bold text-slate-600">CMV / Custos</span>
+              <span className="font-extrabold text-[#0071e3]">{simCmvPct.toFixed(1)}%</span>
+            </div>
+            <input
+              type="range"
+              min={10}
+              max={75}
+              step={0.5}
+              value={simCmvPct}
+              onChange={(e) => setSimCmvPct(Number(e.target.value))}
+              className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-[#0071e3]"
+            />
+            <div className="flex justify-between text-[9px] text-slate-400 select-none">
+              <span>10%</span>
+              <span>75%</span>
+            </div>
           </div>
-        )}
+
+          {/* Slider 3: OPEX % */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-[11px]">
+              <span className="font-bold text-slate-600">OPEX / Despesas Firas</span>
+              <span className="font-extrabold text-[#0071e3]">{simOpexPct.toFixed(1)}%</span>
+            </div>
+            <input
+              type="range"
+              min={5}
+              max={45}
+              step={0.5}
+              value={simOpexPct}
+              onChange={(e) => setSimOpexPct(Number(e.target.value))}
+              className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-[#0071e3]"
+            />
+            <div className="flex justify-between text-[9px] text-slate-400 select-none">
+              <span>5%</span>
+              <span>45%</span>
+            </div>
+          </div>
+
+          {/* Slider 4: PMR */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-[11px]">
+              <span className="font-bold text-slate-600">Recebimento de Clientes</span>
+              <span className="font-extrabold text-[#0071e3]">{simPmr} dias</span>
+            </div>
+            <input
+              type="range"
+              min={15}
+              max={120}
+              step={1}
+              value={simPmr}
+              onChange={(e) => setSimPmr(Number(e.target.value))}
+              className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-[#0071e3]"
+            />
+            <div className="flex justify-between text-[9px] text-slate-400 select-none">
+              <span>15 dias</span>
+              <span>120 dias</span>
+            </div>
+          </div>
+
+          {/* Slider 5: PME */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-[11px]">
+              <span className="font-bold text-slate-600">Giro de Estoque (PME)</span>
+              <span className="font-extrabold text-[#0071e3]">{simPme} dias</span>
+            </div>
+            <input
+              type="range"
+              min={10}
+              max={180}
+              step={1}
+              value={simPme}
+              onChange={(e) => setSimPme(Number(e.target.value))}
+              className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-[#0071e3]"
+            />
+            <div className="flex justify-between text-[9px] text-slate-400 select-none">
+              <span>10 dias</span>
+              <span>180 dias</span>
+            </div>
+          </div>
+
+          {/* Slider 6: PMP */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-[11px]">
+              <span className="font-bold text-slate-600">Prazo de Compra (PMP)</span>
+              <span className="font-extrabold text-[#0071e3]">{simPmp} dias</span>
+            </div>
+            <input
+              type="range"
+              min={15}
+              max={120}
+              step={1}
+              value={simPmp}
+              onChange={(e) => setSimPmp(Number(e.target.value))}
+              className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-[#0071e3]"
+            />
+            <div className="flex justify-between text-[9px] text-slate-400 select-none">
+              <span>15 dias</span>
+              <span>120 dias</span>
+            </div>
+          </div>
+
+          {/* Slider 7: Cash */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-[11px]">
+              <span className="font-bold text-slate-600">Caixa Disponível</span>
+              <span className="font-extrabold text-[#0071e3]">{formatBRL(simCash)}</span>
+            </div>
+            <input
+              type="range"
+              min={100000}
+              max={15000000}
+              step={100000}
+              value={simCash}
+              onChange={(e) => setSimCash(Number(e.target.value))}
+              className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-[#0071e3]"
+            />
+            <div className="flex justify-between text-[9px] text-slate-400 select-none">
+              <span>R$ 100k</span>
+              <span>R$ 15.0M</span>
+            </div>
+          </div>
+
+          {/* Slider 8: Aging */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-[11px]">
+              <span className="font-bold text-slate-600">Inadimplência (PDD)</span>
+              <span className="font-extrabold text-[#0071e3]">{simAging.toFixed(1)}%</span>
+            </div>
+            <input
+              type="range"
+              min={1}
+              max={25}
+              step={0.5}
+              value={simAging}
+              onChange={(e) => setSimAging(Number(e.target.value))}
+              className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-[#0071e3]"
+            />
+            <div className="flex justify-between text-[9px] text-slate-400 select-none">
+              <span>1%</span>
+              <span>25%</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Main Interactive Dashboard Area */}
-      <div className="space-y-4 pt-4 border-t border-slate-100">
-        <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-slate-800 flex items-center gap-2">
-            <Database className="h-5 w-5 text-[#0071e3]" /> Painel Executivo Demonstrativo
-          </h3>
-          {file && (
-            <button
-              type="button"
-              onClick={clearWorkspace}
-              className="text-xs text-red-500 font-bold hover:underline"
-            >
-              Limpar Workspace
-            </button>
-          )}
+      {/* 2. Main Executive Grid Layout: Cards & Insights */}
+      <div className="grid gap-6 lg:grid-cols-[1fr_minmax(330px,380px)]">
+        <div className="space-y-6">
+          {/* KPI Dashboard Cards Grid */}
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {/* Card 1: Receita */}
+            <div className="rounded-3xl border border-slate-100 bg-white p-5 shadow-sm space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="rounded-lg bg-blue-50 p-1 text-[#0071e3]">
+                  <TrendingUp className="h-4.5 w-4.5" />
+                </div>
+                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Receita Realizada</span>
+              </div>
+              <div className="flex items-baseline justify-between">
+                <span className="text-2xl font-bold tracking-tight text-slate-900">{formatBRL(computedMetrics.revenue)}</span>
+                <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border ${
+                  computedMetrics.revenue >= 24000000 ? 'bg-emerald-50 border-emerald-100 text-emerald-700' : 'bg-amber-50 border-amber-100 text-amber-700'
+                }`}>
+                  {computedMetrics.revenue >= 24000000 ? '+3.3% vs Orçado' : 'Abaixo da Meta'}
+                </span>
+              </div>
+              <p className="text-[10px] text-slate-400">Baseline anual projetada de faturamento bruto.</p>
+            </div>
+
+            {/* Card 2: EBITDA */}
+            <div className="rounded-3xl border border-slate-100 bg-white p-5 shadow-sm space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="rounded-lg bg-emerald-50 p-1 text-emerald-600">
+                  <Percent className="h-4.5 w-4.5" />
+                </div>
+                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">EBITDA & Margem</span>
+              </div>
+              <div className="flex items-baseline justify-between">
+                <span className="text-2xl font-bold tracking-tight text-slate-900">{formatBRL(computedMetrics.ebitda)}</span>
+                <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border ${
+                  computedMetrics.margin >= 25 ? 'bg-emerald-50 border-emerald-100 text-emerald-700' : computedMetrics.margin >= 15 ? 'bg-amber-50 border-amber-100 text-amber-700' : 'bg-red-50 border-red-100 text-red-700'
+                }`}>
+                  {computedMetrics.margin.toFixed(1)}% Margem
+                </span>
+              </div>
+              <p className="text-[10px] text-slate-400">Lucro operacional antes de impostos e amortizações.</p>
+            </div>
+
+            {/* Card 3: Ciclo de Caixa */}
+            <div className="rounded-3xl border border-slate-100 bg-white p-5 shadow-sm space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="rounded-lg bg-amber-50 p-1 text-amber-600">
+                  <Clock className="h-4.5 w-4.5" />
+                </div>
+                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Ciclo de Caixa (CCC)</span>
+              </div>
+              <div className="flex items-baseline justify-between">
+                <span className="text-2xl font-bold tracking-tight text-slate-900">{computedMetrics.cashCycle} dias</span>
+                <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border ${
+                  computedMetrics.cashCycle <= 30 ? 'bg-emerald-50 border-emerald-100 text-emerald-700' : computedMetrics.cashCycle <= 60 ? 'bg-amber-50 border-amber-100 text-amber-700' : 'bg-red-50 border-red-100 text-red-700'
+                }`}>
+                  PMR + PME - PMP
+                </span>
+              </div>
+              <p className="text-[10px] text-slate-400">Ciclo de conversão do capital de giro operacional.</p>
+            </div>
+
+            {/* Card 4: NCG */}
+            <div className="rounded-3xl border border-slate-100 bg-white p-5 shadow-sm space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="rounded-lg bg-cyan-50 p-1 text-cyan-600">
+                  <Coins className="h-4.5 w-4.5" />
+                </div>
+                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Necessidade de Giro (NCG)</span>
+              </div>
+              <div className="flex items-baseline justify-between">
+                <span className="text-2xl font-bold tracking-tight text-slate-900">
+                  {computedMetrics.ncg > 0 ? formatBRL(computedMetrics.ncg) : 'Superávit Caixa'}
+                </span>
+                <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border ${
+                  computedMetrics.ncg > 2000000 ? 'bg-red-50 border-red-100 text-red-700' : computedMetrics.ncg > 0 ? 'bg-amber-50 border-amber-100 text-amber-700' : 'bg-emerald-50 border-emerald-100 text-emerald-700'
+                }`}>
+                  {computedMetrics.ncg > 0 ? 'Foco em liquidez' : 'Financiado Fornec.'}
+                </span>
+              </div>
+              <p className="text-[10px] text-slate-400">Capital necessário para manter as operações de giro.</p>
+            </div>
+
+            {/* Card 5: Ciclo Operacional */}
+            <div className="rounded-3xl border border-slate-100 bg-white p-5 shadow-sm space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="rounded-lg bg-purple-50 p-1 text-purple-600">
+                  <Activity className="h-4.5 w-4.5" />
+                </div>
+                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Ciclo Operacional</span>
+              </div>
+              <div className="flex items-baseline justify-between">
+                <span className="text-2xl font-bold tracking-tight text-slate-900">{computedMetrics.operationalCycle} dias</span>
+                <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full border bg-slate-50 border-slate-150 text-slate-600">
+                  PMR + PME
+                </span>
+              </div>
+              <p className="text-[10px] text-slate-400">Período total desde a compra do estoque até a venda.</p>
+            </div>
+
+            {/* Card 6: Inadimplência */}
+            <div className="rounded-3xl border border-slate-100 bg-white p-5 shadow-sm space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="rounded-lg bg-rose-50 p-1 text-rose-600">
+                  <DollarSign className="h-4.5 w-4.5" />
+                </div>
+                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Liquidez & PDD</span>
+              </div>
+              <div className="flex items-baseline justify-between">
+                <span className="text-2xl font-bold tracking-tight text-slate-900">{formatBRL(simCash)}</span>
+                <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full border bg-red-50 border-red-100 text-red-700">
+                  {simAging.toFixed(1)}% PDD
+                </span>
+              </div>
+              <p className="text-[10px] text-slate-400">Exposição à inadimplência: {formatBRL(computedMetrics.pddExposure)}</p>
+            </div>
+          </div>
+
+          {/* Recharts Graphical Analysis */}
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* Chart 1: Budget vs Actual */}
+            <div className="rounded-[32px] border border-slate-100 bg-white p-5 shadow-sm space-y-4">
+              <div className="space-y-1">
+                <h4 className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                  <BarChart2 className="h-4 w-4 text-[#0071e3]" />
+                  Orçamento vs Realizado (Anualizado)
+                </h4>
+                <p className="text-[10px] text-slate-400">Comparativo das rubricas do DRE em milhares (k BRL).</p>
+              </div>
+
+              <div className="h-64 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={chartDataDRE} margin={{ top: 10, right: 10, left: -20, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                    <XAxis dataKey="name" tick={{ fontSize: 9 }} stroke="#94a3b8" />
+                    <YAxis tick={{ fontSize: 9 }} stroke="#94a3b8" />
+                    <Tooltip wrapperStyle={{ fontSize: 10 }} />
+                    <Legend wrapperStyle={{ fontSize: 9 }} />
+                    <Bar dataKey="Orcado" name="Meta/Orçado (k BRL)" fill="#cbd5e1" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="Realizado" name="Simulado (k BRL)" fill="#0071e3" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Chart 2: Cycles Bar Chart */}
+            <div className="rounded-[32px] border border-slate-100 bg-white p-5 shadow-sm space-y-4">
+              <div className="space-y-1">
+                <h4 className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                  <Activity className="h-4 w-4 text-emerald-500" />
+                  Estrutura do Ciclo de Conversão (Dias)
+                </h4>
+                <p className="text-[10px] text-slate-400">Relação entre prazos de recebimento, estocagem, pagamento e ciclo de caixa.</p>
+              </div>
+
+              <div className="h-64 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    layout="vertical"
+                    data={chartDataCycles}
+                    margin={{ top: 10, right: 10, left: 10, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                    <XAxis type="number" tick={{ fontSize: 9 }} stroke="#94a3b8" />
+                    <YAxis dataKey="name" type="category" tick={{ fontSize: 8 }} stroke="#94a3b8" width={90} />
+                    <Tooltip wrapperStyle={{ fontSize: 10 }} />
+                    <Bar dataKey="Dias" radius={[0, 4, 4, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <ERPDashboardGrid widgets={widgets} />
+        {/* Dynamic AI insights panel inside Workspace */}
+        <div className="space-y-6">
+          <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm space-y-6 h-full flex flex-col">
+            <div className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-cyan-50 text-cyan-600">
+                <Sparkles className="h-4.5 w-4.5" />
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-slate-800">Insights de IA & Recomendações</h3>
+                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Controller Virtual Ativo</p>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-cyan-100/40 bg-cyan-50/20 p-4 text-xs text-slate-700 leading-relaxed shadow-sm">
+              <p className="font-semibold text-cyan-900 mb-1 flex items-center gap-1">
+                📊 Diagnóstico Financeiro Consolidado
+              </p>
+              <p className="text-slate-600">{aiAnalysis.summary}</p>
+            </div>
+
+            <div className="space-y-3 overflow-y-auto flex-1 max-h-[500px] pr-1">
+              {aiAnalysis.insights.map((insight) => (
+                <div
+                  key={insight.id}
+                  className="group rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition hover:shadow-md hover:border-slate-200"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start gap-3 min-w-0">
+                      <div className="mt-0.5 rounded-xl bg-slate-50 p-1.5 transition group-hover:bg-slate-100">
+                        {getCategoryIcon(insight.category)}
+                      </div>
+                      <div className="min-w-0">
+                        <h4 className="text-xs font-bold text-slate-800 truncate">
+                          {insight.title}
+                        </h4>
+                        <p className="mt-1 text-[11px] leading-relaxed text-slate-500">
+                          {insight.description}
+                        </p>
+                      </div>
+                    </div>
+
+                    <span
+                      className={`inline-block rounded-full border px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide flex-shrink-0 ${getPriorityClass(
+                        insight.priority
+                      )}`}
+                    >
+                      {insight.priority === 'high' ? 'Alta' : insight.priority === 'medium' ? 'Média' : 'Baixa'}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="text-[10px] text-center text-slate-400 bg-slate-50 p-2.5 rounded-xl border border-slate-100/50 select-none">
+              💡 **Recomendações FP&A**: O simulador analisa o mix de prazos e CMV para sugerir ajustes imediatos no ciclo operacional e de tesouraria.
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

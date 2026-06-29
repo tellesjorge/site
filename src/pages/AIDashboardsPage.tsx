@@ -19,7 +19,7 @@ export default function AIDashboardsPage() {
               Plataforma Executiva de Controladoria
             </h1>
             <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600 sm:text-base">
-              Carregue PDFs, planilhas e indicadores para simular uma análise executiva com dashboards, gargalos e recomendações de IA.
+              Simulador Interativo de Planejamento FP&A, Ciclo de Caixa e Necessidade de Capital de Giro (NCG). Ajuste os controles operacionais para recalibrar o DRE e obter análises automatizadas do Controller Virtual.
             </p>
           </div>
         </div>
@@ -27,7 +27,7 @@ export default function AIDashboardsPage() {
         <LiveContextWidget />
 
         <div className="rounded-[24px] border border-blue-400/20 bg-blue-50/10 p-5 text-xs text-slate-600 leading-relaxed max-w-5xl shadow-sm">
-          💡 **Nota de Arquitetura**: Esta plataforma demonstrativa roda localmente no navegador utilizando dados simulados, análise léxica e persistência. O código está totalmente acoplável a integrações reais com bancos de dados, relatórios e modelos de LLM.
+          💡 **Nota de Planejamento**: Este simulador de cenários demonstra a modelagem financeira estratégica executada por um Controller. O motor de cálculo recalibra indicadores de rentabilidade e capital de giro, ideal para apresentações e diagnósticos executivos de diretoria.
         </div>
 
         {/* Lazy boundary for heavy ERP features */}
