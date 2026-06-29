@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { ShieldCheck } from 'lucide-react'
+import { useLanguage } from '../context/LanguageContext'
 
 const STORAGE_KEY = 'jorge-privacy-consent'
 type ConsentState = 'accepted' | 'pending'
 
 function PrivacyBanner() {
   const [consent, setConsent] = useState<ConsentState>('pending')
+  const { t } = useLanguage()
 
   useEffect(() => {
     const saved = window.localStorage.getItem(STORAGE_KEY)
@@ -31,9 +33,14 @@ function PrivacyBanner() {
             <ShieldCheck className="h-5 w-5" />
           </div>
           <div>
-            <p className="text-sm font-bold text-[#1d1d1f]">Conformidade LGPD & Privacidade</p>
+            <p className="text-sm font-bold text-[#1d1d1f]">
+              {t({ pt: 'Conformidade LGPD & Privacidade', en: 'GDPR / LGPD Compliance & Privacy' })}
+            </p>
             <p className="mt-0.5 text-xs text-[#6e6e73] leading-relaxed">
-              Solicitamos seu consentimento para prosseguir. Utilizamos armazenamento local estritamente necessário para fins de navegação e propostas, sem cookies de rastreamento comercial.
+              {t({
+                pt: 'Solicitamos seu consentimento para prosseguir. Utilizamos armazenamento local estritamente necessário para fins de navegação e propostas, sem cookies de rastreamento comercial.',
+                en: 'We request your consent to proceed. We use strictly necessary local storage data to enable basic browsing and proposals, with no commercial tracking cookies.'
+              })}
             </p>
           </div>
         </div>
@@ -44,14 +51,14 @@ function PrivacyBanner() {
             onClick={handleAccept}
             className="text-[11px] font-bold text-[#8e8e93] hover:text-[#1d1d1f] hover:underline transition"
           >
-            Ler Política
+            {t({ pt: 'Ler Política', en: 'View Policy' })}
           </a>
           <button
             type="button"
             onClick={handleAccept}
             className="rounded-full bg-[#0071e3] px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-[#2997ff] active:scale-[0.98]"
           >
-            Sim, concordo
+            {t({ pt: 'Sim, concordo', en: 'Yes, I agree' })}
           </button>
         </div>
       </div>

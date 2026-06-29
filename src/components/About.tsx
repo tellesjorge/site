@@ -1,7 +1,10 @@
 import { motion } from 'framer-motion'
 import { profile } from '../data/profile'
+import { useLanguage } from '../context/LanguageContext'
 
 function About() {
+  const { t } = useLanguage()
+
   return (
     <motion.section
       id="sobre"
@@ -13,11 +16,15 @@ function About() {
     >
       <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <p className="text-sm uppercase tracking-[0.28em] text-[#0071e3]">Sobre mim</p>
-          <h2 className="mt-3 text-3xl font-semibold text-[#1d1d1f] sm:text-4xl">Profissional de finanças e controladoria sênior</h2>
+          <p className="text-sm uppercase tracking-[0.28em] text-[#0071e3]">
+            {t({ pt: 'Sobre mim', en: 'About me' })}
+          </p>
+          <h2 className="mt-3 text-3xl font-semibold text-[#1d1d1f] sm:text-4xl">
+            {t({ pt: 'Profissional de finanças e controladoria sênior', en: 'Senior Finance & Controllership Expert' })}
+          </h2>
         </div>
         <div className="max-w-2xl text-[#424245]">
-          <p className="leading-8">{profile.about}</p>
+          <p className="leading-8">{t(profile.about)}</p>
         </div>
       </div>
     </motion.section>

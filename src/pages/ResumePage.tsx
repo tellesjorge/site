@@ -7,12 +7,20 @@ import ProfilePortrait from '../components/brand/ProfilePortrait'
 import { profile } from '../data/profile'
 import { Linkedin, MessageSquare, Briefcase, GraduationCap } from 'lucide-react'
 import { useSEO } from '../hooks/useSEO'
+import { useLanguage } from '../context/LanguageContext'
 
 export default function ResumePage() {
+  const { language, t } = useLanguage()
+
   useSEO({
-    title: 'Currículo Profissional',
-    description: 'Visualização completa do currículo de Jorge Telles. Formação acadêmica, stack tecnológica (SAP, Power BI, Python) e principais competências em finanças.'
+    title: t({ pt: 'Currículo Profissional', en: 'Professional Resume' }),
+    description: t({
+      pt: 'Visualização completa do currículo de Jorge Telles. Formação acadêmica, stack tecnológica (SAP, Power BI, Python) e principais competências em finanças.',
+      en: 'Complete professional resume of Jorge Telles. Academic background, tech stack (SAP, Power BI, Python) and core finance competencies.'
+    })
   })
+
+  const whatsappUrl = language === 'en' ? profile.actions.whatsappEn : profile.actions.whatsapp
 
   return (
     <PageTransition>
@@ -23,7 +31,7 @@ export default function ResumePage() {
             <div>
               <Logo variant="full" />
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#0071e3] mt-2">
-                Currículo Executivo
+                {t({ pt: 'Currículo Executivo', en: 'Executive Resume' })}
               </p>
             </div>
           </div>
@@ -38,7 +46,7 @@ export default function ResumePage() {
               <Linkedin className="h-4 w-4 text-[#0071e3]" /> LinkedIn
             </a>
             <a
-              href={profile.actions.whatsapp}
+              href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-full bg-[#25d366] px-5 py-2.5 text-xs font-semibold text-white hover:bg-[#20ba56] transition"
@@ -55,47 +63,56 @@ export default function ResumePage() {
             {/* Executive Summary */}
             <div className="space-y-4">
               <h2 className="text-xl font-bold text-[#1d1d1f] flex items-center gap-2 border-b border-black/5 pb-3">
-                <Briefcase className="h-5 w-5 text-[#0071e3]" /> Resumo Profissional
+                <Briefcase className="h-5 w-5 text-[#0071e3]" /> {t({ pt: 'Resumo Profissional', en: 'Executive Summary' })}
               </h2>
-              <p className="text-sm text-[#6e6e73] leading-relaxed">
-                {profile.subtitle}
+              <p className="text-xs text-[#6e6e73] leading-relaxed">
+                {t(profile.subtitle)}
               </p>
             </div>
 
             {/* Experience Summary */}
             <div className="space-y-6">
               <h2 className="text-xl font-bold text-[#1d1d1f] border-b border-black/5 pb-3">
-                Histórico Profissional
+                {t({ pt: 'Histórico Profissional', en: 'Professional History' })}
               </h2>
               <div className="space-y-6">
-                {profile.experience.map((exp, index) => (
-                  <div key={index} className="space-y-2">
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <h3 className="font-bold text-sm text-[#1d1d1f]">{exp.role}</h3>
-                      <span className="text-xs text-[#6e6e73] bg-slate-100 px-3 py-1 rounded-full">{exp.period}</span>
+                {profile.experience.map((exp, index) => {
+                  const roleStr = t(exp.role)
+                  const highlightList = exp.highlights[language] || exp.highlights['pt'] || []
+                  return (
+                    <div key={index} className="space-y-2 border-b border-slate-50 pb-4 last:border-0 last:pb-0">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <h3 className="font-bold text-sm text-[#1d1d1f]">{roleStr}</h3>
+                        <span className="text-xs text-[#6e6e73] bg-slate-100 px-3 py-1 rounded-full">{t(exp.period)}</span>
+                      </div>
+                      <p className="text-xs font-semibold text-[#0071e3]">{exp.company}</p>
+                      <p className="text-xs text-[#6e6e73] leading-relaxed">{t(exp.summary)}</p>
+                      <ul className="list-disc pl-4 space-y-1 text-xs text-[#424245]">
+                        {highlightList.map((h, i) => (
+                          <li key={i}>{h}</li>
+                        ))}
+                      </ul>
                     </div>
-                    <p className="text-xs font-semibold text-[#0071e3]">{exp.company}</p>
-                    <p className="text-xs text-[#6e6e73]">{exp.summary}</p>
-                    <ul className="list-disc pl-4 space-y-1 text-xs text-[#424245]">
-                      {exp.highlights.map((h, i) => (
-                        <li key={i}>{h}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </div>
 
             {/* Formation / Certifications */}
             <div className="space-y-4">
               <h2 className="text-xl font-bold text-[#1d1d1f] flex items-center gap-2 border-b border-black/5 pb-3">
-                <GraduationCap className="h-5 w-5 text-[#0071e3]" /> Formação Acadêmica
+                <GraduationCap className="h-5 w-5 text-[#0071e3]" /> {t({ pt: 'Formação Acadêmica', en: 'Academic Background' })}
               </h2>
               <div className="space-y-3 text-xs text-[#6e6e73]">
                 <p>
-                  <strong>Bacharelado em Ciências Contábeis</strong>
+                  <strong>{t({ pt: 'Bacharelado em Ciências Contábeis', en: 'Bachelor of Science in Accounting' })}</strong>
                 </p>
-                <p>CRC ativo e regularizado pronto para atuação em controladoria corporativa.</p>
+                <p>
+                  {t({
+                    pt: 'CRC ativo e regularizado pronto para atuação em controladoria corporativa.',
+                    en: 'Active, regularized CRC (Certified Public Accountant) credentials ready for controllership service.'
+                  })}
+                </p>
               </div>
             </div>
           </div>

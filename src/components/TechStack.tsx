@@ -1,7 +1,12 @@
 import { motion } from 'framer-motion'
 import { profile } from '../data/profile'
+import { useLanguage } from '../context/LanguageContext'
 
 function TechStack() {
+  const { language, t } = useLanguage()
+
+  const techList = profile.technologies[language] || profile.technologies['pt'] || []
+
   return (
     <motion.section
       id="tecnologias"
@@ -12,14 +17,21 @@ function TechStack() {
       className="mb-16"
     >
       <div className="mb-10 flex flex-col gap-4">
-        <p className="text-xs uppercase tracking-[0.28em] text-[#0071e3] font-semibold">Sistemas e tecnologias</p>
-        <h2 className="text-3xl font-semibold text-[#1d1d1f] sm:text-4xl">Ferramentas da Rotina Financeira</h2>
+        <p className="text-xs uppercase tracking-[0.28em] text-[#0071e3] font-semibold">
+          {t({ pt: 'Sistemas e tecnologias', en: 'Systems & Technologies' })}
+        </p>
+        <h2 className="text-3xl font-semibold text-[#1d1d1f] sm:text-4xl">
+          {t({ pt: 'Ferramentas da Rotina Financeira', en: 'Tools of the Financial Routine' })}
+        </h2>
         <p className="max-w-2xl text-sm leading-6 text-[#6e6e73]">
-          Ecossistema de sistemas ERP, BI e desenvolvimento usados em controles, análises e automações.
+          {t({
+            pt: 'Ecossistema de sistemas ERP, BI e desenvolvimento usados em controles, análises e automações.',
+            en: 'Ecosystem of ERP, BI and development frameworks leveraged for controls, data analysis and pipeline automations.'
+          })}
         </p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {profile.technologies.map((tech) => (
+        {techList.map((tech) => (
           <motion.div
             key={tech}
             whileHover={{ y: -4 }}

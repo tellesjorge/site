@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Cpu, RefreshCw, Server } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 export default function LiveContextWidget({ className = 'my-6' }: { className?: string }) {
   const [updatedAt, setUpdatedAt] = useState('')
+  const { t } = useLanguage()
 
   useEffect(() => {
     const now = new Date()
@@ -18,11 +20,15 @@ export default function LiveContextWidget({ className = 'my-6' }: { className?: 
             <Server className="h-4.5 w-4.5" />
           </div>
           <div className="min-w-0">
-            <p className="text-[9px] font-bold uppercase tracking-widest text-slate-600">Painel Executivo</p>
-            <p className="truncate text-xs font-bold text-slate-900">Status Operacional</p>
+            <p className="text-[9px] font-bold uppercase tracking-widest text-slate-600">
+              {t({ pt: 'Painel Executivo', en: 'Executive Panel' })}
+            </p>
+            <p className="truncate text-xs font-bold text-slate-900">
+              {t({ pt: 'Status Operacional', en: 'Operational Status' })}
+            </p>
             <div className="mt-0.5 flex items-center gap-1.5 text-[10px] font-semibold text-emerald-600">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Dashboard Ativo</span>
+              <span>{t({ pt: 'Dashboard Ativo', en: 'Dashboard Active' })}</span>
             </div>
           </div>
         </div>
@@ -33,11 +39,20 @@ export default function LiveContextWidget({ className = 'my-6' }: { className?: 
             <Cpu className="h-4.5 w-4.5" />
           </div>
           <div className="min-w-0">
-            <p className="text-[9px] font-bold uppercase tracking-widest text-slate-600">Automação IA</p>
-            <p className="truncate text-xs font-bold text-slate-900">Modo de Simulação</p>
+            <p className="text-[9px] font-bold uppercase tracking-widest text-slate-600">
+              {t({ pt: 'Automação IA', en: 'AI Automation' })}
+            </p>
+            <p className="truncate text-xs font-bold text-slate-900">
+              {t({ pt: 'Modo de Simulação', en: 'Simulation Engine' })}
+            </p>
             <div className="mt-0.5 flex items-center gap-1 text-[10px] text-slate-600">
               <RefreshCw className="h-2.5 w-2.5 animate-spin" />
-              <span className="truncate">Auto-regenerando às {updatedAt}</span>
+              <span className="truncate">
+                {t({
+                  pt: `Auto-regenerando às ${updatedAt}`,
+                  en: `Auto-regenerating at ${updatedAt}`
+                })}
+              </span>
             </div>
           </div>
         </div>

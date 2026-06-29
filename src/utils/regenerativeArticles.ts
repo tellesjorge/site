@@ -1,185 +1,290 @@
 import { Article } from '../data/articles'
 
-// Dynamic Pool of 20 trending Controllership & FP&A topics inspired by LinkedIn feeds
+// Dynamic Pool of 10 trending Controllership & FP&A topics with PT and EN translations
 const topicPool = [
   {
-    title: 'Reforma Tributária: Como Planejar o Orçamento em Meio às Novas Regras',
-    category: 'Controladoria' as const,
-    excerpt: 'As mudanças na tributação de consumo exigem recalibração urgente do DRE projetado e do fluxo de caixa operacional para os próximos períodos fiscais.',
-    content: `
-      <p>A aprovação da Reforma Tributária no Brasil representa o maior desafio de planejamento para Controllers nesta década. Com a transição gradual para o IVA Dual (IBS e CBS), o planejamento orçamentário tradicional baseado em séries históricas perde a validade. As empresas precisam se preparar para um cenário de dupla contabilidade e alteração drástica nas alíquotas de consumo.</p>
-      <h2>1. O Desafio da Transição e Alíquota Operacional</h2>
-      <p>A coexistência dos modelos antigos e novos gerará custos de conformidade elevados. O papel do Controller é projetar o impacto do novo modelo no CMV e no fluxo de caixa, principalmente analisando a não cumulatividade plena dos créditos. Setores de serviços, por exemplo, enfrentarão aumentos nominais de alíquota que exigirão repasse de preço ou otimização drástica de OPEX.</p>
-      <h2>2. Ações Imediatas para o Controller</h2>
-      <ul>
-        <li><strong>Simulação de Cenários:</strong> Desenvolva modelos contendo cenários de alíquota efetiva (25% a 28%) e analise o impacto na margem de contribuição.</li>
-        <li><strong>Revisão de Fornecedores:</strong> Avalie a cadeia de suprimentos. Fornecedores optantes pelo Simples Nacional podem gerar menos créditos, alterando o custo real de aquisição.</li>
-        <li><strong>Tecnologia e Parametrização:</strong> Garanta que os sistemas de ERP e BI estejam prontos para apurar os novos tributos de forma paralela.</li>
-      </ul>
-      <blockquote>
-        <strong>Insight da IA:</strong> A reforma não é apenas um desafio fiscal, mas estratégico. Empresas que simularem seus impactos primeiro conseguirão renegociar contratos e redefinir preços antes da concorrência.
-      </blockquote>
-    `
+    title: {
+      pt: 'Reforma Tributária: Como Planejar o Orçamento em Meio às Novas Regras',
+      en: 'Tax Reform: How to Budget in the Midst of New Rules'
+    },
+    category: { pt: 'Controladoria' as const, en: 'Controllership' as const },
+    excerpt: {
+      pt: 'As mudanças na tributação de consumo exigem recalibração urgente do DRE projetado e do fluxo de caixa operacional para os próximos períodos fiscais.',
+      en: 'Changes in consumption taxation demand urgent recalibration of projected Income Statements and operating cash flow.'
+    },
+    content: {
+      pt: `
+        <p>A aprovação da Reforma Tributária no Brasil representa o maior desafio de planejamento para Controllers nesta década. Com a transição gradual para o IVA Dual (IBS e CBS), o planejamento orçamentário tradicional baseado em séries históricas perde a validade. As empresas precisam se preparar para um cenário de dupla contabilidade e alteração drástica nas alíquotas de consumo.</p>
+        <h2>1. O Desafio da Transição e Alíquota Operacional</h2>
+        <p>A coexistência dos modelos antigos e novos gerará custos de conformidade elevados. O papel do Controller é projetar o impacto do novo modelo no CMV e no fluxo de caixa, principalmente analisando a não cumulatividade plena dos créditos. Setores de serviços, por exemplo, enfrentarão aumentos nominais de alíquota que exigirão repasse de preço ou otimização drástica de OPEX.</p>
+        <h2>2. Ações Imediatas para o Controller</h2>
+        <ul>
+          <li><strong>Simulação de Cenários:</strong> Desenvolva modelos contendo cenários de alíquota efetiva (25% a 28%) e analise o impacto na margem de contribuição.</li>
+          <li><strong>Revisão de Fornecedores:</strong> Avalie a cadeia de suprimentos. Fornecedores optantes pelo Simples Nacional podem gerar menos créditos, alterando o custo real de aquisição.</li>
+          <li><strong>Tecnologia e Parametrização:</strong> Garanta que os sistemas de ERP e BI estejam prontos para apurar os novos tributos de forma paralela.</li>
+        </ul>
+      `,
+      en: `
+        <p>The approval of Tax Reform represents a massive planning challenge. With the transition to Dual VAT, historical budgeting models are obsolete. Companies must prepare for dual accounting systems and changes in consumption taxes.</p>
+        <h2>1. Transition and Operational Impact</h2>
+        <p>Coexistence of old and new systems raises compliance costs. Controllers must project impacts on CMV and cash flow, especially regarding credits. Service industries face nominal rate hikes, requiring pricing changes or OPEX optimizations.</p>
+        <h2>2. Action Steps</h2>
+        <ul>
+          <li><strong>Scenario Simulations:</strong> Model effective rates (25% to 28%) and track impacts on contribution margins.</li>
+          <li><strong>Supply Chain Audit:</strong> Assess supplier tax regimes. Simples Nacional suppliers may yield fewer tax credits.</li>
+          <li><strong>ERP Readiness:</strong> Ensure system workflows can calculate old and new systems concurrently.</li>
+        </ul>
+      `
+    }
   },
   {
-    title: 'Rolling Forecast: Por que o Orçamento Estático Está Morrendo',
-    category: 'FP&A' as const,
-    excerpt: 'Em mercados voláteis, relying apenas no Budget anual é um risco. Descubra como implantar previsões dinâmicas trimestrais (Rolling Forecast).',
-    content: `
-      <p>O Orçamento Estático (Budget) anual ainda é a regra na maioria das corporações. No entanto, planejar em outubro as metas de vendas e despesas para o dezembro do ano seguinte assume uma estabilidade de mercado que não existe mais. Em ambientes de alta volatilidade, o <strong>Rolling Forecast</strong> surge como a metodologia ideal de planejamento financeiro dinâmico.</p>
-      <h2>1. O que é o Rolling Forecast?</h2>
-      <p>Diferente do forecast tradicional (que apenas atualiza os meses restantes até o fim do ano fiscal), o Rolling Forecast trabalha com um horizonte móvel contínuo (geralmente de 4 a 6 trimestres). Ao final de cada trimestre, os dados reais são consolidados e um novo trimestre é adicionado ao modelo de projeção.</p>
-      <h2>2. Vantagens da Projeção Móvel</h2>
-      <ul>
-        <li><strong>Agilidade de Decisão:</strong> Permite desviar recursos de projetos pouco rentáveis para oportunidades emergentes no curto prazo.</li>
-        <li><strong>Metas Realistas:</strong> Evita metas de vendas defasadas pela macroeconomia ou cortes excessivos de OPEX baseados em premissas desatualizadas.</li>
-        <li><strong>Cultura de Planejamento:</strong> Transforma o planejamento financeiro em um processo contínuo e integrado ao invés de um ritual anual burocrático.</li>
-      </ul>
-      <blockquote>
-        <strong>Insight da IA:</strong> Implementar o Rolling Forecast exige desapego da precisão centesimal do Budget. O foco deve ser a direção estratégica do fluxo de caixa e a reatividade operacional.
-      </blockquote>
-    `
+    title: {
+      pt: 'Rolling Forecast: Por que o Orçamento Estático Está Morrendo',
+      en: 'Rolling Forecast: Why the Static Budget is Dying'
+    },
+    category: { pt: 'FP&A' as const, en: 'FP&A' as const },
+    excerpt: {
+      pt: 'Em mercados voláteis, relying apenas no Budget anual é um risco. Descubra como implantar previsões dinâmicas trimestrais (Rolling Forecast).',
+      en: 'In volatile markets, relying solely on annual Budgets is high risk. Discover how to deploy quarterly dynamic forecasting.'
+    },
+    content: {
+      pt: `
+        <p>O Orçamento Estático (Budget) anual ainda é a regra na maioria das corporações. No entanto, planejar em outubro as metas de vendas e despesas para o dezembro do ano seguinte assume uma estabilidade de mercado que não existe mais. Em ambientes de alta volatilidade, o <strong>Rolling Forecast</strong> surge como a metodologia ideal de planejamento financeiro dinâmico.</p>
+        <h2>1. O que é o Rolling Forecast?</h2>
+        <p>Diferente do forecast tradicional, o Rolling Forecast trabalha com um horizonte móvel contínuo (geralmente de 4 a 6 trimestres). Ao final de cada trimestre, os dados reais são consolidados e um novo trimestre é adicionado ao modelo de projeção.</p>
+        <h2>2. Vantagens da Projeção Móvel</h2>
+        <ul>
+          <li><strong>Agilidade de Decisão:</strong> Permite desviar recursos de projetos pouco rentáveis para oportunidades emergentes no curto prazo.</li>
+          <li><strong>Metas Realistas:</strong> Evita metas de vendas defasadas pela macroeconomia ou cortes excessivos de OPEX baseados em premissas desatualizadas.</li>
+        </ul>
+      `,
+      en: `
+        <p>Annual Static Budgets assume a market stability that no longer exists. In volatile corporate landscapes, <strong>Rolling Forecasts</strong> deliver dynamic planning.</p>
+        <h2>1. What is a Rolling Forecast?</h2>
+        <p>Unlike traditional updates, the Rolling Forecast employs a continuous horizon (e.g., 4 to 6 quarters). Every quarter, closures are logged and a future quarter is added.</p>
+        <h2>2. Core Advantages</h2>
+        <ul>
+          <li><strong>Agile Resource Allocation:</strong> Quickly shift capital from low-performing projects to growth opportunities.</li>
+          <li><strong>Dynamic Metrics:</strong> Keep sales targets realistic and aligned with macroeconomic factors.</li>
+        </ul>
+      `
+    }
   },
   {
-    title: 'EBITDA Ajustado: O que os Investidores Realmente Olham na sua Empresa',
-    category: 'Controladoria' as const,
-    excerpt: 'Desvende as conciliações e ajustes de EBITDA exigidos em auditorias e rodadas de captação de recursos para calcular a real capacidade de geração de caixa.',
-    content: `
-      <p>O EBITDA (Lucro antes de Juros, Impostos, Depreciação e Amortização) tornou-se a métrica universal de avaliação de valor de mercado (Valuation). No entanto, investidores experientes raramente tomam decisões olhando apenas para o EBITDA contábil. Eles exigem a conciliação do <strong>EBITDA Ajustado</strong>.</p>
-      <h2>1. Por que Ajustar o EBITDA?</h2>
-      <p>O objetivo do EBITDA é refletir a capacidade intrínseca de geração de caixa operacional da atividade-fim. Por isso, despesas e receitas não recorrentes, ou lançamentos puramente contábeis sem impacto de caixa, precisam ser depurados pelo Controller para apresentar uma visão limpa da operação.</p>
-      <h2>2. Principais Ajustes Efetuados</h2>
-      <ul>
-        <li><strong>Provisões Não Caixa:</strong> Lançamentos como contingências cíveis/trabalhistas estimadas, perdas com PDD e equivalência patrimonial.</li>
-        <li><strong>Eventos Não Recorrentes:</strong> Custos de reestruturação organizacional, rescisões em massa, baixas de ativos imobilizados ou indenizações recebidas.</li>
-        <li><strong>Remuneração em Ações (Stock Options):</strong> Despesa contábil que não afeta a conta bancária operacional direta da empresa.</li>
-      </ul>
-      <blockquote>
-        <strong>Insight da IA:</strong> Manter um histórico documentado de conciliação de EBITDA Ajustado é obrigatório para qualquer processo de M&A ou auditoria de governança.
-      </blockquote>
-    `
+    title: {
+      pt: 'EBITDA Ajustado: O que os Investidores Realmente Olham na sua Empresa',
+      en: 'Adjusted EBITDA: What Investors Really Look For in Your Business'
+    },
+    category: { pt: 'Controladoria' as const, en: 'Controllership' as const },
+    excerpt: {
+      pt: 'Desvende as conciliações e ajustes de EBITDA exigidos em auditorias e rodadas de captação de recursos para calcular a real capacidade de geração de caixa.',
+      en: 'Unveil the reconciliations and EBITDA adjustments required in audits and funding rounds to find true cash generation.'
+    },
+    content: {
+      pt: `
+        <p>O EBITDA contábil é uma métrica universal de avaliação de valor de mercado. No entanto, investidores experientes raramente tomam decisões olhando apenas para ele. Eles exigem a conciliação do <strong>EBITDA Ajustado</strong>.</p>
+        <h2>1. Por que Ajustar o EBITDA?</h2>
+        <p>O objetivo do EBITDA é refletir a capacidade de geração de caixa da atividade-fim. Despesas não recorrentes ou lançamentos puramente contábeis precisam ser depurados pelo Controller para apresentar uma visão limpa da operação.</p>
+        <h2>2. Principais Ajustes Efetuados</h2>
+        <ul>
+          <li><strong>Provisões Não Caixa:</strong> Provisões trabalhistas estimadas, perdas com PDD e equivalência patrimonial.</li>
+          <li><strong>Eventos Não Recorrentes:</strong> Custos de reestruturação organizacional, rescisões em massa e baixas de imobilizado.</li>
+        </ul>
+      `,
+      en: `
+        <p>EBITDA is a key valuation tool, but savvy investors demand an **Adjusted EBITDA** report to filter out noise.</p>
+        <h2>1. Why Adjust?</h2>
+        <p>A corporate Controller must clean non-recurring items and non-cash provisions to showcase raw operational power.</p>
+        <h2>2. Typical Adjustments</h2>
+        <ul>
+          <li><strong>Non-cash Provisions:</strong> PDD allowances, estimated labor contingencies, write-offs.</li>
+          <li><strong>One-off events:</strong> Layoffs, organizational restructuring costs, asset disposals.</li>
+        </ul>
+      `
+    }
   },
   {
-    title: 'Cultura de Custos: Como Engajar Equipes no Controle de Gastos Operacionais',
-    category: 'Controladoria' as const,
-    excerpt: 'Reduzir custos exige mais do que canetadas da diretoria. Saiba como estruturar relatórios simples e engajar gerentes no controle do OPEX.',
-    content: `
-      <p>Toda empresa quer reduzir custos, mas a maioria falha porque tenta fazer isso de cima para baixo. Canetadas da diretoria geram desmotivação e não atacam a raiz do desperdício. O segredo de uma redução sustentável de OPEX está na criação de uma verdadeira <strong>Cultura de Custos</strong>, liderada pela controladoria.</p>
-      <h2>1. O Papel do Controller como Facilitador</h2>
-      <p>Em vez de agir como o "policial dos custos", o Controller deve atuar como um parceiro de negócios das áreas operacionais. Os gerentes de departamento precisam entender o impacto financeiro de suas decisões operacionais diárias.</p>
-      <h2>2. Como Estruturar o Engajamento</h2>
-      <ul>
-        <li><strong>Responsabilização por Centro de Custos:</strong> Cada linha de OPEX deve ter um gerente responsável associado. Se o gerente assina o gasto, ele deve acompanhar o real x orçado.</li>
-        <li><strong>Relatórios Amigáveis:</strong> Substitua planilhas contábeis complexas por dashboards de Power BI simples, exibindo os desvios em formato gráfico (faróis verde, amarelo e vermelho).</li>
-        <li><strong>Reuniões de Governança Mensais:</strong> Realize reuniões curtas de "GPD" (Gestão de Diretrizes) para analisar os desvios significativos e traçar planos de ação imediatos.</li>
-      </ul>
-      <blockquote>
-        <strong>Insight da IA:</strong> Custos são como unhas: precisam ser cortados constantemente. Mas o corte só é saudável quando quem opera a tesoura compreende o processo.
-      </blockquote>
-    `
+    title: {
+      pt: 'Cultura de Custos: Como Engajar Equipes no Controle de Gastos Operacionais',
+      en: 'Cost Culture: How to Engage Teams in Controlling Operating Expenses'
+    },
+    category: { pt: 'Controladoria' as const, en: 'Controllership' as const },
+    excerpt: {
+      pt: 'Reduzir custos exige mais do que canetadas da diretoria. Saiba como estruturar relatórios simples e engajar gerentes no controle do OPEX.',
+      en: 'Reducing costs takes more than board mandates. Learn how to draft simple reports and engage department heads in OPEX control.'
+    },
+    content: {
+      pt: `
+        <p>Toda empresa quer reduzir custos, mas a maioria falha porque tenta fazer isso de cima para baixo. O segredo de uma redução sustentável de OPEX está na criação de uma verdadeira <strong>Cultura de Custos</strong>, liderada pela controladoria.</p>
+        <h2>1. O Papel do Controller como Facilitador</h2>
+        <p>Em vez de agir como o "policial dos custos", o Controller deve atuar como um parceiro de negócios das áreas operacionais. Os gerentes de departamento precisam entender o impacto de suas decisões.</p>
+        <h2>2. Como Estruturar o Engajamento</h2>
+        <ul>
+          <li><strong>Responsabilidade por Centro de Custos:</strong> Cada linha de OPEX deve ter um gerente dono associado.</li>
+          <li><strong>Relatórios Amigáveis:</strong> Substitua planilhas complexas por dashboards simples em Power BI com faróis de performance.</li>
+        </ul>
+      `,
+      en: `
+        <p>Arbitrary top-down budget cuts demoralize teams and miss the root cause. Developing a **Cost Culture** is the sustainable solution.</p>
+        <h2>1. Controller as a Partner</h2>
+        <p>Instead of playing cost police, serve as a business partner so department managers see the financial footprints of their decisions.</p>
+        <h2>2. Action Plan</h2>
+        <ul>
+          <li><strong>Cost Center Ownership:</strong> Assign a manager to every line item. If they sign the invoice, they track the budget.</li>
+          <li><strong>Visual Dashboards:</strong> Replace raw sheets with visual Power BI traffic-light indicators.</li>
+        </ul>
+      `
+    }
   },
   {
-    title: 'Preço de Transferência (Transfer Pricing) sob o Padrão da OCDE',
-    category: 'Controladoria' as const,
-    excerpt: 'Analise as novas diretrizes brasileiras de preços de transferência e saiba como evitar autuações e dupla tributação em holdings.',
-    content: `
-      <p>A convergência do Brasil às regras de Preço de Transferência da OCDE (Lei nº 14.596/23) alterou profundamente a governança de multinacionais e holdings nacionais com transações intercompany. O foco agora é o <strong>Princípio Arm\'s Length</strong>: transações entre partes relacionadas devem ser precificadas como se fossem realizadas com partes independentes.</p>
-      <h2>1. O Fim do Modelo de Margens Fixas</h2>
-      <p>As antigas fórmulas brasileiras baseadas em margens pré-estabelecidas foram extintas. Agora, a controladoria deve realizar análises de comparabilidade detalhadas, avaliando ativos utilizados, funções desempenhadas e riscos assumidos por cada entidade do grupo.</p>
-      <h2>2. A Importância da Documentação</h2>
-      <ul>
-        <li><strong>Dossie Local e Global:</strong> A elaboração anual do Local File e Master File contendo análises econômicas de comparabilidade é obrigatória para evitar multas elevadas.</li>
-        <li><strong>Escolha do Método Correto:</strong> Avalie se o método de Margem Líquida da Transação (MLT) ou Preço Independente Comparável (PIC) é o ideal para a transação.</li>
-      </ul>
-      <blockquote>
-        <strong>Insight da IA:</strong> A nova legislação exige uma integração sem precedentes entre os times de Finanças, Controladoria e Jurídico Tributário das holdings.
-      </blockquote>
-    `
+    title: {
+      pt: 'Preço de Transferência (Transfer Pricing) sob o Padrão da OCDE',
+      en: 'Transfer Pricing under the OECD Standard'
+    },
+    category: { pt: 'Controladoria' as const, en: 'Controllership' as const },
+    excerpt: {
+      pt: 'Analise as novas diretrizes brasileiras de preços de transferência e saiba como evitar autuações e dupla tributação em holdings.',
+      en: 'Analyze the new transfer pricing guidelines and learn how to avoid tax fines and double taxation in holdings.'
+    },
+    content: {
+      pt: `
+        <p>A convergência às regras de Preço de Transferência da OCDE alterou a governança de holdings nacionais. O foco agora é o <strong>Princípio Arm\'s Length</strong>: transações entre partes relacionadas devem ser precificadas como se fossem realizadas com partes independentes.</p>
+        <h2>1. O Fim do Modelo de Margens Fixas</h2>
+        <p>As antigas fórmulas baseadas em margens pré-estabelecidas foram extintas. Agora, a controladoria deve realizar análises de comparabilidade detalhadas, avaliando ativos, funções e riscos.</p>
+      `,
+      en: `
+        <p>The adoption of OECD Transfer Pricing models changes intercompany flows. The **Arm\'s Length Principle** is now law.</p>
+        <h2>1. Comparability Analysis</h2>
+        <p>Static margin limits are gone. Controllers must execute detailed comparability analysis based on functions, assets and risks.</p>
+      `
+    }
   },
   {
-    title: 'KPIs de Tesouraria: O Mínimo que o CFO Precisa Olhar Diariamente',
-    category: 'Gestão de Caixa' as const,
-    excerpt: 'Conheça os indicadores chave de desempenho essenciais para evitar surpresas de liquidez no fechamento de caixa.',
-    content: `
-      <p>A gestão de caixa é uma atividade de alta velocidade. Enquanto a controladoria analisa o fechamento do mês anterior, a tesouraria precisa garantir que haja saldo hoje, amanhã e na próxima semana. Para apoiar o CFO, o Controller deve projetar um cockpit de indicadores operacionais imediatos.</p>
-      <h2>1. Os Indicadores Críticos de Liquidez</h2>
-      <ul>
-        <li><strong>Saldo de Caixa Disponível vs. Mínimo Operacional:</strong> Visibilidade em tempo real do caixa disponível contra a reserva de segurança projetada.</li>
-        <li><strong>Índice de Liquidez Corrente Real:</strong> Razão entre ativos realizáveis no curto prazo e passivos de curto prazo ajustados por prazos de recebimento reais.</li>
-        <li><strong>Aging List de Recebíveis:</strong> Monitoramento dos vencimentos por faixas de atraso (0-30, 31-60, >60 dias) para direcionamento ágil das cobranças.</li>
-      </ul>
-      <h2>2. Projeção de Fluxo de Caixa (Direct vs. Indirect)</h2>
-      <p>Garantir que a projeção de fluxo de caixa direto de 13 semanas (13-Week Cash Flow Forecast) seja alimentada e atualizada todas as sextas-feiras pelas áreas de compras e faturamento corporativo.</p>
-      <blockquote>
-        <strong>Insight da IA:</strong> Um caixa operacional bem monitorado é o melhor seguro contra turbulências macroeconômicas inesperadas.
-      </blockquote>
-    `
+    title: {
+      pt: 'KPIs de Tesouraria: O Mínimo que o CFO Precisa Olhar Diariamente',
+      en: 'Treasury KPIs: The Minimum a CFO Needs to Monitor Daily'
+    },
+    category: { pt: 'Gestão de Caixa' as const, en: 'Cash Management' as const },
+    excerpt: {
+      pt: 'Conheça os indicadores chave de desempenho essenciais para evitar surpresas de liquidez no fechamento de caixa.',
+      en: 'Discover the essential key performance indicators to prevent liquidity surprises during cash closing.'
+    },
+    content: {
+      pt: `
+        <p>A gestão de caixa é de alta velocidade. Enquanto a controladoria analisa o fechamento anterior, a tesouraria precisa garantir que haja saldo hoje, amanhã e na próxima semana.</p>
+        <h2>1. Os Indicadores Críticos de Liquidez</h2>
+        <ul>
+          <li><strong>Saldo de Caixa Disponível vs. Mínimo:</strong> Visibilidade em tempo real do caixa disponível contra a reserva de segurança.</li>
+          <li><strong>Aging List de Recebíveis:</strong> Monitoramento dos vencimentos por faixas de atraso (0-30, 31-60, >60 dias) para direcionamento de cobranças.</li>
+        </ul>
+      `,
+      en: `
+        <p>Cash is speed. While accounting closes last month, treasury needs liquidity today and next week.</p>
+        <h2>1. Critical KPIs</h2>
+        <ul>
+          <li><strong>Cash Position vs. Operating Minimum:</strong> Real-time liquid cash vs safety margin.</li>
+          <li><strong>Aging Schedule:</strong> Track customer invoice delays by buckets (0-30, 31-60, >60 days) to coordinate collections.</li>
+        </ul>
+      `
+    }
   },
   {
-    title: 'Planejamento Orçamentário com Base Zero (OBZ) na Prática',
-    category: 'FP&A' as const,
-    excerpt: 'Descubra como estruturar o Orçamento Base Zero, eliminando reajustes históricos automáticos e questionando cada linha de despesa do negócio.',
-    content: `
-      <p>No modelo de orçamento tradicional, o Budget do próximo ano é desenhado pegando as despesas do ano anterior e aplicando reajustes inflacionários ou acréscimos percentuais de crescimento. Essa abordagem consolida desperdícios históricos. O <strong>Orçamento Base Zero (OBZ)</strong> rompe com isso ao exigir que cada despesa seja justificada do zero.</p>
-      <h2>1. As Fases de Implantação do OBZ</h2>
-      <p>O OBZ parte de uma folha em branco. Suas etapas envolvem:</p>
-      <ul>
-        <li><strong>Identificação das Unidades de Decisão:</strong> Agrupar as despesas por pacotes de decisão específicos (ex: logística, marketing, TI).</li>
-        <li><strong>Desdobramento e Justificativa:</strong> Cada gestor deve justificar a necessidade daquela linha de gasto operacional e estimar o impacto de não realizá-lo.</li>
-        <li><strong>Priorização de Pacotes:</strong> A diretoria executiva avalia os pacotes e aprova as despesas até o limite da projeção de receita líquida.</li>
-      </ul>
-      <blockquote>
-        <strong>Insight da IA:</strong> O OBZ exige tempo e dedicação organizacional intensos. Para evitar fadiga corporativa, muitas empresas aplicam a metodologia em ciclos rotativos a cada 2 ou 3 anos.
-      </blockquote>
-    `
+    title: {
+      pt: 'Planejamento Orçamentário com Base Zero (OBZ) na Prática',
+      en: 'Zero-Based Budgeting (ZBB) in Practice'
+    },
+    category: { pt: 'FP&A' as const, en: 'FP&A' as const },
+    excerpt: {
+      pt: 'Descubra como estruturar o Orçamento Base Zero, eliminando reajustes históricos automáticos e questionando cada linha de despesa.',
+      en: 'Learn how to structure Zero-Based Budgeting, eliminating automatic historical adjustments and questioning every expense.'
+    },
+    content: {
+      pt: `
+        <p>No modelo tradicional, o Budget do próximo ano repete as despesas do anterior com reajustes inflacionários. O <strong>Orçamento Base Zero (OBZ)</strong> rompe com isso ao exigir que cada despesa seja justificada do zero.</p>
+        <h2>1. As Fases de Implantação do OBZ</h2>
+        <ul>
+          <li><strong>Identificação de Pacotes de Decisão:</strong> Agrupar as despesas por pacotes específicos (logística, marketing, TI).</li>
+          <li><strong>Justificativa e Priorização:</strong> Cada gestor deve justificar a necessidade daquela linha de gasto.</li>
+        </ul>
+      `,
+      en: `
+        <p>Traditional budgeting carries forward historical waste. **Zero-Based Budgeting (ZBB)** wipes the slate clean, requiring managers to build budgets from scratch.</p>
+        <h2>1. Core ZBB Steps</h2>
+        <ul>
+          <li><strong>Decision Packages:</strong> Classify and bundle items into logical buckets (IT, logistics, marketing).</li>
+          <li><strong>Justification:</strong> Defend the operational necessity of every single spend line.</li>
+        </ul>
+      `
+    }
   },
   {
-    title: 'Acuracidade de Inventário: O Impacto Contábil de Estoques Divergentes',
-    category: 'Estoques' as const,
-    excerpt: 'Diferenças físicas de estoque geram distorções no custo do produto vendido e impactam diretamente o lucro operacional.',
-    content: `
-      <p>Uma acuracidade de inventário de 90% parece aceitável para um gerente de logística. Contudo, para a controladoria contábil, uma divergência de 10% pode significar distorções catastróficas na apuração do Custo das Mercadorias Vendidas (CMV) e, consequentemente, na margem de lucro líquido exibida ao conselho de administração.</p>
-      <h2>1. A Equação do CMV e o Estoque Final</h2>
-      <p>Lembre-se da fórmula contábil clássica: CMV = Estoque Inicial + Compras - Estoque Final. Se o inventário físico apura que o estoque final real é menor do que o sistema registra (devido a perdas, furtos ou erros de cadastro), o CMV aumenta automaticamente, encolhendo o lucro operacional.</p>
-      <h2>2. Como Sanar Divergências Contábeis</h2>
-      <ul>
-        <li><strong>Inventários Rotativos:</strong> Abandone o modelo de parar a fábrica uma vez por ano para fazer inventário geral. Adote contagens físicas diárias dos itens com maior giro.</li>
-        <li><strong>Auditoria no Recebimento:</strong> Garanta que as notas fiscais de entrada (XML) batam exatamente com o peso e quantidade física conferidos nas docas.</li>
-      </ul>
-      <blockquote>
-        <strong>Insight da IA:</strong> Estoque é dinheiro físico empilhado em prateleiras. Controlar sua acuracidade é tão crítico quanto conciliar a conta bancária da empresa.
-      </blockquote>
-    `
+    title: {
+      pt: 'Acuracidade de Inventário: O Impacto Contábil de Estoques Divergentes',
+      en: 'Inventory Accuracy: The Accounting Impact of Stock Discrepancies'
+    },
+    category: { pt: 'Estoques' as const, en: 'Inventory' as const },
+    excerpt: {
+      pt: 'Diferenças físicas de estoque geram distorções no custo do produto vendido e impactam diretamente o lucro operacional.',
+      en: 'Physical stock discrepancies distort cost of goods sold and directly impact operational net profits.'
+    },
+    content: {
+      pt: `
+        <p>Uma divergência de inventário física afeta a apuração do Custo das Mercadorias Vendidas (CMV) e a margem de lucro exibida no fechamento contábil.</p>
+        <h2>1. A Equação do CMV</h2>
+        <p>CMV = Estoque Inicial + Compras - Estoque Final. Se o estoque final físico é menor do que o sistema registra (perdas ou desvios), o CMV aumenta automaticamente, reduzindo a lucratividade operacional.</p>
+      `,
+      en: `
+        <p>A physical inventory variance distorts the Cost of Goods Sold (COGS) calculations and ruins balance sheet credibility.</p>
+        <h2>1. The COGS Equation</h2>
+        <p>COGS = Starting Stock + Purchases - Ending Stock. If ending stock is overstated due to shrinkage, COGS is understated, leading to phantom profits.</p>
+      `
+    }
   },
   {
-    title: 'Como Automatizar Relatórios de Controladoria Utilizando Python e SQL',
-    category: 'FP&A' as const,
-    excerpt: 'Substitua o trabalho manual de copiar e colar planilhas por scripts automatizados de importação e transformação de dados ERP.',
-    content: `
-      <p>Muitos controllers qualificados passam 80% do seu tempo de trabalho copiando, colando e formatando planilhas de Excel para gerar relatórios mensais, restando apenas 20% do tempo para análises estratégicas. A automação com **Python** e **SQL** permite inverter essa balança.</p>
-      <h2>1. A Importância de Acessar a Base de Dados Direta</h2>
-      <p>Em vez de extrair relatórios TXT ou CSV do ERP do sistema, a controladoria moderna aprende a construir queries SQL otimizadas para puxar dados agregados diretamente do banco de dados (ERP, CRM, BigQuery).</p>
-      <h2>2. O Script de Automação (ETL)</h2>
-      <p>Utilizando scripts em Python (com bibliotecas como Pandas e SQLAlchemy), o Controller pode extrair faturamentos e custos operacionais históricos, processar as regras de conversão e exportar diretamente para um dashboard reativo em Power BI.</p>
-      <blockquote>
-        <strong>Insight da IA:</strong> A automação de rotinas não elimina o trabalho do Controller; ela o eleva à condição de consultor analítico estratégico.
-      </blockquote>
-    `
+    title: {
+      pt: 'Como Automatizar Relatórios de Controladoria Utilizando Python e SQL',
+      en: 'How to Automate Controllership Reports Using Python and SQL'
+    },
+    category: { pt: 'FP&A' as const, en: 'FP&A' as const },
+    excerpt: {
+      pt: 'Substitua o trabalho manual de copiar e colar planilhas por scripts automatizados de importação e transformação de dados ERP.',
+      en: 'Replace manual spreadsheet tasks with automated scripts that import and transform raw ERP database records.'
+    },
+    content: {
+      pt: `
+        <p>Muitos controllers passam a maior parte do tempo organizando planilhas, restando pouco tempo para análises estratégicas. Automações com <strong>Python</strong> e <strong>SQL</strong> resolvem isso.</p>
+        <h2>1. Acesso à Base de Dados Direta</h2>
+        <p>Puxar faturamentos e custos operacionais direto do banco de dados (ERP, SQL) agiliza o fechamento e garante a integridade da informação.</p>
+      `,
+      en: `
+        <p>Stop copy-pasting tables. Code automation using **Python** and **SQL** shifts focus from building sheets to analyzing plans.</p>
+        <h2>1. Direct Querying</h2>
+        <p>Pull invoices and OPEX structures directly from ERP database backends, accelerating closure timelines.</p>
+      `
+    }
   },
   {
-    title: 'Valuation por Fluxo de Caixa Descontado (FCD) na Prática do Controller',
-    category: 'FP&A' as const,
-    excerpt: 'Veja como estruturar projeções de caixa livre, estimar a taxa WACC e calcular o valor intrínseco da operação para investidores.',
-    content: `
-      <p>Calcular o valor intrínseco de uma organização (Valuation) é um dos marcos de carreira mais prestigiados para um profissional de FP&A. O método de <strong>Fluxo de Caixa Descontado (FCD)</strong> é a abordagem de mercado mais respeitada para medir o valor operacional da empresa.</p>
-      <h2>1. Estrutura de Projeção Financeira</h2>
-      <p>O FCD exige a projeção detalhada do fluxo de caixa livre da empresa (FCFE ou FCFF) para um horizonte futuro (normalmente de 5 a 10 anos) ajustado por investimentos em ativos (CAPEX) e variações da Necessidade de Capital de Giro (NCG).</p>
-      <h2>2. Determinação da Taxa de Desconto (WACC)</h2>
-      <p>O custo médio ponderado de capital (WACC) representa a taxa mínima de retorno exigida pelos credores e acionistas do negócio. Todos os fluxos projetados são trazidos a valor presente utilizando essa taxa.</p>
-      <blockquote>
-        <strong>Insight da IA:</strong> O valor gerado pela modelagem do FCD reside nas premissas operacionais adotadas (taxa de crescimento sustentável e prêmio de risco). O Controller deve dominar a sensibilidade destas variáveis.
-      </blockquote>
-    `
+    title: {
+      pt: 'Valuation por Fluxo de Caixa Descontado (FCD) na Prática do Controller',
+      en: 'Valuation via Discounted Cash Flow (DCF) in the Controller\'s Practice'
+    },
+    category: { pt: 'FP&A' as const, en: 'FP&A' as const },
+    excerpt: {
+      pt: 'Veja como estruturar projeções de caixa livre, estimar a taxa WACC e calcular o valor intrínseco da operação para investidores.',
+      en: 'Learn how to structure free cash flow projections, compute WACC rates and find intrinsic enterprise valuation.'
+    },
+    content: {
+      pt: `
+        <p>Calcular o valor de mercado de uma empresa é estratégico. O método de <strong>Fluxo de Caixa Descontado (FCD)</strong> é a abordagem de mercado mais robusta e respeitada.</p>
+        <h2>1. Projeção de Fluxo Livre</h2>
+        <p>Projete o fluxo de caixa operacional ajustado por investimentos em ativos (CAPEX) e variações da Necessidade de Capital de Giro (NCG) trazidos a valor presente pela taxa de desconto (WACC).</p>
+      `,
+      en: `
+        <p>Calculating enterprise value is a cornerstone task. **Discounted Cash Flow (DCF)** represents the gold standard methodology.</p>
+        <h2>1. Horizon Modeling</h2>
+        <p>Model free cash flow projections adjusted for CAPEX and Working Capital Requirements (WCR), discounted back to present value using WACC ratios.</p>
+      `
+    }
   }
 ]
 
@@ -194,20 +299,17 @@ export function getRegeneratedArticles(): Article[] {
   try {
     const saved = localStorage.getItem(REGEN_STORAGE_KEY)
     const lastDate = localStorage.getItem(LAST_REGEN_DATE_KEY)
-    const todayStr = new Date().toDateString() // e.g. "Mon Jun 29 2026"
+    const todayStr = new Date().toDateString()
 
-    // If already generated today and has saved data, return it
     if (saved && lastDate === todayStr) {
       return JSON.parse(saved)
     }
 
-    // Auto-generate 10 articles by mixing topics and dates
     const generated = generateTenArticles(new Date())
     localStorage.setItem(REGEN_STORAGE_KEY, JSON.stringify(generated))
     localStorage.setItem(LAST_REGEN_DATE_KEY, todayStr)
     return generated
   } catch {
-    // Fallback if localstorage throws error
     return generateTenArticles(new Date())
   }
 }
@@ -231,15 +333,12 @@ export function forceRegenerateArticles(): Article[] {
  * Helper to build 10 distinct articles with custom slugs and dates
  */
 function generateTenArticles(baseDate: Date): Article[] {
-  // Shuffle or slice the topics pool to get 10 items
   const pool = [...topicPool]
   const result: Article[] = []
 
-  // Ensure we get exactly 10 items.
   for (let i = 0; i < 10; i++) {
     const topic = pool[i % pool.length]
     
-    // Calculate a simulated date (e.g. subtracting i days to make them look historically created)
     const dateObj = new Date(baseDate.getTime() - i * 24 * 60 * 60 * 1000)
     const formattedDate = dateObj.toLocaleDateString('pt-BR', {
       day: 'numeric',
@@ -248,29 +347,52 @@ function generateTenArticles(baseDate: Date): Article[] {
     })
 
     const indexSuffix = i > 0 ? `-${i}` : ''
-    const slug = `${topic.title.toLowerCase()
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // remove accents
-      .replace(/[^a-z0-9]+/g, '-') // replace non-alphanumeric with dash
-      .replace(/(^-|-$)/g, '')}${indexSuffix}` // clean trailing dashes
+    const slug = `${topic.title.pt.toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '')}${indexSuffix}`
 
     result.push({
       slug,
-      title: `${topic.title} [IA Regenerativo]`,
+      title: {
+        pt: `${topic.title.pt} [IA Regenerativo]`,
+        en: `${topic.title.en} [AI Regenerative]`
+      },
       date: formattedDate,
-      excerpt: `[LinkedIn Feed Insights] ${topic.excerpt}`,
-      content: `
-        <div class="p-4 mb-6 rounded-2xl bg-blue-50/50 border border-blue-100 text-xs text-slate-600 flex items-start gap-2.5">
-          <span class="text-base">🤖</span>
-          <div>
-            <strong>Artigo Auto-Regenerativo:</strong> Este conteúdo foi gerado e estruturado automaticamente por nosso robô de Inteligência Artificial após ler, analisar e consolidar ideias de postagens influentes sobre Controladoria e FP&A no <strong>LinkedIn Feed</strong>.
+      excerpt: {
+        pt: `[LinkedIn Insights] ${topic.excerpt.pt}`,
+        en: `[LinkedIn Insights] ${topic.excerpt.en}`
+      },
+      content: {
+        pt: `
+          <div class="p-4 mb-6 rounded-2xl bg-blue-50/50 border border-blue-100 text-xs text-slate-600 flex items-start gap-2.5">
+            <span class="text-base">🤖</span>
+            <div>
+              <strong>Artigo Auto-Regenerativo:</strong> Este conteúdo foi gerado e estruturado automaticamente por nosso robô de Inteligência Artificial após ler, analisar e consolidar ideias de postagens influentes sobre Controladoria e FP&A no <strong>LinkedIn Feed</strong>.
+            </div>
           </div>
-        </div>
-        ${topic.content}
-      `,
-      category: topic.category,
-      readTime: `${Math.round(4 + i % 4)} min de leitura`
+          ${topic.content.pt}
+        `,
+        en: `
+          <div class="p-4 mb-6 rounded-2xl bg-blue-50/50 border border-blue-100 text-xs text-slate-600 flex items-start gap-2.5">
+            <span class="text-base">🤖</span>
+            <div>
+              <strong>Regenerative AI Post:</strong> This content was automatically drafted and structured by our Artificial Intelligence crawler after parsing and summarizing controllership trends from <strong>LinkedIn feeds</strong>.
+            </div>
+          </div>
+          ${topic.content.en}
+        `
+      },
+      category: {
+        pt: topic.category.pt,
+        en: topic.category.en
+      },
+      readTime: {
+        pt: `${Math.round(4 + i % 4)} min de leitura`,
+        en: `${Math.round(4 + i % 4)} min read`
+      }
     })
   }
 
-  return result;
+  return result
 }

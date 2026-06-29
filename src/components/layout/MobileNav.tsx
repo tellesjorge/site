@@ -3,13 +3,41 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronRight } from 'lucide-react'
 import { navigationItems } from '../../data/navigation'
 import Logo from '../brand/Logo'
+import { useLanguage } from '../../context/LanguageContext'
 
 type MobileNavProps = {
   isOpen: boolean
   onClose: () => void
 }
 
+const BrazilFlag = () => (
+  <svg viewBox="0 0 20 20" className="h-4 w-4 rounded-full overflow-hidden shadow-sm" xmlns="http://www.w3.org/2000/svg">
+    <rect width="20" height="20" fill="#009c3b" />
+    <polygon points="10,2 18,10 10,18 2,10" fill="#ffdf00" />
+    <circle cx="10" cy="10" r="4" fill="#002776" />
+  </svg>
+)
+
+const USFlag = () => (
+  <svg viewBox="0 0 20 20" className="h-4 w-4 rounded-full overflow-hidden shadow-sm" xmlns="http://www.w3.org/2000/svg">
+    <rect width="20" height="20" fill="#ffffff" />
+    <rect width="20" height="2" y="0" fill="#b22234" />
+    <rect width="20" height="2" y="4" fill="#b22234" />
+    <rect width="20" height="2" y="8" fill="#b22234" />
+    <rect width="20" height="2" y="12" fill="#b22234" />
+    <rect width="20" height="2" y="16" fill="#b22234" />
+    <rect width="10" height="10" fill="#3c3b6e" />
+    <circle cx="3" cy="3" r="0.7" fill="#ffffff" />
+    <circle cx="7" cy="3" r="0.7" fill="#ffffff" />
+    <circle cx="3" cy="7" r="0.7" fill="#ffffff" />
+    <circle cx="7" cy="7" r="0.7" fill="#ffffff" />
+    <circle cx="5" cy="5" r="0.7" fill="#ffffff" />
+  </svg>
+)
+
 export default function MobileNav({ isOpen, onClose }: MobileNavProps) {
+  const { language, setLanguage, t } = useLanguage()
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -42,7 +70,7 @@ export default function MobileNav({ isOpen, onClose }: MobileNavProps) {
               </button>
             </div>
 
-            <nav className="flex-1 flex flex-col gap-2">
+            <nav className="flex-1 flex flex-col gap-2 overflow-y-auto">
               {navigationItems.map((item) => (
                 <NavLink
                   key={item.href}
@@ -56,19 +84,52 @@ export default function MobileNav({ isOpen, onClose }: MobileNavProps) {
                     }`
                   }
                 >
-                  {item.label}
+                  {t(item.label)}
                   <ChevronRight className="h-4 w-4 opacity-50" />
                 </NavLink>
               ))}
             </nav>
 
             <div className="mt-auto pt-6 border-t border-black/5 flex flex-col gap-3">
+              {/* Language Switcher */}
+              <div className="flex items-center justify-between border border-black/5 bg-slate-50 p-2 rounded-2xl">
+                <span className="text-xs font-semibold text-[#8e8e93] pl-2">
+                  {t({ pt: 'Idioma', en: 'Language' })}
+                </span>
+                <div className="flex items-center gap-1 bg-white p-0.5 rounded-full shadow-sm border border-black/5">
+                  <button
+                    type="button"
+                    onClick={() => setLanguage('pt')}
+                    className={`flex h-7 px-3.5 items-center gap-1.5 rounded-full text-xs transition duration-200 ${
+                      language === 'pt'
+                        ? 'bg-[#0071e3] text-white shadow-sm font-bold'
+                        : 'text-slate-500 hover:bg-slate-100'
+                    }`}
+                  >
+                    <BrazilFlag />
+                    <span>PT</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLanguage('en')}
+                    className={`flex h-7 px-3.5 items-center gap-1.5 rounded-full text-xs transition duration-200 ${
+                      language === 'en'
+                        ? 'bg-[#0071e3] text-white shadow-sm font-bold'
+                        : 'text-slate-500 hover:bg-slate-100'
+                    }`}
+                  >
+                    <USFlag />
+                    <span>EN</span>
+                  </button>
+                </div>
+              </div>
+
               <NavLink
                 to="/contato"
                 onClick={onClose}
                 className="flex items-center justify-center rounded-2xl bg-[#0071e3] px-5 py-4 text-sm font-medium text-white transition hover:bg-[#2997ff]"
               >
-                Falar agora
+                {t({ pt: 'Falar com Jorge', en: 'Contact Jorge' })}
               </NavLink>
             </div>
           </motion.div>

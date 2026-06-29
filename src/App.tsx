@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import AppLayout from './components/layout/AppLayout'
+import { LanguageProvider } from './context/LanguageContext'
 
 // Lazy-loaded pages
 const HomePage = lazy(() => import('./pages/HomePage'))
@@ -24,23 +25,25 @@ const PageLoader = () => (
 
 function App() {
   return (
-    <BrowserRouter>
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
-          <Route path="/" element={<AppLayout />}>
-            <Route index element={<HomePage />} />
-            <Route path="perfil" element={<ExecutiveProfilePage />} />
-            <Route path="experiencia" element={<ExperiencePage />} />
-            <Route path="ia-dashboards" element={<AIDashboardsPage />} />
-            <Route path="consultoria" element={<ConsultingPage />} />
-            <Route path="artigos" element={<ArticlesPage />} />
-            <Route path="artigos/:slug" element={<ArticleDetailPage />} />
-            <Route path="curriculo" element={<ResumePage />} />
-            <Route path="contato" element={<ContactPage />} />
-          </Route>
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
+    <LanguageProvider>
+      <BrowserRouter>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<AppLayout />}>
+              <Route index element={<HomePage />} />
+              <Route path="perfil" element={<ExecutiveProfilePage />} />
+              <Route path="experiencia" element={<ExperiencePage />} />
+              <Route path="ia-dashboards" element={<AIDashboardsPage />} />
+              <Route path="consultoria" element={<ConsultingPage />} />
+              <Route path="artigos" element={<ArticlesPage />} />
+              <Route path="artigos/:slug" element={<ArticleDetailPage />} />
+              <Route path="curriculo" element={<ResumePage />} />
+              <Route path="contato" element={<ContactPage />} />
+            </Route>
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+    </LanguageProvider>
   )
 }
 

@@ -1,15 +1,15 @@
 export type NavItem = {
-  label: string
+  label: { pt: string; en: string }
   href: string
 }
 
 export const navigationItems: NavItem[] = [
-  { label: 'Início', href: '/' },
-  { label: 'Perfil Executivo', href: '/perfil' },
-  { label: 'Experiência', href: '/experiencia' },
-  { label: 'IA & Dashboards', href: '/ia-dashboards' },
-  { label: 'Consultoria', href: '/consultoria' },
-  { label: 'Artigos', href: '/artigos' },
-  { label: 'Currículo', href: '/curriculo' },
-  { label: 'Contato', href: '/contato' },
+  { label: { pt: 'Início', en: 'Home' }, href: '/' },
+  { label: { pt: 'Perfil Executivo', en: 'Executive Profile' }, href: '/perfil' },
+  { label: { pt: 'Experiência', en: 'Experience' }, href: '/experiencia' },
+  { label: { pt: 'IA & Dashboards', en: 'AI & Dashboards' }, href: '/ia-dashboards' },
+  { label: { pt: 'Consultoria', en: 'Consulting' }, href: '/consultoria' },
+  { label: { pt: 'Artigos', en: 'Articles' }, href: '/artigos' },
+  { label: { pt: 'Currículo', en: 'Resume' }, href: '/curriculo' },
+  { label: { pt: 'Contato', en: 'Contact' }, href: '/contato' },
 ]

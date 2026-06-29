@@ -4,8 +4,9 @@ import { Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import HeroImageAtmosphere from '../brand/HeroImageAtmosphere'
 import InteractiveAuroraBackground from '../ui/InteractiveAuroraBackground'
+import { useLanguage } from '../../context/LanguageContext'
 
-const INSIGHTS = [
+const INSIGHTS_PT = [
   "IA Diagnóstico: CMV médio projetado em 42% devido a flutuações de estoque de insumos.",
   "IA Forecast: Margem operacional estimada para R$ 1.8M (+3.2% vs. orçamento anterior).",
   "IA Auditoria: Divergência de R$ 12.4k corrigida no fluxo de caixa projetado.",
@@ -13,15 +14,26 @@ const INSIGHTS = [
   "IA Autodiagnóstico: Análise preditiva indica ganho de eficiência operacional de 4.8% no setor A."
 ]
 
+const INSIGHTS_EN = [
+  "AI Diagnosis: Average CMV projected at 42% due to raw material stock fluctuations.",
+  "AI Forecast: Operating margin estimated at $350k (+3.2% vs. previous budget).",
+  "AI Audit: Discrepancy of $2.4k corrected in the projected cash flow statement.",
+  "AI Working Capital: Suggested DPO extension of 15 days with key suppliers.",
+  "AI Auto-Diagnosis: Predictive analytics show a 4.8% operational efficiency gain in sector A."
+]
+
 export default function ImmersiveHero() {
   const [currentInsightIndex, setCurrentInsightIndex] = useState(0)
+  const { language, t } = useLanguage()
+
+  const insightsList = language === 'en' ? INSIGHTS_EN : INSIGHTS_PT
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentInsightIndex((prev) => (prev + 1) % INSIGHTS.length)
+      setCurrentInsightIndex((prev) => (prev + 1) % insightsList.length)
     }, 7000)
     return () => clearInterval(interval)
-  }, [])
+  }, [insightsList])
 
   return (
     <InteractiveAuroraBackground className="relative flex w-full flex-col px-5 pb-8 pt-14 sm:px-8 sm:pt-16 lg:px-10 lg:pb-10 lg:pt-20 overflow-hidden">
@@ -34,11 +46,11 @@ export default function ImmersiveHero() {
             className="relative z-20 max-w-2xl space-y-5 text-left"
           >
             <div className="space-y-3">
-              <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[#0071e3] opacity-95">
-                Controladoria • FP&A • IA • Dados
+              <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[#0071e3] opacity-95 animate-fade-in">
+                {t({ pt: 'Controladoria • FP&A • IA • Dados', en: 'Controllership • FP&A • AI • Data' })}
               </p>
               <h1
-                className="max-w-3xl text-[#0f172a]"
+                className="max-w-3xl text-[#0f172a] animate-fade-in"
                 style={{
                   fontSize: 'clamp(2.0rem, 3.8vw, 3.65rem)',
                   fontWeight: 700,
@@ -46,13 +58,18 @@ export default function ImmersiveHero() {
                   lineHeight: 1.04
                 }}
               >
-                Controller Estratégico | FP&A
-                <span className="block text-[#1f2937]">IA aplicada à Controladoria</span>
+                {t({ pt: 'Controller Estratégico | FP&A', en: 'Strategic Controller | FP&A' })}
+                <span className="block text-[#1f2937]">
+                  {t({ pt: 'IA aplicada à Controladoria', en: 'AI applied to Controllership' })}
+                </span>
               </h1>
             </div>
 
-            <p className="max-w-xl text-sm font-medium leading-relaxed text-slate-700 sm:text-[15px]">
-              Transformo dados financeiros, custos, estoques, orçamento e indicadores em decisões executivas com apoio de dashboards, automação e inteligência artificial.
+            <p className="max-w-xl text-sm font-medium leading-relaxed text-slate-700 sm:text-[15px] animate-fade-in">
+              {t({
+                pt: 'Transformo dados financeiros, custos, estoques, orçamento e indicadores em decisões executivas com apoio de dashboards, automação e inteligência artificial.',
+                en: 'I transform financial data, costs, inventory, budgets and metrics into executive decisions backed by dashboards, automation and artificial intelligence.'
+              })}
             </p>
 
             {/* AI Auto-regenerative Insights Feed */}
@@ -62,11 +79,13 @@ export default function ImmersiveHero() {
               </div>
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <span className="font-bold text-[#0071e3] uppercase text-[9px] tracking-wider">Agente IA Ativo</span>
+                  <span className="font-bold text-[#0071e3] uppercase text-[9px] tracking-wider">
+                    {t({ pt: 'Agente IA Ativo', en: 'AI Agent Active' })}
+                  </span>
                   <span className="h-1 w-1 rounded-full bg-emerald-500 animate-ping" />
                 </div>
                 <p className="mt-0.5 text-slate-800 text-[11px] leading-relaxed transition-all duration-500 font-medium">
-                  {INSIGHTS[currentInsightIndex]}
+                  {insightsList[currentInsightIndex]}
                 </p>
               </div>
             </div>
@@ -76,13 +95,13 @@ export default function ImmersiveHero() {
                 to="/contato?interest=hire"
                 className="inline-flex items-center justify-center rounded-full bg-[#0071e3] px-6 py-3 text-xs font-semibold text-[#fff] shadow-[0_18px_42px_rgba(0,122,255,0.22)] transition hover:bg-[#2997ff]"
               >
-                Contratar como Controller
+                {t({ pt: 'Contratar como Controller', en: 'Hire as Controller' })}
               </Link>
               <Link
                 to="/contato?interest=consulting"
                 className="inline-flex items-center justify-center rounded-full border border-white/80 bg-white/70 px-6 py-3 text-xs font-semibold text-slate-950 shadow-[0_16px_42px_rgba(15,23,42,0.08)] backdrop-blur-2xl transition hover:bg-white/90"
               >
-                Solicitar Diagnóstico Financeiro
+                {t({ pt: 'Solicitar Diagnóstico Financeiro', en: 'Request Financial Diagnosis' })}
               </Link>
             </div>
           </motion.div>
@@ -97,7 +116,6 @@ export default function ImmersiveHero() {
           </motion.div>
         </div>
       </div>
-
     </InteractiveAuroraBackground>
   )
 }
