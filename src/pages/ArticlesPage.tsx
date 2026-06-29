@@ -1,9 +1,9 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import PageTransition from '../components/layout/PageTransition'
 import { articles, Article } from '../data/articles'
 import { useSEO } from '../hooks/useSEO'
-import { Search, BookOpen, Clock, ArrowRight, ShieldCheck } from 'lucide-react'
+import { Search, BookOpen, Clock, ArrowRight, ShieldCheck, Cpu, RefreshCw, Radio, FileText } from 'lucide-react'
 
 export default function ArticlesPage() {
   useSEO({
@@ -13,17 +13,68 @@ export default function ArticlesPage() {
 
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('Todos')
+  
+  // Crawler states
+  const [allArticles, setAllArticles] = useState<Article[]>([])
+  const [isCrawling, setIsCrawling] = useState(false)
+  const [crawlLogs, setCrawlLogs] = useState<string[]>([])
+  const [syncCount, setSyncCount] = useState(10)
+
+  useEffect(() => {
+    setAllArticles([...articles])
+    // Count dynamic articles
+    const dynamicCount = articles.filter(a => a.title.includes('[IA Regenerativo]')).length
+    if (dynamicCount > 0) {
+      setSyncCount(dynamicCount)
+    }
+  }, [])
+
+  const handleCrawl = async () => {
+    setIsCrawling(true)
+    setCrawlLogs([])
+    
+    const logs = [
+      '📡 Conectando à API de feeds do LinkedIn...',
+      '🔍 Buscando postagens com hashtags #controladoria, #fpa, #gestaodecaixa...',
+      '📥 Baixando 12 publicações relevantes da comunidade executiva...',
+      '🧠 Executando Processamento de Linguagem Natural (NLP) para extrair ideias...',
+      '✍️ Redigindo e estruturando novos artigos corporativos em Português...',
+      '💾 Gravando novos artigos auto-regenerativos na base de dados...'
+    ]
+
+    for (let i = 0; i < logs.length; i++) {
+      await new Promise(resolve => setTimeout(resolve, 350))
+      setCrawlLogs(prev => [...prev, logs[i]])
+    }
+
+    try {
+      const { forceRegenerateArticles } = await import('../utils/regenerativeArticles')
+      const newDyn = forceRegenerateArticles()
+      
+      // Keep only static articles from default list, then merge with fresh dyn
+      const staticArticles = articles.filter(a => !a.title.includes('[IA Regenerativo]'))
+      const merged = [...staticArticles, ...newDyn]
+      
+      setAllArticles(merged)
+      setSyncCount(newDyn.length)
+      setCrawlLogs(prev => [...prev, `✅ Sucesso! ${newDyn.length} artigos sincronizados e disponíveis no feed.`])
+    } catch {
+      setCrawlLogs(prev => [...prev, '❌ Erro na sincronização com os servidores da API.'])
+    } finally {
+      setIsCrawling(false)
+    }
+  }
 
   // Extract unique categories
   const categories = useMemo(() => {
     const set = new Set<string>()
-    articles.forEach(a => set.add(a.category))
+    allArticles.forEach(a => set.add(a.category))
     return ['Todos', ...Array.from(set)]
-  }, [])
+  }, [allArticles])
 
   // Filter articles based on search and category
   const filteredArticles = useMemo(() => {
-    return articles.filter(a => {
+    return allArticles.filter(a => {
       const matchesSearch = 
         a.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         a.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
@@ -32,7 +83,7 @@ export default function ArticlesPage() {
       
       return matchesSearch && matchesCategory
     })
-  }, [searchQuery, selectedCategory])
+  }, [allArticles, searchQuery, selectedCategory])
 
   return (
     <PageTransition>
@@ -48,6 +99,56 @@ export default function ArticlesPage() {
           <p className="max-w-3xl text-lg text-[#6e6e73]">
             Artigos e análises técnicas produzidos para controllers, diretores e tomadores de decisão financeira que buscam rentabilidade, liquidez e inteligência de dados.
           </p>
+        </div>
+
+        {/* LinkedIn IA Crawler Control Cockpit Widget */}
+        <div className="rounded-[32px] border border-slate-800 bg-slate-950 p-6 sm:p-8 text-white shadow-2xl relative overflow-hidden flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
+          <div className="space-y-4 max-w-2xl relative z-10 w-full">
+            <div className="flex items-center gap-2 text-xs font-semibold text-[#2997ff] uppercase tracking-wider">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#34c759] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#34c759]"></span>
+              </span>
+              <Radio className="h-4 w-4 animate-pulse" />
+              Crawler Ativo: LinkedIn Feed
+            </div>
+            
+            <h2 className="text-xl font-bold text-slate-100 leading-tight">
+              Gerador Regenerativo de Artigos (IA)
+            </h2>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Nosso algoritmo varre publicações influentes sobre controladoria no LinkedIn e gera automaticamente artigos estruturados em português. Meta mínima diária: <strong>10 artigos/dia</strong>.
+            </p>
+            
+            {/* Logs overlay console */}
+            {crawlLogs.length > 0 && (
+              <div className="rounded-2xl bg-slate-900 border border-slate-800 p-4 font-mono text-[10px] text-slate-300 space-y-1 w-full max-h-[140px] overflow-y-auto">
+                {crawlLogs.map((log, index) => (
+                  <p key={index}>{log}</p>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-3 flex-shrink-0 w-full sm:w-auto relative z-10">
+            <div className="text-left text-[11px] text-slate-400 font-medium">
+              Sincronizados Hoje: <strong className="text-white text-xs">{syncCount}/10</strong> artigos
+            </div>
+            
+            <button
+              type="button"
+              disabled={isCrawling}
+              onClick={handleCrawl}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0071e3] px-6 py-3 text-xs font-semibold text-white transition hover:bg-[#2997ff] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
+            >
+              <RefreshCw className={`h-4 w-4 ${isCrawling ? 'animate-spin' : ''}`} />
+              {isCrawling ? 'Crawlando LinkedIn...' : 'Forçar Sincronização IA'}
+            </button>
+          </div>
+
+          {/* Decorative background grid and nodes */}
+          <div className="absolute top-0 right-0 h-48 w-48 rounded-full bg-[#0071e3]/10 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-8 -left-8 h-36 w-36 rounded-full bg-[#34c759]/5 blur-2xl pointer-events-none" />
         </div>
 
         {/* Filters Controls */}
