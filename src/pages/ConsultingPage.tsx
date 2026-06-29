@@ -2,6 +2,7 @@ import PageTransition from '../components/layout/PageTransition'
 import ProfilePortrait from '../components/brand/ProfilePortrait'
 import { Link } from 'react-router-dom'
 import { ArrowRight, BarChart3, CheckCircle2, ShieldCheck, Zap } from 'lucide-react'
+import { useSEO } from '../hooks/useSEO'
 
 type ServiceDetail = {
   title: string
@@ -80,6 +81,11 @@ const packagesList: Package[] = [
 ]
 
 export default function ConsultingPage() {
+  useSEO({
+    title: 'Consultoria Financeira',
+    description: 'Serviços de consultoria em controladoria e FP&A por Jorge Telles: estruturação contábil, auditoria física de estoques, CMV gerencial e dashboards em Power BI.'
+  })
+
   return (
     <PageTransition>
       <section className="mx-auto max-w-7xl px-6 pb-24 pt-12 sm:px-8 lg:px-10 space-y-16">

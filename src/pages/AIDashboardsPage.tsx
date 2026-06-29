@@ -2,11 +2,17 @@ import { lazy, Suspense } from 'react'
 import PageTransition from '../components/layout/PageTransition'
 import LiveContextWidget from '../components/widgets/LiveContextWidget'
 import { Sparkles } from 'lucide-react'
+import { useSEO } from '../hooks/useSEO'
 
 // Lazy-load the heavy ERP workspace modules to optimize portfolio bundle performance (Tarefa 13)
 const ERPWorkspace = lazy(() => import('../modules/erp/components/ERPWorkspace'))
 
 export default function AIDashboardsPage() {
+  useSEO({
+    title: 'Simulador FP&A & Dashboards IA',
+    description: 'Experimente a modelagem financeira em tempo real: simulador reativo de receita, custos CMV, despesas OPEX, prazos de pagamento e ciclo de caixa.'
+  })
+
   return (
     <PageTransition>
       <section className="mx-auto max-w-7xl px-6 pb-24 pt-12 sm:px-8 lg:px-10 space-y-12 bg-white">

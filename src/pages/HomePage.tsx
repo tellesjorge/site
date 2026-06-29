@@ -2,6 +2,7 @@ import PageTransition from '../components/layout/PageTransition'
 import Hero from '../components/home/ImmersiveHero'
 import About from '../components/About'
 import { Link } from 'react-router-dom'
+import { useSEO } from '../hooks/useSEO'
 import {
   ArrowRight,
   Landmark,
@@ -14,6 +15,11 @@ import {
 } from 'lucide-react'
 
 export default function HomePage() {
+  useSEO({
+    title: 'Controller Estratégico & FP&A',
+    description: 'Portfólio executivo de Jorge Telles, profissional sênior de Controladoria e FP&A. Conectando controladoria moderna, Power BI e Inteligência Artificial.'
+  })
+
   return (
     <PageTransition>
       <Hero />

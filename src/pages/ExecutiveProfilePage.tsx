@@ -3,8 +3,14 @@ import Expertise from '../components/Expertise'
 import ProfilePortrait from '../components/brand/ProfilePortrait'
 import { Link } from 'react-router-dom'
 import { ArrowRight, CheckCircle2, UserCheck, MapPin } from 'lucide-react'
+import { useSEO } from '../hooks/useSEO'
 
 export default function ExecutiveProfilePage() {
+  useSEO({
+    title: 'Perfil Executivo',
+    description: 'Trajetória profissional de Jorge Telles. Foco em Controladoria Estratégica, FP&A, governança, custos, estoque e business partnership gerencial.'
+  })
+
   return (
     <PageTransition>
       <section className="mx-auto max-w-7xl px-6 pb-24 pt-12 sm:px-8 lg:px-10 space-y-16">

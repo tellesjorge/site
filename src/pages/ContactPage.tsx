@@ -4,8 +4,14 @@ import PageTransition from '../components/layout/PageTransition'
 import ProfilePortrait from '../components/brand/ProfilePortrait'
 import { profile } from '../data/profile'
 import { Send, Smartphone, Linkedin, Mail, CheckCircle2, Download } from 'lucide-react'
+import { useSEO } from '../hooks/useSEO'
 
 export default function ContactPage() {
+  useSEO({
+    title: 'Contato & Propostas',
+    description: 'Inicie uma conversa estratégica para contratação executiva ou consultoria com Jorge Telles. Fale direto pelo WhatsApp ou envie sua proposta.'
+  })
+
   const [searchParams] = useSearchParams()
   const initialTab = searchParams.get('interest') === 'consulting' ? 'consulting' : 'hire'
   const [activeTab, setActiveTab] = useState<'hire' | 'consulting'>(initialTab)

@@ -1,8 +1,14 @@
 import PageTransition from '../components/layout/PageTransition'
 import Experience from '../components/Experience'
 import Projects from '../components/Projects'
+import { useSEO } from '../hooks/useSEO'
 
 export default function ExperiencePage() {
+  useSEO({
+    title: 'Histórico & Casos de Sucesso',
+    description: 'Histórico de cargos de Jorge Telles na Vitol Group, Tradestar Group e JTB Contabilidade. Gestão de CMV, auditorias físicas, KPIs e fechamentos gerenciais.'
+  })
+
   return (
     <PageTransition>
       <section className="mx-auto max-w-7xl px-6 pb-24 pt-12 sm:px-8 lg:px-10 space-y-16">

@@ -6,8 +6,14 @@ import Logo from '../components/brand/Logo'
 import ProfilePortrait from '../components/brand/ProfilePortrait'
 import { profile } from '../data/profile'
 import { Linkedin, MessageSquare, Briefcase, GraduationCap } from 'lucide-react'
+import { useSEO } from '../hooks/useSEO'
 
 export default function ResumePage() {
+  useSEO({
+    title: 'Currículo Profissional',
+    description: 'Visualização completa do currículo de Jorge Telles. Formação acadêmica, stack tecnológica (SAP, Power BI, Python) e principais competências em finanças.'
+  })
+
   return (
     <PageTransition>
       <section className="mx-auto max-w-7xl px-6 pb-24 pt-12 sm:px-8 lg:px-10 space-y-16">
