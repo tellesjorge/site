@@ -33,6 +33,31 @@ export default function ContactPage() {
     }
   }, [searchParams])
 
+  const getWhatsAppFallbackLink = () => {
+    const text = encodeURIComponent(
+      `Olá Jorge,\n\nMe chamo *${formData.name}*${formData.company ? ` da empresa *${formData.company}*` : ''}.\n` +
+      `Estou entrando em contato sobre: *${activeTab === 'hire' ? 'Oportunidade Profissional' : 'Consultoria Empresarial'} (${formData.interestType || 'Geral'})*.\n\n` +
+      `*Mensagem:*\n${formData.message}\n\n` +
+      `*E-mail:* ${formData.email}\n` +
+      `*WhatsApp:* ${formData.whatsapp || 'Não informado'}`
+    )
+    return `https://wa.me/5511999999999?text=${text}`
+  }
+
+  const getMailtoFallbackLink = () => {
+    const subject = encodeURIComponent(`Lead Portfólio: [${activeTab === 'hire' ? 'Vaga' : 'Consultoria'}] ${formData.name}`)
+    const body = encodeURIComponent(
+      `Olá Jorge Telles,\n\n` +
+      `Nome: ${formData.name}\n` +
+      `Empresa: ${formData.company || 'Não informado'}\n` +
+      `E-mail: ${formData.email}\n` +
+      `WhatsApp/Telefone: ${formData.whatsapp || 'Não informado'}\n` +
+      `Interesse: ${activeTab === 'hire' ? 'Oportunidade Profissional' : 'Consultoria Empresarial'} (${formData.interestType || 'Geral'})\n\n` +
+      `Mensagem:\n${formData.message}`
+    )
+    return `mailto:telles.jorge@gmail.com?subject=${subject}&body=${body}`
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!consent) {
@@ -48,7 +73,7 @@ export default function ContactPage() {
     setIsSending(true)
 
     try {
-      const response = await fetch('https://formspree.io/telles.jorge@gmail.com', {
+      const response = await fetch('https://formsubmit.co/ajax/telles.jorge@gmail.com', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -66,7 +91,9 @@ export default function ContactPage() {
         })
       })
 
-      if (response.ok) {
+      const data = await response.json()
+
+      if (response.ok && data.success === 'true') {
         setSubmitted(true)
         // Local persistence of contact request for visual response
         try {
@@ -78,27 +105,15 @@ export default function ContactPage() {
           // ignore
         }
       } else {
-        const data = await response.json()
-        if (data.errors) {
-          const translateError = (msg: string) => {
-            if (msg.toLowerCase().includes("isn't set up yet") || msg.toLowerCase().includes("not set up")) {
-              return 'O formulário ainda não foi ativado. Por favor, verifique a caixa de entrada (e pasta de Spam) do e-mail telles.jorge@gmail.com para clicar no link de ativação enviado pelo Formspree. Você também pode falar diretamente pelos canais de WhatsApp/LinkedIn ao lado.'
-            }
-            if (msg.toLowerCase().includes('is required')) {
-              return 'Campo obrigatório não preenchido.'
-            }
-            if (msg.toLowerCase().includes('email address')) {
-              return 'Endereço de e-mail corporativo inválido.'
-            }
-            return msg
-          }
-          setErrorMsg(data.errors.map((err: any) => translateError(err.message)).join(', '))
+        const msg = data.message || ''
+        if (msg.toLowerCase().includes('activate') || msg.toLowerCase().includes('confirm')) {
+          setErrorMsg('O formulário ainda não foi ativado por e-mail. Por favor, verifique a caixa de entrada (e pasta de Spam) do e-mail telles.jorge@gmail.com para clicar no link de ativação enviado pelo FormSubmit.co. Você também pode enviar estes dados preenchidos imediatamente clicando em um dos botões de contingência abaixo:')
         } else {
-          setErrorMsg('Falha ao enviar mensagem. Por favor, tente falar direto por WhatsApp/E-mail.')
+          setErrorMsg(msg || 'Falha ao enviar mensagem. Por favor, utilize os botões diretos de WhatsApp/E-mail abaixo para enviar os dados sem perdas:')
         }
       }
     } catch (err) {
-      setErrorMsg('Erro de conexão ao enviar o formulário. Por favor, utilize os canais diretos.')
+      setErrorMsg('Erro de conexão ao enviar o formulário. Por favor, clique em um dos botões abaixo para enviar a mensagem diretamente:')
     } finally {
       setIsSending(false)
     }
@@ -367,7 +382,28 @@ export default function ContactPage() {
                   </span>
                 </label>
 
-                {errorMsg && <p className="text-xs text-[#ff3b30]">{errorMsg}</p>}
+                {errorMsg && (
+                  <div className="space-y-3 rounded-2xl border border-[#ff3b30]/15 bg-[#ff3b30]/5 p-4 text-xs">
+                    <p className="text-[#ff3b30] font-semibold leading-relaxed">{errorMsg}</p>
+                    
+                    <div className="pt-1 flex flex-wrap gap-2.5">
+                      <a
+                        href={getWhatsAppFallbackLink()}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 rounded-full bg-[#34c759] px-4.5 py-2 text-[11px] font-bold text-white hover:bg-[#2db74c] transition shadow-sm"
+                      >
+                        🚀 Enviar Tudo por WhatsApp
+                      </a>
+                      <a
+                        href={getMailtoFallbackLink()}
+                        className="inline-flex items-center gap-1.5 rounded-full bg-slate-800 px-4.5 py-2 text-[11px] font-bold text-white hover:bg-slate-900 transition shadow-sm"
+                      >
+                        ✉️ Enviar Tudo por E-mail Direto
+                      </a>
+                    </div>
+                  </div>
+                )}
 
                 <button
                   type="submit"
