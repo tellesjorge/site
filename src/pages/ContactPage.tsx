@@ -315,7 +315,7 @@ export default function ContactPage() {
                     className="mt-0.5 h-4 w-4 rounded border-black/10 text-[#0071e3] focus:ring-[#0071e3]"
                   />
                   <span>
-                    Concordo com o tratamento dos dados informados exclusivamente para o estabelecimento de contato profissional entre as partes conforme as regras da LGPD.
+                    Concordo com o tratamento de meus dados exclusivamente para fins de contato profissional, conforme a <a href="#privacidade" className="text-[#0071e3] font-semibold hover:underline">Política de Privacidade</a> e as regras da LGPD (Lei nº 13.709/18).
                   </span>
                 </label>
 
