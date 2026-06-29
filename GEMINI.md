@@ -1,0 +1,8 @@
+- Hero claro, clean e premium
+- Proibido fundo escuro
+- Proibido dark mode
+- Proibido foto com fundo escuro no Hero
+- Usar foto com fundo removido real
+- Onda/aurora clara seguindo o mouse
+- Não alterar dashboard, rotas e páginas internas
+- Sempre rodar npm run build

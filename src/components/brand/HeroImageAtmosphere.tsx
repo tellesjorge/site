@@ -2,38 +2,24 @@ import ProfilePortrait from './ProfilePortrait'
 
 export default function HeroImageAtmosphere() {
   return (
-    <div className="relative w-full max-w-lg mx-auto flex items-center justify-center">
-      {/* Layer 5/1: Ambient glow behind the container */}
-      <div className="absolute inset-[-20px] z-0 rounded-[64px] bg-gradient-to-tr from-[#0071e3]/15 via-cyan-500/10 to-transparent blur-[40px] opacity-75 pointer-events-none" />
-      <div className="absolute inset-[-5px] z-0 rounded-[52px] bg-gradient-to-b from-blue-500/5 to-cyan-500/5 blur-xl pointer-events-none" />
+    <div className="relative mx-auto flex w-full max-w-[520px] items-center justify-center lg:mx-0">
+      {/* Glow ambiental branco/azul/ciano suave atrás da foto */}
+      <div className="absolute -inset-10 -z-10 rounded-full bg-[radial-gradient(circle_at_50%_50%,_rgba(0,122,255,0.15),_rgba(0,199,190,0.12)_45%,_transparent_70%)] blur-[60px]" />
+      <div className="absolute top-[10%] left-[10%] -z-10 h-[300px] w-[300px] rounded-full bg-sky-200/30 blur-[80px]" />
+      <div className="absolute bottom-[20%] right-[10%] -z-10 h-[280px] w-[280px] rounded-full bg-cyan-200/25 blur-[80px]" />
 
-      {/* Layer 4: Deep ambient box shadows & frame container */}
-      <div className="relative z-10 w-full overflow-hidden rounded-[48px] border border-black/5 p-2 bg-gradient-to-b from-[#121214] to-[#1a1a1e] shadow-[0_32px_64px_rgba(0,0,0,0.16)] group">
-        
-        {/* Internal Backdrop Gradient behind the photo */}
-        <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_rgba(0,113,227,0.15),_transparent_80%)] pointer-events-none" />
+      {/* Sombra difusa elegante abaixo da pessoa */}
+      <div className="absolute bottom-[-15px] left-1/2 -z-10 h-10 w-[72%] -translate-x-1/2 rounded-full bg-slate-900/6 blur-[24px]" />
 
-        {/* Layer 2: Main Image (cover aspect) */}
-        <ProfilePortrait
-          variant="hero"
-          size="lg"
-          className="w-full h-[400px] sm:h-[480px] md:h-[520px] lg:h-[540px] rounded-[40px] object-cover transition-transform duration-700 ease-out group-hover:scale-[1.015]"
-        />
+      {/* Formas translúcidas de profundidade leve */}
+      <div className="absolute top-[20%] left-[-15%] -z-10 h-[140px] w-[140px] rounded-full border border-white/60 bg-white/30 shadow-[0_8px_32px_rgba(15,23,42,0.03)] backdrop-blur-md" />
+      <div className="absolute bottom-[25%] right-[-12%] -z-10 h-[100px] w-[100px] rounded-full border border-white/70 bg-white/40 shadow-[0_8px_32px_rgba(15,23,42,0.02)] backdrop-blur-sm" />
 
-        {/* Layer 3: Fade overlay at the bottom and edge borders for environmental blend */}
-        <div className="absolute inset-x-2 bottom-2 h-36 bg-gradient-to-t from-[#121214] via-[#121214]/65 to-transparent pointer-events-none rounded-b-[40px]" />
-        
-        <div className="absolute inset-2 pointer-events-none rounded-[40px] border border-white/10" />
-
-        {/* Overlay metadata */}
-        <div className="absolute bottom-6 left-8 right-8 z-20 flex items-center justify-between pointer-events-none">
-          <div className="flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-[9px] font-bold text-slate-300 uppercase tracking-widest">Sessão Segura</span>
-          </div>
-          <span className="text-[8px] font-semibold text-slate-400 uppercase tracking-wider">Curitiba, PR</span>
-        </div>
-      </div>
+      {/* Foto recortada transparente flutuando no stage */}
+      <ProfilePortrait
+        variant="hero"
+        className="relative z-10 h-[420px] w-auto object-contain sm:h-[480px] md:h-[540px] lg:h-[610px] select-none"
+      />
     </div>
   )
 }

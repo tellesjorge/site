@@ -1,0 +1,20 @@
+Primeiro, não altere nenhum arquivo.
+
+Analise este projeto React + Vite + TypeScript + Tailwind CSS em C:\site_jt.
+
+Execute ou verifique:
+1. git status
+2. npm run build
+
+Depois identifique:
+1. Qual arquivo controla a HomePage.
+2. Qual componente controla o Hero principal.
+3. Qual componente controla a foto corporativa do Hero.
+4. Qual componente controla o fundo interativo ou aurora background.
+5. Qual componente controla os widgets abaixo do Hero.
+
+Objetivo futuro:
+Quero corrigir o Hero, porque a foto ainda parece colocada como um card isolado e o fundo seguindo o mouse não está perceptível.
+
+Nesta etapa, apenas analise e me diga quais arquivos precisam ser alterados.
+Não edite nada ainda.

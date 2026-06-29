@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import heroImg from '../../assets/profile/jorge-telles-hero.png'
+import heroCutoutImg from '../../assets/profile/jorge-telles-hero-cutout.png'
 import profileImg from '../../assets/profile/jorge-telles-profile.png'
 import avatarImg from '../../assets/profile/jorge-telles-avatar.png'
 import consultingImg from '../../assets/profile/jorge-telles-consulting.png'
 
 const variantImages = {
-  hero: heroImg,
+  hero: heroCutoutImg,
   profile: profileImg,
   avatar: avatarImg,
   consulting: consultingImg,
@@ -43,15 +43,15 @@ export default function ProfilePortrait({
   }
 
   const selectedImg = variantImages[variant]
+  const fitClass = variant === 'hero' ? 'object-contain' : 'object-cover'
+  const sizeClass = variant === 'hero' ? '' : sizeClasses[size]
 
-  // Fallback placeholder when the image is not yet available
   if (hasError || !selectedImg) {
     return (
       <div
-        className={`relative flex items-center justify-center bg-gradient-to-br from-[#0071e3] to-[#1fb6ff] font-bold text-white shadow-xl border border-black/5 ${sizeClasses[size]} ${className}`}
+        className={`relative flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#0071e3] via-[#4db7ff] to-[#1fb6ff] font-bold text-[#fff] shadow-xl border border-white/45 ${sizeClass || sizeClasses[size]} ${className}`}
       >
-        {/* Subtle executive background grid pattern */}
-        <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] bg-[size:16px_16px] rounded-inherit" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,_rgba(255,255,255,0.32),_transparent_58%)]" />
         <span className="relative tracking-wider select-none">JT</span>
       </div>
     )
@@ -62,8 +62,9 @@ export default function ProfilePortrait({
       src={selectedImg}
       alt={alt || defaultAlt[variant]}
       onError={() => setHasError(true)}
-      loading="lazy"
-      className={`object-cover hover:scale-[1.01] transition-transform duration-300 ${sizeClasses[size]} ${className}`}
+      loading={variant === 'hero' ? 'eager' : 'lazy'}
+      decoding="async"
+      className={`${fitClass} ${sizeClass} ${className}`}
     />
   )
 }

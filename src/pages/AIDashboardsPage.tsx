@@ -1,47 +1,44 @@
+import { lazy, Suspense } from 'react'
 import PageTransition from '../components/layout/PageTransition'
-import DashboardPreview from '../components/DashboardPreview'
-import FinancialDiagnostic from '../components/FinancialDiagnostic'
-import ControladoriaSystem from '../components/ControladoriaSystem'
-import AIFinanceSection from '../components/AIFinanceSection'
 import LiveContextWidget from '../components/widgets/LiveContextWidget'
 import { Sparkles } from 'lucide-react'
+
+// Lazy-load the heavy ERP workspace modules to optimize portfolio bundle performance (Tarefa 13)
+const ERPWorkspace = lazy(() => import('../modules/erp/components/ERPWorkspace'))
 
 export default function AIDashboardsPage() {
   return (
     <PageTransition>
-      <section className="mx-auto max-w-7xl px-6 pb-24 pt-12 sm:px-8 lg:px-10 space-y-12">
+      <section className="mx-auto max-w-7xl px-6 pb-24 pt-12 sm:px-8 lg:px-10 space-y-12 bg-white">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-semibold text-cyan-600">
-              <Sparkles className="h-3.5 w-3.5" /> Futuro da Decisão Financeira
+            <div className="inline-flex items-center gap-2 rounded-full bg-[#0071e3]/10 px-3 py-1 text-xs font-semibold text-[#0071e3]">
+              <Sparkles className="h-3.5 w-3.5" /> Plataforma Integrada
             </div>
-            <h1 className="mt-3 text-4xl font-semibold tracking-tight text-[#1d1d1f] sm:text-5xl">
-              Plataforma de IA & Dashboards de Controladoria
+            <h1 className="mt-3 text-4xl font-semibold tracking-tight text-[#0f172a] sm:text-5xl">
+              Plataforma Executiva de Controladoria
             </h1>
-            <p className="mt-4 max-w-3xl text-lg leading-8 text-[#6e6e73]">
-              Simule cenários, gere diagnósticos financeiros a partir de planilhas/PDFs e visualize recomendações guiadas por inteligência de dados em tempo real.
+            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600 sm:text-base">
+              Carregue PDFs, planilhas e indicadores para simular uma análise executiva com dashboards, gargalos e recomendações de IA.
             </p>
           </div>
         </div>
 
         <LiveContextWidget />
 
-        {/* Dynamic Warning/Info banner explaining mock status */}
-        <div className="rounded-[24px] border border-cyan-400/20 bg-cyan-500/5 p-5 text-sm text-cyan-800 leading-relaxed max-w-5xl">
-          💡 **Nota de Arquitetura**: Esta versão interativa roda localmente no navegador utilizando dados simulados e persistência via `localStorage`. A infraestrutura está totalmente preparada para integração direta via API com modelos reais de LLM, bancos de dados SQL e relatórios ativos do Power BI.
+        <div className="rounded-[24px] border border-blue-400/20 bg-blue-50/10 p-5 text-xs text-slate-600 leading-relaxed max-w-5xl shadow-sm">
+          💡 **Nota de Arquitetura**: Esta plataforma demonstrativa roda localmente no navegador utilizando dados simulados, análise léxica e persistência. O código está totalmente acoplável a integrações reais com bancos de dados, relatórios e modelos de LLM.
         </div>
 
-        {/* 1. Real-time Dashboard Preview */}
-        <DashboardPreview />
-
-        {/* 2. Upload / Manual Financial Diagnostic Tool */}
-        <FinancialDiagnostic />
-
-        {/* 3. Controladoria Simulation Framework */}
-        <ControladoriaSystem />
-
-        {/* 4. Complete AI Finance Suite (Insights, Recommendations, Forecast, etc) */}
-        <AIFinanceSection />
+        {/* Lazy boundary for heavy ERP features */}
+        <Suspense fallback={
+          <div className="h-80 flex flex-col items-center justify-center text-xs text-slate-400 gap-2">
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-blue-500" />
+            Carregando Workspace Executivo...
+          </div>
+        }>
+          <ERPWorkspace />
+        </Suspense>
       </section>
     </PageTransition>
   )
