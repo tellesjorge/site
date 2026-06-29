@@ -25,53 +25,97 @@ export const profile = {
   ],
   experience: [
     {
-      role: 'Controller | FP&A | Controladoria',
-      company: 'Vitol Group',
-      period: 'Atuação recente',
-      summary:
-        'Atuação estratégica em controladoria, análise financeira, gestão de custos e apoio à tomada de decisão em ambiente de alto volume operacional e forte exigência de precisão.',
-      highlights: [
-        'Budget, Forecast, DRE Gerencial e análise de rentabilidade.',
-        'Power BI, dashboards gerenciais e apoio à gestão executiva.',
-        'Gestão de margem, pricing e controle financeiro integrado à operação.',
-      ],
-    },
-    {
       role: 'Gerente de Controladoria',
       company: 'Tradestar Group',
-      period: 'Atuação executiva',
-      summary:
-        'Liderança em finanças corporativas, controle de custos, performance financeira e estruturação de indicadores para o negócio.',
+      period: 'nov/2025 - mar/2026 (5 meses)',
+      summary: 'Atuação estratégica em Controladoria e FP&A, suportando decisões relacionadas à rentabilidade, pricing, custos e eficiência operacional. Gestão e governança de inventário em operação logística multimilionária em Curitiba, PR.',
       highlights: [
-        'Gestão financeira estratégica e apoio ao planejamento corporativo.',
-        'Medição de custos, margem e resultados por unidade de negócio.',
-        'Integração entre finanças, operação e tomada de decisão.',
-      ],
+        'Desenvolvimento de análises gerenciais, indicadores financeiros e dashboards em Power BI para suporte à tomada de decisão.',
+        'Gestão e governança de inventário em operação logística multimilionária, com foco em controle, acuracidade e mitigação de riscos.',
+        'Participação na estruturação de processos financeiros e operacionais, promovendo integração entre áreas e melhoria de eficiência.',
+        'Atuação em Budget, Forecast, DRE Gerencial, fluxo de caixa e análises de margem de contribuição.',
+        'Suporte estratégico às operações de importação, supply chain e gestão financeira integrada ao negócio.',
+        'Integração de dados financeiros e operacionais via ERP Conexos para geração de inteligência gerencial.'
+      ]
     },
     {
-      role: 'Coordenador Administrativo Financeiro',
+      role: 'Head de Controladoria',
       company: 'JTB Contabilidade',
-      period: 'Estruturação financeira',
-      summary:
-        'Coordenação de processos financeiros, fluxo de caixa e controles administrativos em ambientes de alta complexidade.',
+      period: 'feb/2016 - nov/2025 (9 anos 10 meses)',
+      summary: 'Responsável pela liderança da área de controladoria e suporte estratégico às áreas financeira, contábil e fiscal, atuando na geração de informações gerenciais e no desenvolvimento de análises financeiras para clientes e gestão interna.',
       highlights: [
-        'Gestão de caixa, conciliações bancárias e automação de processos.',
-        'Auditoria de inventário e governança de estoques.',
-        'Integração entre contábil, fiscal, comercial e operação.',
-      ],
+        'Estruturação e gestão da área de controladoria gerencial, com foco na geração de informações financeiras estratégicas.',
+        'Desenvolvimento e análise de DRE gerencial, indicadores de desempenho e relatórios financeiros para acompanhamento de resultados.',
+        'Estruturação de planejamento financeiro, orçamento empresarial e análises de performance financeira.',
+        'Desenvolvimento de modelos de análise financeira e cenários de rentabilidade, apoiando decisões estratégicas.',
+        'Análise de custos, formação de preço e margens de contribuição, avaliando impacto financeiro das operações.',
+        'Elaboração de projeções financeiras e análises de fluxo de caixa, apoiando planejamento de curto e longo prazo.',
+        'Suporte a processos de compliance contábil, fiscal e controles internos.',
+        'Desenvolvimento de relatórios gerenciais e dashboards financeiros no acompanhamento da performance das empresas atendidas.'
+      ]
     },
     {
-      role: 'Contador',
+      role: 'Gerente de Controladoria | Fiscal | Controller',
       company: 'JTB Contabilidade',
-      period: 'Base contábil',
-      summary:
-        'Atuação em contabilidade gerencial, fiscal e elaboração de controles internos.',
+      period: 'jan/2016 - nov/2019 (3 anos 11 meses)',
+      summary: 'Responsável pela liderança operacional da controladoria, fechamento fiscal e elaboração de relatórios gerenciais para clientes corporativos de médio e grande porte.',
       highlights: [
-        'Fechamento contábil e gerencial com foco em qualidade e conformidade.',
-        'Suporte a auditorias e rotinas fiscais.',
-        'Desenvolvimento de controles internos e dashboards de desempenho.',
-      ],
+        'Liderança direta em rotinas contábeis, apurações fiscais e planejamento de compliance.',
+        'Atuação consultiva junto à gestão das empresas na interpretação de resultados e estratégias de melhoria de desempenho.'
+      ]
     },
+    {
+      role: 'Controller | Coordenador Administrativo Financeiro | Contador',
+      company: 'Vitol Group',
+      period: 'feb/2009 - dec/2015 (6 anos 11 meses)',
+      summary: 'Responsável pela gestão das áreas administrativa, financeira e contábil, atuando na estruturação de controles internos, análise financeira e suporte à tomada de decisão estratégica da diretoria.',
+      highlights: [
+        'Gestão consolidada das áreas administrativa, financeira e contábil.',
+        'Estruturação de processos de controladoria e governança financeira do grupo.',
+        'Elaboração e análise de Demonstrações Financeiras (DRE, Balanço Patrimonial e Fluxo de Caixa).',
+        'Controle e análise de custos, despesas operacionais e orçamento empresarial.',
+        'Implantação e monitoramento de controles internos com interface direta com auditoria externa.',
+        'Otimização de processos administrativos e financeiros resultando em ganho de qualidade e acuracidade contábil.'
+      ]
+    },
+    {
+      role: 'Analista Fiscal Sênior',
+      company: 'Aliansce Shopping Centers S/A',
+      period: 'oct/2007 - feb/2009 (1 ano 5 meses)',
+      summary: 'Suporte às demandas do Controller, executando rotinas e fechamentos contábeis e fiscais de 23 empresas do grupo.',
+      highlights: [
+        'Assegurar o atendimento de solicitações da auditoria externa e direcionamento de informativos.',
+        'Acompanhamento e entrega das obrigações fiscais, cálculo de impostos e preparação de relatórios gerenciais.'
+      ]
+    },
+    {
+      role: 'Analista Contábil e Financeiro',
+      company: 'Profarma',
+      period: 'mar/2007 - oct/2007 (8 meses)',
+      summary: 'Atuação na análise contábil e de controladoria financeira do setor administrativo.',
+      highlights: [
+        'Preparação de conciliações patrimoniais e suporte a fechamentos gerenciais.'
+      ]
+    },
+    {
+      role: 'Analista Contábil e Financeiro',
+      company: 'Telos-Fundação Embratel de Seguridade Social',
+      period: 'feb/2006 - mar/2007 (1 ano 2 meses)',
+      summary: 'Análises de controladoria e finanças do setor administrativo da fundação.',
+      highlights: [
+        'Conciliação de contas patrimoniais e controle de obrigações contábeis.'
+      ]
+    },
+    {
+      role: 'Analista Contábil Júnior',
+      company: 'Domingues e Pinho Contadores',
+      period: 'jan/2004 - feb/2006 (2 anos 2 meses)',
+      summary: 'Revisão de balancetes contábeis e fiscais elaborados para clientes de diversos segmentos.',
+      highlights: [
+        'Elaboração de LALUR (Parte A e B) e apurações de preço de transferência (Transfer Pricing).',
+        'Atendimento a consultas fiscais e suporte na elaboração de obrigações acessórias.'
+      ]
+    }
   ],
   projects: [
     {
