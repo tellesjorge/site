@@ -1,3 +1,5 @@
+import { getRegeneratedArticles } from '../utils/regenerativeArticles'
+
 export type Article = {
   slug: string
   title: string
@@ -9,7 +11,7 @@ export type Article = {
   coverImage?: string
 }
 
-export const articles: Article[] = [
+const staticArticles: Article[] = [
   {
     slug: 'lucro-nao-paga-boleto',
     title: 'Lucro não Paga Boleto: A Diferença Vital entre Competência e Caixa',
@@ -115,3 +117,13 @@ export const articles: Article[] = [
     `
   }
 ]
+
+export const articles: Article[] = [...staticArticles]
+
+// Self-running initialization to load regenerated articles from local storage on load
+try {
+  const dynArticles = getRegeneratedArticles()
+  articles.push(...dynArticles)
+} catch {
+  // ignore
+}
