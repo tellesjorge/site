@@ -64,21 +64,59 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden items-center gap-6 lg:flex">
-            {navigationItems.map((item) => (
-              <NavLink
-                key={item.href}
-                to={item.href}
-                className={({ isActive }) =>
-                  `text-sm font-medium transition ${
-                    isActive
-                      ? 'text-[#0071e3]'
-                      : 'text-[#6e6e73] hover:text-[#1d1d1f]'
-                  }`
-                }
-              >
-                {t(item.label)}
-              </NavLink>
-            ))}
+            {navigationItems.map((item) => {
+              if (item.dropdown) {
+                return (
+                  <div key={item.href} className="relative group py-2">
+                    <button
+                      type="button"
+                      className="text-sm font-medium text-[#6e6e73] hover:text-[#1d1d1f] transition flex items-center gap-1 focus:outline-none"
+                    >
+                      {t(item.label)}
+                      <svg className="h-3.5 w-3.5 opacity-60 group-hover:rotate-180 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    {/* Dropdown Menu Container */}
+                    <div className="absolute left-1/2 -translate-x-1/2 top-full mt-1 w-52 rounded-2xl border border-black/5 bg-white p-2 shadow-xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 z-50">
+                      <div className="space-y-1">
+                        {item.dropdown.map((sub) => (
+                          <NavLink
+                            key={sub.href}
+                            to={sub.href}
+                            className={({ isActive }) =>
+                              `block rounded-xl px-4 py-2 text-xs font-semibold transition ${
+                                isActive
+                                  ? 'bg-[#0071e3]/10 text-[#0071e3]'
+                                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                              }`
+                            }
+                          >
+                            {t(sub.label)}
+                          </NavLink>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )
+              }
+
+              return (
+                <NavLink
+                  key={item.href}
+                  to={item.href}
+                  className={({ isActive }) =>
+                    `text-sm font-medium transition ${
+                      isActive
+                        ? 'text-[#0071e3]'
+                        : 'text-[#6e6e73] hover:text-[#1d1d1f]'
+                    }`
+                  }
+                >
+                  {t(item.label)}
+                </NavLink>
+              )
+            })}
           </nav>
 
           {/* Call to Action, Flags & Hamburger */}

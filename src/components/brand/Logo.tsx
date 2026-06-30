@@ -57,7 +57,7 @@ export default function Logo({ variant = 'full', className = '', lightText = fal
         <span className={`text-sm font-bold tracking-wider leading-tight ${titleColor}`}>
           Jorge Telles
         </span>
-        <span className={`text-[9px] font-semibold uppercase tracking-widest ${subtitleColor} mt-0.5`}>
+        <span className={`text-[9px] font-semibold uppercase tracking-widest ${subtitleColor} mt-0.5 hidden xl:block`}>
           Controladoria • FP&A • IA Financeira
         </span>
       </div>

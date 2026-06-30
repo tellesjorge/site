@@ -70,24 +70,55 @@ export default function MobileNav({ isOpen, onClose }: MobileNavProps) {
               </button>
             </div>
 
-            <nav className="flex-1 flex flex-col gap-2 overflow-y-auto">
-              {navigationItems.map((item) => (
-                <NavLink
-                  key={item.href}
-                  to={item.href}
-                  onClick={onClose}
-                  className={({ isActive }) =>
-                    `flex items-center justify-between rounded-2xl px-5 py-4 text-sm font-medium transition ${
-                      isActive
-                        ? 'bg-[#0071e3]/10 text-[#0071e3]'
-                        : 'text-[#424245] hover:bg-[#f5f5f7] hover:text-[#1d1d1f]'
-                    }`
-                  }
-                >
-                  {t(item.label)}
-                  <ChevronRight className="h-4 w-4 opacity-50" />
-                </NavLink>
-              ))}
+            <nav className="flex-1 flex flex-col gap-1.5 overflow-y-auto">
+              {navigationItems.map((item) => {
+                if (item.dropdown) {
+                  return (
+                    <div key={item.href} className="space-y-1">
+                      <div className="px-5 py-2 text-xs font-bold text-[#8e8e93] uppercase tracking-wider select-none">
+                        {t(item.label)}
+                      </div>
+                      <div className="pl-3 space-y-1 border-l border-slate-100 ml-5">
+                        {item.dropdown.map((sub) => (
+                          <NavLink
+                            key={sub.href}
+                            to={sub.href}
+                            onClick={onClose}
+                            className={({ isActive }) =>
+                              `flex items-center justify-between rounded-xl px-4 py-2.5 text-xs font-semibold transition ${
+                                isActive
+                                  ? 'bg-[#0071e3]/10 text-[#0071e3]'
+                                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                              }`
+                            }
+                          >
+                            {t(sub.label)}
+                            <ChevronRight className="h-3.5 w-3.5 opacity-40" />
+                          </NavLink>
+                        ))}
+                      </div>
+                    </div>
+                  )
+                }
+
+                return (
+                  <NavLink
+                    key={item.href}
+                    to={item.href}
+                    onClick={onClose}
+                    className={({ isActive }) =>
+                      `flex items-center justify-between rounded-2xl px-5 py-3.5 text-sm font-medium transition ${
+                        isActive
+                          ? 'bg-[#0071e3]/10 text-[#0071e3]'
+                          : 'text-[#424245] hover:bg-[#f5f5f7] hover:text-[#1d1d1f]'
+                      }`
+                    }
+                  >
+                    {t(item.label)}
+                    <ChevronRight className="h-4 w-4 opacity-50" />
+                  </NavLink>
+                )
+              })}
             </nav>
 
             <div className="mt-auto pt-6 border-t border-black/5 flex flex-col gap-3">
