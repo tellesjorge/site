@@ -1,21 +1,23 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import PageTransition from '../components/layout/PageTransition'
 import LiveContextWidget from '../components/widgets/LiveContextWidget'
-import { Sparkles } from 'lucide-react'
+import { Sparkles, Settings2, Database } from 'lucide-react'
 import { useSEO } from '../hooks/useSEO'
 import { useLanguage } from '../context/LanguageContext'
 
 // Lazy-load the heavy ERP workspace modules to optimize portfolio bundle performance (Tarefa 13)
 const ERPWorkspace = lazy(() => import('../modules/erp/components/ERPWorkspace'))
+const ERPPortal = lazy(() => import('../modules/erp/components/ERPPortal'))
 
 export default function AIDashboardsPage() {
   const { t } = useLanguage()
+  const [activeTab, setActiveTab] = useState<'simulator' | 'portal'>('simulator')
 
   useSEO({
-    title: t({ pt: 'Simulador FP&A & Dashboards IA', en: 'FP&A Simulator & AI Dashboards' }),
+    title: t({ pt: 'Plataforma FP&A & Portal ERP', en: 'FP&A Platform & ERP Portal' }),
     description: t({
-      pt: 'Experimente a modelagem financeira em tempo real: simulador reativo de receita, custos CMV, despesas OPEX, prazos de pagamento e ciclo de caixa.',
-      en: 'Experience real-time financial modeling: reactive simulator of revenues, COGS (CMV) costs, OPEX expenses, payment terms, and cash cycles.'
+      pt: 'Experimente a modelagem financeira em tempo real e simule o portal ERP com importação de XML de Notas Fiscais e dashboards analíticos.',
+      en: 'Experience real-time financial modeling and simulate the ERP portal with XML invoice uploads and analytical dashboards.'
     })
   })
 
@@ -32,8 +34,8 @@ export default function AIDashboardsPage() {
             </h1>
             <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600 sm:text-base">
               {t({
-                pt: 'Simulador Interativo de Planejamento FP&A, Ciclo de Caixa e Necessidade de Capital de Giro (NCG). Ajuste os controles operacionais para recalibrar o DRE e obter análises automatizadas do Controller Virtual.',
-                en: 'Interactive FP&A planning simulator, cash cycles, and working capital needs (WCN/NCG). Adjust operational sliders to recalibrate income statements and receive virtual controller reviews.'
+                pt: 'Ambiente completo de simulação financeira e demonstração de ERP. Alterne entre o simulador de cenários macro ou a demonstração de processamento de notas e conexões analíticas.',
+                en: 'Comprehensive financial simulation and ERP environment. Switch between macro scenario modeling or mock database processing and analytical pipelines.'
               })}
             </p>
           </div>
@@ -41,10 +43,30 @@ export default function AIDashboardsPage() {
 
         <LiveContextWidget />
 
+        {/* Tab Selection Capsule */}
+        <div className="flex border-b border-slate-100 max-w-xl">
+          <button
+            type="button"
+            onClick={() => setActiveTab('simulator')}
+            className={`flex items-center gap-2 px-6 py-3.5 text-xs font-bold uppercase tracking-wider border-b-2 transition ${activeTab === 'simulator' ? 'border-[#0071e3] text-[#0071e3]' : 'border-transparent text-slate-400 hover:text-slate-700'}`}
+          >
+            <Settings2 className="h-4 w-4" />
+            {t({ pt: 'Simulador FP&A (Variáveis)', en: 'FP&A Simulator (Variables)' })}
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('portal')}
+            className={`flex items-center gap-2 px-6 py-3.5 text-xs font-bold uppercase tracking-wider border-b-2 transition ${activeTab === 'portal' ? 'border-[#0071e3] text-[#0071e3]' : 'border-transparent text-slate-400 hover:text-slate-700'}`}
+          >
+            <Database className="h-4 w-4" />
+            {t({ pt: 'Portal ERP (XML & DB)', en: 'ERP Portal (XML & DB)' })}
+          </button>
+        </div>
+
         <div className="rounded-[24px] border border-blue-400/20 bg-blue-50/10 p-5 text-xs text-slate-600 leading-relaxed max-w-5xl shadow-sm">
           {t({
-            pt: '💡 **Nota de Planejamento**: Este simulador de cenários demonstra a modelagem financeira estratégica executada por um Controller. O motor de cálculo recalibra indicadores de rentabilidade e capital de giro, ideal para apresentações e diagnósticos executivos de diretoria.',
-            en: '💡 **Planning Note**: This simulation environment demonstrates strategic financial modeling executed by a senior Controller. The calculation engine recalibrates indicators of profitability and working capital, ideal for board presentations and diagnosis.'
+            pt: '💡 **Nota de Planejamento**: Este demonstrador de cockpit operacional reúne cenários FP&A e recursos de ERP para simular de forma transparente o fluxo de dados em controladoria avançada.',
+            en: '💡 **Planning Note**: This operational cockpit demonstrator integrates FP&A scenarios and mock ERP tools to visually represent modern advanced controllership pipelines.'
           })}
         </div>
 
@@ -55,7 +77,7 @@ export default function AIDashboardsPage() {
             {t({ pt: 'Carregando Workspace Executivo...', en: 'Loading Executive Workspace...' })}
           </div>
         }>
-          <ERPWorkspace />
+          {activeTab === 'simulator' ? <ERPWorkspace /> : <ERPPortal />}
         </Suspense>
       </section>
     </PageTransition>
