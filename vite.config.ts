@@ -8,6 +8,10 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
+      input: {
+        commercial: 'index.html',
+        application: 'app.html',
+      },
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {

@@ -1,10 +1,14 @@
-import { Suspense, lazy } from 'react'
+import { Suspense, lazy, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import AppLayout from './components/layout/AppLayout'
 import { LanguageProvider } from './context/LanguageContext'
 
 // Lazy-loaded pages
-const HomePage = lazy(() => import('./pages/HomePage'))
+// Internal SPA links to / must reopen the approved standalone commercial home.
+function HomePage() {
+  useEffect(() => { window.location.replace('/') }, [])
+  return null
+}
 const ExecutiveProfilePage = lazy(() => import('./pages/ExecutiveProfilePage'))
 const ExperiencePage = lazy(() => import('./pages/ExperiencePage'))
 const AIDashboardsPage = lazy(() => import('./pages/AIDashboardsPage'))

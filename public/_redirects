@@ -1,1 +1,11 @@
-/*    /index.html   200
+/login /sistema-em-breve.html 200
+/cadastro /sistema-em-breve.html 200
+/apresentacao /sistema-em-breve.html 200
+/perfil /app.html 200
+/experiencia /app.html 200
+/ia-dashboards /app.html 200
+/consultoria /app.html 200
+/artigos /app.html 200
+/artigos/* /app.html 200
+/curriculo /app.html 200
+/contato /app.html 200

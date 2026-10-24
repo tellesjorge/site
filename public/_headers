@@ -1,0 +1,5 @@
+/static/*
+  X-Content-Type-Options: nosniff
+
+/sistema-em-breve.html
+  X-Robots-Tag: noindex
