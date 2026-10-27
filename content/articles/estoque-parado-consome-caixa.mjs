@@ -1,6 +1,7 @@
 export default {
  slug:'estoque-parado-consome-caixa',
- path:'/blog/estoque-parado-capital-de-giro',
+ path:'/artigos/estoque-parado-capital-de-giro',
+ aliases:['/blog/estoque-parado-capital-de-giro','/blog/estoque-parado-capital-de-giro/','/blog/estoque-parado-capital-de-giro/index.html'],
  seoTitle:'Estoque Parado: Como Ele Consome o Caixa da Empresa | Jorge Telles',
  primaryKeyword:'estoque parado',
  keywords:['estoque parado e capital de giro','giro de estoque','estoque excessivo','dinheiro parado em estoque','gestão de estoque','capital de giro','prazo médio de estocagem','ciclo financeiro','estoque sem giro','como reduzir estoque parado'],

@@ -1,5 +1,7 @@
 # Seção Artigos
 
+Os quatro episódios usam URLs canônicas em `/artigos/`. Os endereços anteriores em `/blog/` permanecem como redirecionamentos permanentes 301 para evitar perda de acessos. O Episódio 04 conserva o texto fornecido em Markdown, convertido por um renderizador limitado que escapa HTML; título, autoria e apresentação são compartilhados pelo modelo editorial.
+
 O menu e o destaque da página inicial levam à biblioteca editorial em `/artigos/`. A seção segue a identidade comercial roxa e rosa e não modifica o aplicativo fiscal.
 
 ## Conteúdo e publicação

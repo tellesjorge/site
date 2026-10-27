@@ -7,15 +7,23 @@
 /consultoria /app.html 200
 # BEGIN EDITORIAL ROUTES
 # Published articles use native Pages directory/index.html routing.
-/artigos/vende-muito-lucra-pouco /blog/empresa-vende-muito-e-lucra-pouco 301
-/artigos/vende-muito-lucra-pouco/ /blog/empresa-vende-muito-e-lucra-pouco 301
-/artigos/vende-muito-lucra-pouco/index.html /blog/empresa-vende-muito-e-lucra-pouco 301
-/artigos/estoque-parado-consome-caixa /blog/estoque-parado-capital-de-giro 301
-/artigos/estoque-parado-consome-caixa/ /blog/estoque-parado-capital-de-giro 301
-/artigos/estoque-parado-consome-caixa/index.html /blog/estoque-parado-capital-de-giro 301
-/blog/empresa-vende-muito-lucra-pouco /blog/empresa-vende-muito-e-lucra-pouco 301
-/blog/empresa-vende-muito-lucra-pouco/ /blog/empresa-vende-muito-e-lucra-pouco 301
-/blog/empresa-vende-muito-lucra-pouco/index.html /blog/empresa-vende-muito-e-lucra-pouco 301
+/artigos/vende-muito-lucra-pouco /artigos/empresa-vende-muito-e-lucra-pouco 301
+/artigos/vende-muito-lucra-pouco/ /artigos/empresa-vende-muito-e-lucra-pouco 301
+/artigos/vende-muito-lucra-pouco/index.html /artigos/empresa-vende-muito-e-lucra-pouco 301
+/artigos/estoque-parado-consome-caixa /artigos/estoque-parado-capital-de-giro 301
+/artigos/estoque-parado-consome-caixa/ /artigos/estoque-parado-capital-de-giro 301
+/artigos/estoque-parado-consome-caixa/index.html /artigos/estoque-parado-capital-de-giro 301
+/blog/impacto-descontos-margem-lucro /artigos/impacto-descontos-margem-lucro 301
+/blog/impacto-descontos-margem-lucro/ /artigos/impacto-descontos-margem-lucro 301
+/blog/empresa-vende-muito-lucra-pouco /artigos/empresa-vende-muito-e-lucra-pouco 301
+/blog/empresa-vende-muito-lucra-pouco/ /artigos/empresa-vende-muito-e-lucra-pouco 301
+/blog/empresa-vende-muito-lucra-pouco/index.html /artigos/empresa-vende-muito-e-lucra-pouco 301
+/blog/empresa-vende-muito-e-lucra-pouco /artigos/empresa-vende-muito-e-lucra-pouco 301
+/blog/empresa-vende-muito-e-lucra-pouco/ /artigos/empresa-vende-muito-e-lucra-pouco 301
+/blog/empresa-vende-muito-e-lucra-pouco/index.html /artigos/empresa-vende-muito-e-lucra-pouco 301
+/blog/estoque-parado-capital-de-giro /artigos/estoque-parado-capital-de-giro 301
+/blog/estoque-parado-capital-de-giro/ /artigos/estoque-parado-capital-de-giro 301
+/blog/estoque-parado-capital-de-giro/index.html /artigos/estoque-parado-capital-de-giro 301
 # END EDITORIAL ROUTES
 /artigos/lucro-nao-paga-boleto /app.html 200
 /artigos/estoque-parado-custo-invisivel /app.html 200

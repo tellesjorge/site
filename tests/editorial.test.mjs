@@ -5,6 +5,8 @@ import {Script} from 'node:vm';
 import article from '../content/articles/lucro-sem-dinheiro-em-caixa.mjs';
 import stock from '../content/articles/estoque-parado-consome-caixa.mjs';
 import margin from '../content/articles/vende-muito-lucra-pouco.mjs';
+import discount from '../content/articles/impacto-descontos-margem-lucro.mjs';
+import {renderEditorialMarkdown} from '../tools/editorial-markdown.mjs';
 const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 
 test('article is complete, indexable and attributed to the actual author',()=>{
@@ -32,7 +34,7 @@ test('new library and homepage links preserve active client access',()=>{
  const home=read('index.html'),library=read('public/artigos/index.html'),redirects=read('public/_redirects');
  assert.ok(home.includes('href="/artigos/"'));assert.ok(home.includes(margin.path));assert.ok(library.includes('/artigos/'+article.slug+'/'));
  assert.ok(home.includes('https://app.jorgetelles.com.br/login'));assert.ok(redirects.includes('/login https://app.jorgetelles.com.br/login 302'));
- assert.ok(library.includes('3 artigos publicados'));assert.ok(!library.includes('IA Regenerativo'));assert.ok(!library.includes('API de feeds'));
+ assert.ok(library.includes('4 artigos publicados'));assert.ok(!library.includes('IA Regenerativo'));assert.ok(!library.includes('API de feeds'));
  assert.ok(read('public/sitemap-editorial.xml').includes('/artigos/'+article.slug+'/'));
  assert.ok(read('public/robots.txt').includes('sitemap-editorial.xml'));
 });
@@ -82,4 +84,20 @@ test('episode 03 is complete and its contribution examples reconcile',()=>{
  assert.ok(html.includes('R$ 49.000'));assert.ok(html.includes('R$ 42.000'));assert.ok(html.includes('15,79%'));
  assert.ok(read('public/sitemap-editorial.xml').includes(margin.path));
  const library=read('public/artigos/index.html');assert.ok(library.indexOf(margin.title)<library.indexOf(stock.title));
+});
+
+test('all four articles use artigos and discount examples and SEO are correct',()=>{
+ for(const item of [article,stock,margin,discount])assert.ok((item.path||'/artigos/'+item.slug+'/').startsWith('/artigos/'));
+ const html=read('public'+discount.path+'/index.html');
+ assert.equal((html.match(/<h1>/g)||[]).length,1);assert.ok(html.includes('<title>'+discount.seoTitle+'</title>'));
+ assert.ok(html.includes('<meta name="description" content="'+discount.description+'">'));
+ assert.equal(discount.sections.length,13);for(const [id]of discount.sections)assert.ok(html.includes('href="#'+id+'"'));
+ assert.equal((200-150)/200,0.25);assert.equal(950-650-95-47.5,157.5);assert.equal((200-157.5)/200,.2125);
+ assert.equal(Math.ceil(20000/150),134);assert.equal(134*150,20100);
+ assert.ok(html.includes('21,25%'));assert.ok(html.includes('R$ 157,50'));assert.ok(html.includes('34%'));
+ assert.ok(!read('public/sitemap-editorial.xml').includes('/blog/'));
+ const redirects=read('public/_redirects');for(const item of [stock,margin,discount])for(const alias of item.aliases)assert.ok(redirects.includes(alias+' '+item.path+' 301'));
+ assert.ok(!redirects.includes(discount.path+' '+discount.path+' 301'));
+ assert.ok(renderEditorialMarkdown('<script>alert(1)</script>').html.includes('&lt;script&gt;'));
+ assert.ok(read('index.html').includes(discount.path));
 });

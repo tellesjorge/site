@@ -1,6 +1,6 @@
 export default {
- slug:'vende-muito-lucra-pouco',path:'/blog/empresa-vende-muito-e-lucra-pouco',
- aliases:['/blog/empresa-vende-muito-lucra-pouco','/blog/empresa-vende-muito-lucra-pouco/','/blog/empresa-vende-muito-lucra-pouco/index.html'],
+ slug:'vende-muito-lucra-pouco',path:'/artigos/empresa-vende-muito-e-lucra-pouco',
+ aliases:['/blog/empresa-vende-muito-lucra-pouco','/blog/empresa-vende-muito-lucra-pouco/','/blog/empresa-vende-muito-lucra-pouco/index.html','/blog/empresa-vende-muito-e-lucra-pouco','/blog/empresa-vende-muito-e-lucra-pouco/','/blog/empresa-vende-muito-e-lucra-pouco/index.html'],
  title:'Sua empresa vende muito, mas lucra pouco? Entenda o que pode estar acontecendo',
  seoTitle:'Empresa Vende Muito e Lucra Pouco? Entenda as Causas',
  description:'Sua empresa vende muito, mas lucra pouco? Entenda como margem de contribuição, preços, descontos e custos afetam a rentabilidade.',
