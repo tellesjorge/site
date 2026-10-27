@@ -9,6 +9,7 @@ body.jt-commercial-pages::before{display:none}
 .jt-commercial-app .jt-brand{color:#420b68;text-decoration:none}
 .jt-commercial-app .jt-header nav a[aria-current=page]{color:#420b68;text-decoration:underline;text-underline-offset:6px}
 .jt-commercial-app .jt-footer{margin-top:auto}
+.jt-commercial-app [class~="fixed"][class~="top-6"]{top:auto;bottom:20px;max-height:45vh;overflow-y:auto}
 .jt-commercial-content h1,.jt-commercial-content h2,.jt-commercial-content h3{color:#420b68;letter-spacing:-.025em}
 .jt-commercial-content h1{font-size:clamp(30px,4vw,44px);line-height:1.18}
 .jt-commercial-content [class*="rounded-[32px]"],.jt-commercial-content [class*="rounded-[28px]"],.jt-commercial-content [class*="rounded-3xl"]{border-radius:20px;border-color:#e4d9ec;box-shadow:0 6px 22px #420b6807}
