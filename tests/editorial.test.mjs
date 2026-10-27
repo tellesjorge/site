@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {Script} from 'node:vm';
 import article from '../content/articles/lucro-sem-dinheiro-em-caixa.mjs';
+import stock from '../content/articles/estoque-parado-consome-caixa.mjs';
 const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 
 test('article is complete, indexable and attributed to the actual author',()=>{
@@ -30,9 +31,26 @@ test('new library and homepage links preserve active client access',()=>{
  const home=read('index.html'),library=read('public/artigos/index.html'),redirects=read('public/_redirects');
  assert.ok(home.includes('href="/artigos/"'));assert.ok(home.includes('/artigos/'+article.slug+'/'));
  assert.ok(home.includes('https://app.jorgetelles.com.br/login'));assert.ok(redirects.includes('/login https://app.jorgetelles.com.br/login 302'));
- assert.ok(library.includes('1 artigo publicado'));assert.ok(!library.includes('IA Regenerativo'));assert.ok(!library.includes('API de feeds'));
+ assert.ok(library.includes('2 artigos publicados'));assert.ok(!library.includes('IA Regenerativo'));assert.ok(!library.includes('API de feeds'));
  assert.ok(read('public/sitemap-editorial.xml').includes('/artigos/'+article.slug+'/'));
  assert.ok(read('public/robots.txt').includes('sitemap-editorial.xml'));
+});
+
+test('stock article has correct metadata, section links, examples and contextual references',()=>{
+ const html=read('public/artigos/'+stock.slug+'/index.html');
+ assert.ok(html.includes(stock.title));assert.equal((html.match(/<h1>/g)||[]).length,1);
+ const data=JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+ assert.equal(data.headline,stock.title);assert.equal(data.author.name,'Jorge Telles');
+ for(const [id]of stock.sections){assert.ok(html.includes('id="'+id+'"'));assert.ok(html.includes('href="#'+id+'"'));}
+ assert.ok(html.includes('CPC 16'));assert.ok(html.includes(stock.ctaTitle));assert.ok(!html.includes('CPC 03 (R2)'));
+ assert.equal(900000/300000*30,90);assert.equal(300000*60/30,600000);assert.equal(900000-600000,300000);
+ assert.equal(3600000/900000,4);assert.equal(Math.round(365/4),91);
+ assert.equal(400000+250000+150000+120000+80000,1000000);assert.equal(150000+120000+80000,350000);
+ assert.equal(1000*100-1000*90,10000);assert.equal((45000-5000)*.02*10,8000);assert.equal((45000-5000)*.03*10,12000);
+ assert.ok(html.includes('R$ 8.000'));assert.ok(html.includes('R$ 12 mil'));assert.ok(html.includes('R$ 16 mil'));
+ assert.ok(html.includes('/artigos/'+article.slug+'/'));assert.ok(read('public/artigos/'+article.slug+'/index.html').includes('/artigos/'+stock.slug+'/'));
+ assert.ok(read('public/artigos/index.html').indexOf(stock.title)<read('public/artigos/index.html').indexOf(article.title));
+ assert.ok(read('public/sitemap-editorial.xml').includes(stock.slug));
 });
 
 test('editorial behavior adds no trackers or persistent visitor storage',()=>{

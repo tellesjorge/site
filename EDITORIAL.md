@@ -8,7 +8,7 @@ Cada artigo fica em `content/articles/`, em um arquivo `.mjs` com título, descr
 
 As páginas em `public/artigos/` e o mapa `public/sitemap-editorial.xml` são produtos de geração, ignorados pelo Git. Não editar essas saídas à mão. O bloco identificado em `public/_redirects` é regenerado para dar prioridade às páginas editoriais, mantendo os caminhos antigos da aplicação abaixo dele.
 
-Para publicar outro artigo: adicionar um arquivo com outro identificador, revisar conteúdo e premissas, executar `npm run test:editorial` e `npm run build`, conferir a leitura no computador e no celular e publicar pela integração Git existente do Cloudflare Pages. O destaque da página inicial é uma escolha editorial, editado em `index.html`.
+Para publicar outro artigo: adicionar um arquivo com outro identificador, revisar conteúdo e premissas, executar `npm run test:editorial` e `npm run build`, conferir a leitura no computador e no celular e publicar pela integração Git existente do Cloudflare Pages. A página inicial destaca automaticamente os dois artigos mais recentes; em datas iguais, o episódio mais recente aparece primeiro. As páginas usam o roteamento estático nativo do Pages; os caminhos legados são preservados explicitamente, sem uma regra curinga que intercepte os artigos novos.
 
 ## Primeiro artigo
 
