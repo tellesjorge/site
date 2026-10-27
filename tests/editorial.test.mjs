@@ -72,6 +72,9 @@ test('episode 03 is complete and its contribution examples reconcile',()=>{
  for(const [id]of margin.sections){assert.ok(html.includes('id="'+id+'"'));assert.ok(html.includes('href="#'+id+'"'));}
  const data=JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
  assert.equal(data.mainEntityOfPage,'https://www.jorgetelles.com.br'+margin.path);
+ assert.ok(html.includes('<meta name="description" content="'+margin.description+'">'));
+ assert.deepEqual(data.keywords,[margin.primaryKeyword,...margin.keywords]);
+ for(const alias of margin.aliases)assert.ok(read('public/_redirects').includes(alias+' '+margin.path+' 301'));
  assert.equal(1000000-100000-600000-50000-180000,70000);
  assert.equal(1000000-100000-700000-70000-180000,-50000);
  assert.equal(150000*.30+50000*.08,49000);assert.equal(100000*.30+150000*.08,42000);
