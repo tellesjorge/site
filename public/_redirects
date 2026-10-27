@@ -2,9 +2,9 @@
 /cadastro /sistema-em-breve.html 200
 /apresentacao /sistema-em-breve.html 200
 /perfil /app 200
-/experiencia /app.html 200
-/ia-dashboards /app.html 200
-/consultoria /app.html 200
+/experiencia /app 200
+/ia-dashboards /app 200
+/consultoria /app 200
 # BEGIN EDITORIAL ROUTES
 # Published articles use native Pages directory/index.html routing.
 /artigos/vende-muito-lucra-pouco /artigos/empresa-vende-muito-e-lucra-pouco 301
@@ -25,8 +25,8 @@
 /blog/estoque-parado-capital-de-giro/ /artigos/estoque-parado-capital-de-giro 301
 /blog/estoque-parado-capital-de-giro/index.html /artigos/estoque-parado-capital-de-giro 301
 # END EDITORIAL ROUTES
-/artigos/lucro-nao-paga-boleto /app.html 200
-/artigos/estoque-parado-custo-invisivel /app.html 200
-/artigos/empresa-com-lucro-sem-caixa /app.html 200
-/curriculo /app.html 200
-/contato /app.html 200
+/artigos/lucro-nao-paga-boleto /app 200
+/artigos/estoque-parado-custo-invisivel /app 200
+/artigos/empresa-com-lucro-sem-caixa /app 200
+/curriculo /app 200
+/contato /app 200

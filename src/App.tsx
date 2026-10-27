@@ -9,6 +9,16 @@ function HomePage() {
   useEffect(() => { window.location.replace('/') }, [])
   return null
 }
+// Recover URLs produced by previously cached hosting redirects.
+function LegacyAppPage() {
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const interest = params.get('interest')
+    window.location.replace(interest === 'consulting' || interest === 'hire'
+      ? '/contato?origem=recuperacao&interest=' + interest : '/')
+  }, [])
+  return null
+}
 const ExecutiveProfilePage = lazy(() => import('./pages/ExecutiveProfilePage'))
 const ExperiencePage = lazy(() => import('./pages/ExperiencePage'))
 const AIDashboardsPage = lazy(() => import('./pages/AIDashboardsPage'))
@@ -35,6 +45,7 @@ function App() {
           <Routes>
             <Route path="/" element={<AppLayout />}>
               <Route index element={<HomePage />} />
+              <Route path="app" element={<LegacyAppPage />} />
               <Route path="perfil" element={<ExecutiveProfilePage />} />
               <Route path="experiencia" element={<ExperiencePage />} />
               <Route path="ia-dashboards" element={<AIDashboardsPage />} />
