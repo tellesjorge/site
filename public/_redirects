@@ -6,11 +6,10 @@
 /ia-dashboards /app.html 200
 /consultoria /app.html 200
 # BEGIN EDITORIAL ROUTES
-/artigos /artigos/index.html 200
-/artigos/ /artigos/index.html 200
-/artigos/lucro-sem-dinheiro-em-caixa /artigos/lucro-sem-dinheiro-em-caixa/index.html 200
-/artigos/lucro-sem-dinheiro-em-caixa/ /artigos/lucro-sem-dinheiro-em-caixa/index.html 200
+# Published articles use native Pages directory/index.html routing.
 # END EDITORIAL ROUTES
-/artigos/* /app.html 200
+/artigos/lucro-nao-paga-boleto /app.html 200
+/artigos/estoque-parado-custo-invisivel /app.html 200
+/artigos/empresa-com-lucro-sem-caixa /app.html 200
 /curriculo /app.html 200
 /contato /app.html 200

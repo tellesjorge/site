@@ -14,7 +14,7 @@ const pathFor=article=>'/artigos/'+article.slug+'/';
 const redirectsPath=new URL('public/_redirects',root),redirects=await readFile(redirectsPath,'utf8');
 const marker=/# BEGIN EDITORIAL ROUTES[\s\S]*?# END EDITORIAL ROUTES/;
 if(!marker.test(redirects))throw Error('Missing editorial routing markers');
-const routes=['/artigos /artigos/index.html 200','/artigos/ /artigos/index.html 200',...articles.flatMap(article=>['/artigos/'+article.slug+' /artigos/'+article.slug+'/index.html 200',pathFor(article)+' /artigos/'+article.slug+'/index.html 200'])];
+const routes=['# Published articles use native Pages directory/index.html routing.'];
 await writeFile(redirectsPath,redirects.replace(marker,'# BEGIN EDITORIAL ROUTES\n'+routes.join('\n')+'\n# END EDITORIAL ROUTES'));
 function shell({title,description,path,body,article}){
  const structured=article?{'@context':'https://schema.org','@type':'BlogPosting',headline:article.title,description:article.description,datePublished:article.published,inLanguage:'pt-BR',mainEntityOfPage:origin+path,author:{'@type':'Person',name:'Jorge Telles',url:origin+'/perfil'},publisher:{'@type':'Organization',name:'Jorge Telles',url:origin},isPartOf:{'@type':'CreativeWorkSeries',name:article.series}}:null;
