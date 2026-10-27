@@ -5,4 +5,5 @@ dist/
 .DS_Store
 .vscode/
 /public/artigos/
+/public/blog/
 /public/sitemap-editorial.xml

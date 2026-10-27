@@ -1,7 +1,11 @@
 export default {
  slug:'estoque-parado-consome-caixa',
+ path:'/blog/estoque-parado-capital-de-giro',
+ seoTitle:'Estoque Parado: Como Ele Consome o Caixa da Empresa | Jorge Telles',
+ primaryKeyword:'estoque parado',
+ keywords:['estoque parado e capital de giro','giro de estoque','estoque excessivo','dinheiro parado em estoque','gestão de estoque','capital de giro','prazo médio de estocagem','ciclo financeiro','estoque sem giro','como reduzir estoque parado'],
  title:'Estoque parado: como ele consome o caixa da sua empresa',
- description:'Entenda como estoque, giro e cobertura afetam o caixa. Veja exemplos de capital de giro, mercadorias sem saída e compras com desconto.',
+ description:'Estoque parado pode comprometer o caixa e o capital de giro. Entenda como calcular giro, identificar excessos e melhorar a gestão financeira.',
  category:'Gestão de estoques',series:'O Lucro Invisível',episode:'02',published:'2026-10-27',
  cover:'Estoque também é dinheiro.',
  summary:'Parte do dinheiro que parece ter desaparecido pode estar nas prateleiras. Aprenda a investigar o estoque e equilibrar disponibilidade, demanda e capital empregado.',

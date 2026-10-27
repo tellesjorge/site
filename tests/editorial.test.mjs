@@ -37,7 +37,7 @@ test('new library and homepage links preserve active client access',()=>{
 });
 
 test('stock article has correct metadata, section links, examples and contextual references',()=>{
- const html=read('public/artigos/'+stock.slug+'/index.html');
+ const html=read('public'+stock.path+'/index.html');
  assert.ok(html.includes(stock.title));assert.equal((html.match(/<h1>/g)||[]).length,1);
  const data=JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
  assert.equal(data.headline,stock.title);assert.equal(data.author.name,'Jorge Telles');
@@ -48,9 +48,14 @@ test('stock article has correct metadata, section links, examples and contextual
  assert.equal(400000+250000+150000+120000+80000,1000000);assert.equal(150000+120000+80000,350000);
  assert.equal(1000*100-1000*90,10000);assert.equal((45000-5000)*.02*10,8000);assert.equal((45000-5000)*.03*10,12000);
  assert.ok(html.includes('R$ 8.000'));assert.ok(html.includes('R$ 12 mil'));assert.ok(html.includes('R$ 16 mil'));
- assert.ok(html.includes('/artigos/'+article.slug+'/'));assert.ok(read('public/artigos/'+article.slug+'/index.html').includes('/artigos/'+stock.slug+'/'));
+ assert.ok(html.includes('/artigos/'+article.slug+'/'));assert.ok(read('public/artigos/'+article.slug+'/index.html').includes(stock.path));
  assert.ok(read('public/artigos/index.html').indexOf(stock.title)<read('public/artigos/index.html').indexOf(article.title));
- assert.ok(read('public/sitemap-editorial.xml').includes(stock.slug));
+ assert.ok(read('public/sitemap-editorial.xml').includes(stock.path));
+ assert.ok(html.includes('<title>'+stock.seoTitle+'</title>'));assert.ok(html.includes('<meta name="description" content="'+stock.description+'">'));
+ assert.equal(data.mainEntityOfPage,'https://www.jorgetelles.com.br'+stock.path);
+ assert.deepEqual(data.keywords,[stock.primaryKeyword,...stock.keywords]);
+ assert.ok(html.includes('rel="canonical" href="https://www.jorgetelles.com.br'+stock.path+'"'));
+ assert.ok(read('public/_redirects').includes('/artigos/'+stock.slug+'/ '+stock.path+' 301'));
 });
 
 test('editorial behavior adds no trackers or persistent visitor storage',()=>{

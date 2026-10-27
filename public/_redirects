@@ -7,6 +7,9 @@
 /consultoria /app.html 200
 # BEGIN EDITORIAL ROUTES
 # Published articles use native Pages directory/index.html routing.
+/artigos/estoque-parado-consome-caixa /blog/estoque-parado-capital-de-giro 301
+/artigos/estoque-parado-consome-caixa/ /blog/estoque-parado-capital-de-giro 301
+/artigos/estoque-parado-consome-caixa/index.html /blog/estoque-parado-capital-de-giro 301
 # END EDITORIAL ROUTES
 /artigos/lucro-nao-paga-boleto /app.html 200
 /artigos/estoque-parado-custo-invisivel /app.html 200
