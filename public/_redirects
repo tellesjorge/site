@@ -1,4 +1,4 @@
-/login /sistema-em-breve.html 200
+/login https://app.jorgetelles.com.br/login 302
 /cadastro /sistema-em-breve.html 200
 /apresentacao /sistema-em-breve.html 200
 /perfil /app.html 200
