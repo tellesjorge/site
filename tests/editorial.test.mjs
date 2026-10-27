@@ -4,6 +4,7 @@ import {readFileSync} from 'node:fs';
 import {Script} from 'node:vm';
 import article from '../content/articles/lucro-sem-dinheiro-em-caixa.mjs';
 import stock from '../content/articles/estoque-parado-consome-caixa.mjs';
+import margin from '../content/articles/vende-muito-lucra-pouco.mjs';
 const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 
 test('article is complete, indexable and attributed to the actual author',()=>{
@@ -29,9 +30,9 @@ test('educational financial examples reconcile in reais and days',()=>{
 
 test('new library and homepage links preserve active client access',()=>{
  const home=read('index.html'),library=read('public/artigos/index.html'),redirects=read('public/_redirects');
- assert.ok(home.includes('href="/artigos/"'));assert.ok(home.includes('/artigos/'+article.slug+'/'));
+ assert.ok(home.includes('href="/artigos/"'));assert.ok(home.includes(margin.path));assert.ok(library.includes('/artigos/'+article.slug+'/'));
  assert.ok(home.includes('https://app.jorgetelles.com.br/login'));assert.ok(redirects.includes('/login https://app.jorgetelles.com.br/login 302'));
- assert.ok(library.includes('2 artigos publicados'));assert.ok(!library.includes('IA Regenerativo'));assert.ok(!library.includes('API de feeds'));
+ assert.ok(library.includes('3 artigos publicados'));assert.ok(!library.includes('IA Regenerativo'));assert.ok(!library.includes('API de feeds'));
  assert.ok(read('public/sitemap-editorial.xml').includes('/artigos/'+article.slug+'/'));
  assert.ok(read('public/robots.txt').includes('sitemap-editorial.xml'));
 });
@@ -62,4 +63,20 @@ test('editorial behavior adds no trackers or persistent visitor storage',()=>{
  const script=read('public/static/jorge-telles-editorial.js');new Script(script);
  assert.doesNotMatch(script,/localStorage|sessionStorage|document\.cookie|gtag\(|fetch\(/);
  assert.ok(script.includes('navigator.share'));assert.ok(script.includes('window.print'));
+});
+
+test('episode 03 is complete and its contribution examples reconcile',()=>{
+ const html=read('public'+margin.path+'/index.html');
+ assert.equal((html.match(/<h1>/g)||[]).length,1);assert.ok(html.includes(margin.title));
+ assert.ok(html.includes('<title>'+margin.seoTitle+'</title>'));
+ for(const [id]of margin.sections){assert.ok(html.includes('id="'+id+'"'));assert.ok(html.includes('href="#'+id+'"'));}
+ const data=JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+ assert.equal(data.mainEntityOfPage,'https://www.jorgetelles.com.br'+margin.path);
+ assert.equal(1000000-100000-600000-50000-180000,70000);
+ assert.equal(1000000-100000-700000-70000-180000,-50000);
+ assert.equal(150000*.30+50000*.08,49000);assert.equal(100000*.30+150000*.08,42000);
+ assert.equal(95-80,15);assert.equal(95-60-95*.20,16);assert.equal(80000/.20,400000);
+ assert.ok(html.includes('R$ 49.000'));assert.ok(html.includes('R$ 42.000'));assert.ok(html.includes('15,79%'));
+ assert.ok(read('public/sitemap-editorial.xml').includes(margin.path));
+ const library=read('public/artigos/index.html');assert.ok(library.indexOf(margin.title)<library.indexOf(stock.title));
 });

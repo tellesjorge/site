@@ -7,6 +7,9 @@
 /consultoria /app.html 200
 # BEGIN EDITORIAL ROUTES
 # Published articles use native Pages directory/index.html routing.
+/artigos/vende-muito-lucra-pouco /blog/empresa-vende-muito-lucra-pouco 301
+/artigos/vende-muito-lucra-pouco/ /blog/empresa-vende-muito-lucra-pouco 301
+/artigos/vende-muito-lucra-pouco/index.html /blog/empresa-vende-muito-lucra-pouco 301
 /artigos/estoque-parado-consome-caixa /blog/estoque-parado-capital-de-giro 301
 /artigos/estoque-parado-consome-caixa/ /blog/estoque-parado-capital-de-giro 301
 /artigos/estoque-parado-consome-caixa/index.html /blog/estoque-parado-capital-de-giro 301
