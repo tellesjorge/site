@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "predev": "node tools/build-editorial.mjs",
+    "prebuild": "node tools/build-editorial.mjs",
+    "test:editorial": "node tools/build-editorial.mjs && node --test tests/editorial.test.mjs",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"

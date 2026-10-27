@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://jorgetelles.com.br/sitemap.xml
+Sitemap: https://www.jorgetelles.com.br/sitemap-editorial.xml

@@ -4,3 +4,5 @@ dist/
 .env.local
 .DS_Store
 .vscode/
+/public/artigos/
+/public/sitemap-editorial.xml

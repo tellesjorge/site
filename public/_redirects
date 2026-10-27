@@ -5,7 +5,12 @@
 /experiencia /app.html 200
 /ia-dashboards /app.html 200
 /consultoria /app.html 200
-/artigos /app.html 200
+# BEGIN EDITORIAL ROUTES
+/artigos /artigos/index.html 200
+/artigos/ /artigos/index.html 200
+/artigos/lucro-sem-dinheiro-em-caixa /artigos/lucro-sem-dinheiro-em-caixa/index.html 200
+/artigos/lucro-sem-dinheiro-em-caixa/ /artigos/lucro-sem-dinheiro-em-caixa/index.html 200
+# END EDITORIAL ROUTES
 /artigos/* /app.html 200
 /curriculo /app.html 200
 /contato /app.html 200
