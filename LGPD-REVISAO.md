@@ -28,7 +28,7 @@ Não é certificação de conformidade integral ou parecer jurídico. O escopo f
 
 ## Pendências do responsável — não presumir resolvidas
 
-1. Confirmar a identidade jurídica completa do controlador (razão social/CNPJ/endereço aplicável), atualizar política e formalizar responsável/canal. Não publicar dados pessoais residenciais sem necessidade.
+1. Identificação fornecida em 27/10/2026: Jorge Telles, CNPJ 24.146.741/0001-43, sem endereço comercial informado. Política atualizada com canal digital, sem endereço residencial. Confirmar em documentação empresarial a razão social exata e avaliar com assessoria se outro dado de identificação é necessário; não se presumiu validação cadastral externa.
 2. Confirmar se cabe designar encarregado ou alguma regra diferenciada de pequeno porte; validar juridicamente, sem presumir dispensa.
 3. Revisar contratos e papéis de Cloudflare, Google/Gmail e demais fornecedores; avaliar garantias e transferências internacionais segundo as normas aplicáveis. Revisar dados históricos do FormSubmit.
 4. Definir e executar tabela de retenção e descarte por finalidade, inclusive e-mails, logs e backups. O código não implementa exclusão de e-mail ou dos dados de fornecedores.
