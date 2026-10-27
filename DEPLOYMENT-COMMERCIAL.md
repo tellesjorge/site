@@ -1,5 +1,14 @@
 # Publicação comercial aprovada
 
+## Atualização de acesso — 27/10/2026
+
+Os avisos históricos abaixo descrevem a primeira publicação, não o estado atual do acesso.
+O cabeçalho, o acesso N Fiscal e o rodapé agora apontam para https://app.jorgetelles.com.br/login.
+`/login` redireciona ao mesmo portal HTTPS; `/cadastro` e `/apresentacao` permanecem sem alteração.
+Verificação pública: home HTTP 200 e `/login` terminando no portal HTTP 200.
+O layout comercial foi preservado. O portal passou a usar a paleta comercial e oferece consulta
+de clientes por empresa; isso não significa migração integral das funções e do histórico local.
+
 A página inicial aprovada foi integrada como entrada estática do Vite. `npm run build` continua gerando `dist`, compatível com o projeto Cloudflare Pages existente.
 
 - `index.html`: página comercial aprovada, sem importação de dados operacionais.
