@@ -75,28 +75,22 @@ export default function ExecutiveProfilePage() {
               <li className="flex items-center gap-2">
                 <CheckCircle2 className="h-4 w-4 text-[#34c759] flex-shrink-0" />
                 <span>
-                  {t({
-                    pt: '**Diretoria & Conselhos**: Apresentação de relatórios gerenciais claros (DRE, EBITDA, Fluxo de Caixa).',
-                    en: '**Board & Committees**: Presentation of clear management reports (DRE, EBITDA, Cash Flow).'
-                  })}
+                  <strong>{t({ pt: 'Diretoria & Conselhos', en: 'Board & Committees' })}:</strong>{' '}
+                  {t({ pt: 'Apresentação de relatórios gerenciais claros (DRE, EBITDA, Fluxo de Caixa).', en: 'Presentation of clear management reports (DRE, EBITDA, Cash Flow).' })}
                 </span>
               </li>
               <li className="flex items-center gap-2">
                 <CheckCircle2 className="h-4 w-4 text-[#34c759] flex-shrink-0" />
                 <span>
-                  {t({
-                    pt: '**Contabilidade & Fiscal**: Alinhamento de dados para fechamentos rápidos e conformidade regulatória.',
-                    en: '**Accounting & Tax**: Alignment of data sets for rapid closures and full regulatory compliance.'
-                  })}
+                  <strong>{t({ pt: 'Contabilidade & Fiscal', en: 'Accounting & Tax' })}:</strong>{' '}
+                  {t({ pt: 'Alinhamento de dados para fechamentos rápidos e conformidade regulatória.', en: 'Alignment of data sets for rapid closures and full regulatory compliance.' })}
                 </span>
               </li>
               <li className="flex items-center gap-2">
                 <CheckCircle2 className="h-4 w-4 text-[#34c759] flex-shrink-0" />
                 <span>
-                  {t({
-                    pt: '**Operação & Comercial**: Controle de CMV, margem de contribuição e ciclo financeiro de estoques.',
-                    en: '**Operations & Sales**: COGS/CMV control, contribution margin optimization, and inventory cash cycles.'
-                  })}
+                  <strong>{t({ pt: 'Operação & Comercial', en: 'Operations & Sales' })}:</strong>{' '}
+                  {t({ pt: 'Controle de CMV, margem de contribuição e ciclo financeiro de estoques.', en: 'COGS/CMV control, contribution margin optimization, and inventory cash cycles.' })}
                 </span>
               </li>
             </ul>
