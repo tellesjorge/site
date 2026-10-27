@@ -91,8 +91,8 @@ export default function ContactPage() {
     e.preventDefault()
     if (!consent) {
       setErrorMsg(t({
-        pt: 'Você precisa autorizar o tratamento de dados em conformidade com a LGPD.',
-        en: 'You must authorize data treatment in compliance with privacy laws (GDPR/LGPD).'
+        pt: 'Confirme a leitura das informações sobre o preparo e envio do e-mail.',
+        en: 'Please acknowledge the information about preparing and sending the email.'
       }))
       return
     }
@@ -108,50 +108,8 @@ export default function ContactPage() {
     setIsSending(true)
 
     try {
-      const response = await fetch('https://formsubmit.co/ajax/telles.jorge@gmail.com', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          company: formData.company,
-          whatsapp: formData.whatsapp,
-          interest: activeTab === 'hire' ? 'Oportunidade Profissional' : 'Consultoria Empresarial',
-          interestType: formData.interestType,
-          message: formData.message,
-          _subject: `Lead Portfólio: [${activeTab === 'hire' ? 'Vaga' : 'Consultoria'}] ${formData.name}`
-        })
-      })
-
-      const data = await response.json()
-
-      if (response.ok && data.success === 'true') {
-        setSubmitted(true)
-        try {
-          const existing = window.localStorage.getItem('jorge-contact-leads')
-          const items = existing ? JSON.parse(existing) : []
-          items.unshift({ ...formData, tab: activeTab, date: new Date().toISOString() })
-          window.localStorage.setItem('jorge-contact-leads', JSON.stringify(items.slice(0, 10)))
-        } catch {
-          // ignore
-        }
-      } else {
-        const msg = data.message || ''
-        if (msg.toLowerCase().includes('activate') || msg.toLowerCase().includes('confirm')) {
-          setErrorMsg(t({
-            pt: 'O formulário ainda não foi ativado por e-mail. Por favor, verifique a caixa de entrada (e Spam) de telles.jorge@gmail.com para clicar no link de ativação do FormSubmit.co. Você também pode enviar agora pelo WhatsApp ou E-mail abaixo:',
-            en: 'This form has not been activated via email yet. Please check the spam folder at telles.jorge@gmail.com for the FormSubmit activation link. You can also send this information via WhatsApp or direct email below:'
-          }))
-        } else {
-          setErrorMsg(msg || t({
-            pt: 'Falha ao enviar mensagem. Por favor, utilize os botões diretos de WhatsApp/E-mail abaixo para enviar os dados sem perdas:',
-            en: 'Failed to send message. Please use the WhatsApp or direct Email buttons below to transmit your request:'
-          }))
-        }
-      }
+      window.location.href = getMailtoFallbackLink()
+      setSubmitted(true)
     } catch (err) {
       setErrorMsg(t({
         pt: 'Erro de conexão ao enviar o formulário. Por favor, clique em um dos botões abaixo para enviar a mensagem diretamente:',
@@ -242,7 +200,7 @@ export default function ContactPage() {
                 </a>
 
                 <a
-                  href="mailto:contato@jorgetelles.com.br"
+                  href="mailto:telles.jorge@gmail.com"
                   className="flex items-center gap-3 rounded-2xl border border-black/5 bg-white p-4 text-sm font-semibold text-[#1d1d1f] transition hover:bg-[#fafafa]"
                 >
                   <span className="rounded-full bg-[#8e8e93]/10 p-2 text-slate-600">
@@ -250,7 +208,7 @@ export default function ContactPage() {
                   </span>
                   <div>
                     <p className="font-bold">{t({ pt: 'E-mail Corporativo', en: 'Corporate Email' })}</p>
-                    <p className="text-xs text-[#8e8e93]">contato@jorgetelles.com.br</p>
+                    <p className="text-xs text-[#8e8e93]">telles.jorge@gmail.com</p>
                   </div>
                 </a>
               </div>
@@ -316,12 +274,12 @@ export default function ContactPage() {
                   <CheckCircle2 className="h-8 w-8" />
                 </div>
                 <h3 className="text-xl font-bold text-[#1d1d1f]">
-                  {t({ pt: 'Mensagem enviada com sucesso!', en: 'Message sent successfully!' })}
+                  {t({ pt: 'E-mail preparado para sua revisão', en: 'Email prepared for review' })}
                 </h3>
                 <p className="text-sm text-[#6e6e73] max-w-md mx-auto">
                   {t({
-                    pt: 'Jorge Telles recebeu sua solicitação. O tempo de resposta estimado é de até 24 horas úteis.',
-                    en: 'Jorge Telles received your request. The estimated response time is up to 24 business hours.'
+                    pt: 'Revise e envie no seu aplicativo de e-mail. Nada foi enviado automaticamente pelo site. Se o aplicativo não abrir, escreva para telles.jorge@gmail.com.',
+                    en: 'Review and send in your email application. Nothing was sent automatically by this site.'
                   })}
                 </p>
                 <button
@@ -470,12 +428,14 @@ export default function ContactPage() {
                   />
                   <span>
                     {t({
-                      pt: 'Concordo com o tratamento de meus dados exclusivamente para fins de contato profissional, conforme a Política de Privacidade e as regras da LGPD (Lei nº 13.709/18).',
-                      en: 'I agree to the treatment of my data exclusively for professional contact purposes, in accordance with the Privacy Policy and LGPD/GDPR regulations.'
+                      pt: 'Li o aviso: os dados serão usados para responder ao meu pedido. O botão prepara um e-mail para revisão e envio no meu aplicativo, sem autorizar publicidade.',
+                      en: 'I have read the notice: my details are used to answer my request. The button prepares an email for review and sending in my application, without authorizing advertising.'
                     })}
+                    {' '}<a href="/privacidade/" target="_blank" rel="noopener noreferrer">Ler aviso de privacidade</a>
                   </span>
                 </label>
 
+                <p className="text-xs">Não inclua senhas, documentos pessoais ou dados de pacientes. O site apenas prepara o e-mail; revise e envie no seu aplicativo.</p>
                 {errorMsg && (
                   <div className="space-y-3 rounded-2xl border border-[#ff3b30]/15 bg-[#ff3b30]/5 p-4 text-xs">
                     <p className="text-[#ff3b30] font-semibold leading-relaxed">{errorMsg}</p>
@@ -513,9 +473,7 @@ export default function ContactPage() {
                     <>
                       <Send className="h-4 w-4" />
                       <span>
-                        {activeTab === 'hire'
-                          ? t({ pt: 'Falar sobre oportunidade', en: 'Discuss opportunity' })
-                          : t({ pt: 'Solicitar diagnóstico', en: 'Request diagnosis' })}
+                        {t({ pt: 'Preparar e-mail para revisão', en: 'Prepare email for review' })}
                       </span>
                     </>
                   )}
