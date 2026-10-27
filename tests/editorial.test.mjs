@@ -9,6 +9,14 @@ import discount from '../content/articles/impacto-descontos-margem-lucro.mjs';
 import {renderEditorialMarkdown} from '../tools/editorial-markdown.mjs';
 const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 
+test('internal public pages share the commercial identity without the legacy frame',()=>{
+ const layout=read('src/components/layout/AppLayout.tsx'),chrome=read('src/components/layout/CommercialChrome.tsx');
+ assert.ok(layout.includes('<CommercialHeader />'));assert.ok(layout.includes('<CommercialFooter />'));assert.ok(!layout.includes('apple-shell'));
+ assert.ok(chrome.includes('ESTRATÉGIA, DADOS & TECNOLOGIA'));assert.ok(chrome.includes('aria-expanded={open}'));
+ assert.ok(read('src/commercial-pages.css').includes('#420b68'));assert.ok(read('src/commercial-pages.css').includes('#e90068'));
+ assert.ok(read('app.html').includes('/static/jorge-telles-commercial.css'));
+});
+
 test('article is complete, indexable and attributed to the actual author',()=>{
  const html=read('public/artigos/'+article.slug+'/index.html');
  assert.equal((html.match(/<h1>/g)||[]).length,1);assert.ok(html.includes(article.title));

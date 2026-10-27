@@ -1,0 +1,26 @@
+/* Shared commercial identity; scoped to internal public pages, not the fiscal app. */
+body.jt-commercial-pages{background:#f7f3fb;color:#30313b;font-family:Arial,"Segoe UI",sans-serif;--apple-blue:#420b68;--apple-blue-strong:#e90068;--apple-border:#e9e3ee;--apple-surface-soft:#f7f3fb}
+body.jt-commercial-pages::before{display:none}
+.jt-commercial-app{min-height:100vh;background:#f7f3fb;font-family:Arial,"Segoe UI",sans-serif}
+.jt-commercial-shell{min-height:100vh;display:flex;flex-direction:column}
+.jt-commercial-content{flex:1;padding:42px 0 50px}
+.jt-commercial-content>div>section{padding-top:12px}
+.jt-commercial-app .jt-header{position:relative;background:#fff;border-bottom:1px solid #e9e3ee;z-index:30}
+.jt-commercial-app .jt-brand{color:#420b68;text-decoration:none}
+.jt-commercial-app .jt-header nav a[aria-current=page]{color:#420b68;text-decoration:underline;text-underline-offset:6px}
+.jt-commercial-app .jt-footer{margin-top:auto}
+.jt-commercial-content h1,.jt-commercial-content h2,.jt-commercial-content h3{color:#420b68;letter-spacing:-.025em}
+.jt-commercial-content h1{font-size:clamp(30px,4vw,44px);line-height:1.18}
+.jt-commercial-content [class*="rounded-[32px]"],.jt-commercial-content [class*="rounded-[28px]"],.jt-commercial-content [class*="rounded-3xl"]{border-radius:20px;border-color:#e4d9ec;box-shadow:0 6px 22px #420b6807}
+.jt-commercial-app [class*="text-[#0071e3]"],.jt-commercial-app [class*="text-blue-"],.jt-commercial-app [class*="text-sky-"],.jt-commercial-app [class*="text-[#2997ff]"]{color:#420b68}
+.jt-commercial-app [class*="bg-[#0071e3]"],.jt-commercial-app [class*="bg-blue-600"]{background:#e90068;color:#fff}
+.jt-commercial-app [class*="bg-[#0071e3]/"],.jt-commercial-app [class*="bg-blue-50"],.jt-commercial-app [class*="bg-sky-50"]{background:#f0e5f7;color:#420b68}
+.jt-commercial-app button[class*="bg-[#0071e3]"]:hover,.jt-commercial-app a[class*="bg-[#0071e3]"]:hover{background:#c80059;color:#fff}
+.jt-commercial-app input,.jt-commercial-app select,.jt-commercial-app textarea{accent-color:#420b68}
+.jt-commercial-app input:focus,.jt-commercial-app select:focus,.jt-commercial-app textarea:focus{border-color:#8e57ac;outline:2px solid #e9daf2;outline-offset:1px}
+.jt-commercial-app [class*="border-[#0071e3]"]{border-color:#d7bce7}
+.jt-commercial-app .jt-header a,.jt-commercial-app .jt-footer a{text-decoration:none}
+.jt-commercial-app .jt-header nav a{font-size:13px}
+.jt-commercial-content p{line-height:1.75}
+.jt-commercial-content button,.jt-commercial-content a[class*="rounded-full"]{border-radius:9px}
+@media(max-width:760px){.jt-commercial-content{padding:26px 0 35px}.jt-commercial-app .jt-header nav.is-open{background:#fff}.jt-commercial-content h1{font-size:30px}.jt-commercial-content>div>section{padding-left:20px;padding-right:20px}.jt-commercial-content [class*="rounded-[32px]"]{padding:22px}}
