@@ -46,6 +46,7 @@ for(const article of articles){
  if(article.ctaText)articleBody=articleBody.replace('Uma análise integrada dos resultados, dos prazos e do capital de giro pode ajudar a identificar o que está acontecendo. O ponto de partida é compreender os dados e o momento do seu negócio.',escape(article.ctaText));
  if(article.ctaLabel)articleBody=articleBody.replace('Conversar sobre meu fluxo de caixa →',escape(article.ctaLabel));
  if(article.references)articleBody=articleBody.replace(/(<section class="ed-references"><h2>Referências para aprofundar a leitura<\/h2><ul>)[\s\S]*?(<\/ul>)/,'$1'+article.references+'$2');
+ if(article.referencesDate)articleBody=articleBody.replace('Referências consultadas em 27 de outubro de 2026.', 'Referências consultadas em '+escape(formatDate(article.referencesDate))+'.');
  const related=articles.filter(item=>item.slug!==article.slug&&item.series===article.series);
  if(related.length)articleBody=articleBody.replace('<a class="ed-back"', '<aside class="ed-callout"><strong>Continue na série O Lucro Invisível</strong><ul>'+related.map(item=>'<li><a href="'+pathFor(item)+'">Episódio '+escape(item.episode)+' — '+escape(item.title)+'</a></li>').join('')+'</ul></aside><a class="ed-back"');
  let html=shell({title:article.title,description:article.description,path,body:articleBody,article});

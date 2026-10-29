@@ -1,6 +1,8 @@
 # Seção Artigos
 
-Os quatro episódios usam URLs canônicas em `/artigos/`. Os endereços anteriores em `/blog/` permanecem como redirecionamentos permanentes 301 para evitar perda de acessos. O Episódio 04 conserva o texto fornecido em Markdown, convertido por um renderizador limitado que escapa HTML; título, autoria e apresentação são compartilhados pelo modelo editorial.
+Os cinco episódios usam URLs canônicas em `/artigos/`. Os endereços anteriores em `/blog/` permanecem como redirecionamentos permanentes 301 para evitar perda de acessos. Os episódios 04 e 05 conservam o texto fornecido em Markdown, convertido por um renderizador limitado que escapa HTML; título, autoria e apresentação são compartilhados pelo modelo editorial.
+
+O episódio 05, publicado em 28/10/2026, usa o título SEO e a descrição fornecidos pelo autor, com canonical em /artigos/custos-invisiveis-empresas. Inclui ressalvas sobre dupla contagem, capacidade versus caixa e comparação ilustrativa por margem líquida, além de exemplo complementar de economia líquida dos custos de implantação. Os cálculos e metadados têm testes; a referência ASQ sobre custo da qualidade foi consultada nessa data.
 
 O menu e o destaque da página inicial levam à biblioteca editorial em `/artigos/`. A seção segue a identidade comercial roxa e rosa e não modifica o aplicativo fiscal.
 

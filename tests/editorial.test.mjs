@@ -6,8 +6,32 @@ import article from '../content/articles/lucro-sem-dinheiro-em-caixa.mjs';
 import stock from '../content/articles/estoque-parado-consome-caixa.mjs';
 import margin from '../content/articles/vende-muito-lucra-pouco.mjs';
 import discount from '../content/articles/impacto-descontos-margem-lucro.mjs';
+import costs from '../content/articles/custos-invisiveis-empresas.mjs';
 import {renderEditorialMarkdown} from '../tools/editorial-markdown.mjs';
 const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
+
+test('episode 05 preserves the supplied text, SEO and reconciled cost examples',()=>{
+ const html=read('public'+costs.path+'/index.html');
+ assert.equal(costs.sections.length,15);assert.equal(costs.episode,'05');
+ assert.ok(html.includes('<title>'+costs.seoTitle+'</title>'));
+ assert.ok(html.includes('<meta name="description" content="'+costs.description+'">'));
+ assert.ok(html.includes('href="https://www.jorgetelles.com.br'+costs.path+'"'));
+ assert.equal((html.match(/<h1>/g)||[]).length,1);
+ for(const [id]of costs.sections)assert.ok(html.includes('href="#'+id+'"'));
+ for(const term of [costs.primaryKeyword,...costs.keywords])assert.ok(html.includes(term));
+ assert.equal(2000+3000+1500+2000+1500,10000);
+ assert.equal(10000*12,120000);assert.equal(120000/(500000*12),.02);
+ assert.equal(10000/.05,200000);assert.equal(6000/160*20*5*12,45000);
+ assert.equal((10000*.4-1000)*12-6000,30000);
+ assert.equal(6000/(10000*.4-1000),2);
+ for(const phrase of ['R$ 120.000','R$ 200.000','R$ 45.000','R$ 30.000','capacidade','duas vezes','28 de outubro de 2026'])assert.ok(html.includes(phrase));
+ assert.ok(html.includes('asq.org/quality-resources/cost-of-quality'));
+ for(const alias of costs.aliases)assert.ok(read('public/_redirects').includes(alias+' '+costs.path+' 301'));
+ assert.ok(read('public/sitemap-editorial.xml').includes(costs.path));
+ assert.ok(read('index.html').includes(costs.path));
+ const library=read('public/artigos/index.html');
+ assert.ok(library.indexOf(costs.title)<library.indexOf(discount.title));
+});
 
 test('internal public pages share the commercial identity without the legacy frame',()=>{
  const layout=read('src/components/layout/AppLayout.tsx'),chrome=read('src/components/layout/CommercialChrome.tsx');
@@ -40,12 +64,12 @@ test('educational financial examples reconcile in reais and days',()=>{
 
 test('new library and homepage links preserve active client access',()=>{
  const home=read('index.html'),library=read('public/artigos/index.html'),redirects=read('public/_redirects');
- assert.ok(home.includes('href="/artigos/"'));assert.ok(home.includes(margin.path));assert.ok(library.includes('/artigos/'+article.slug+'/'));
+ assert.ok(home.includes('href="/artigos/"'));assert.ok(home.includes(costs.path));assert.ok(home.includes(discount.path));assert.ok(library.includes('/artigos/'+article.slug+'/'));
  assert.ok(home.includes('https://app.jorgetelles.com.br/login'));assert.ok(redirects.includes('/login https://app.jorgetelles.com.br/login 302'));
  assert.ok(home.includes('href="/perfil?origem=site"'));assert.ok(redirects.includes('/perfil /app 200'));assert.ok(!redirects.includes('/perfil /app.html'));
  assert.ok(redirects.includes('/contato /app 200'));assert.ok(!redirects.includes('/app.html 200'));
  assert.ok(read('public/artigos/impacto-descontos-margem-lucro/index.html').includes('href="/contato?origem=site&amp;interest=consulting"'));
- assert.ok(library.includes('4 artigos publicados'));assert.ok(!library.includes('IA Regenerativo'));assert.ok(!library.includes('API de feeds'));
+ assert.ok(library.includes('5 artigos publicados'));assert.ok(!library.includes('IA Regenerativo'));assert.ok(!library.includes('API de feeds'));
  assert.ok(read('public/sitemap-editorial.xml').includes('/artigos/'+article.slug+'/'));
  assert.ok(read('public/robots.txt').includes('sitemap-editorial.xml'));
 });
