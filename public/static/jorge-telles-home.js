@@ -1,4 +1,5 @@
 (()=>{
+ const platforms=document.querySelector('.jt-platforms');if(platforms){document.addEventListener('click',event=>{if(!platforms.contains(event.target))platforms.open=false;});document.addEventListener('keydown',event=>{if(event.key==='Escape'&&platforms.open){platforms.open=false;platforms.querySelector('summary').focus();}});platforms.addEventListener('click',event=>{if(event.target.closest('a'))platforms.open=false;});}
  const menu=document.getElementById('jt-navigation'),toggle=document.getElementById('jt-menu-toggle');
  const close=()=>{menu.classList.remove('is-open');toggle.setAttribute('aria-expanded','false')};
  toggle.onclick=()=>{const open=menu.classList.toggle('is-open');toggle.setAttribute('aria-expanded',String(open))};
