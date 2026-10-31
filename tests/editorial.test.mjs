@@ -69,7 +69,7 @@ test('new library and homepage links preserve active client access',()=>{
  assert.ok(home.includes('href="/perfil?origem=site"'));assert.ok(redirects.includes('/perfil /app 200'));assert.ok(!redirects.includes('/perfil /app.html'));
  assert.ok(redirects.includes('/contato /app 200'));assert.ok(!redirects.includes('/app.html 200'));
  assert.ok(read('public/artigos/impacto-descontos-margem-lucro/index.html').includes('href="/contato?origem=site&amp;interest=consulting"'));
- assert.ok(library.includes('5 artigos publicados'));assert.ok(!library.includes('IA Regenerativo'));assert.ok(!library.includes('API de feeds'));
+ assert.ok(library.includes('6 artigos publicados'));assert.ok(!library.includes('IA Regenerativo'));assert.ok(!library.includes('API de feeds'));
  assert.ok(read('public/sitemap-editorial.xml').includes('/artigos/'+article.slug+'/'));
  assert.ok(read('public/robots.txt').includes('sitemap-editorial.xml'));
 });

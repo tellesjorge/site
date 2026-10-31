@@ -1,0 +1,23 @@
+import {readFileSync} from 'node:fs';
+import {renderEditorialMarkdown} from '../../tools/editorial-markdown.mjs';
+const source=readFileSync(new URL('./ponto-de-equilibrio-empresa.md',import.meta.url),'utf8');
+const rendered=renderEditorialMarkdown(source.slice(source.indexOf('Sua empresa faturou')).split('## Sobre o autor')[0]);
+const calculator=`<section id="calculadora" class="ed-break-even" aria-labelledby="be-title"><p class="ed-kicker">DO CONCEITO À PRÁTICA</p><h2 id="be-title">Calculadora de ponto de equilíbrio</h2><p>Simulação gerencial simplificada · ponto de equilíbrio contábil operacional</p><form id="be-form"><label for="be-fixed">Custos e despesas fixos mensais (R$)</label><input id="be-fixed" type="number" min="0" max="1000000000" step="0.01" value="80000" required><div class="be-margin-label"><label for="be-margin">Margem de contribuição</label><output id="be-margin-value" for="be-margin">20%</output></div><input id="be-margin" type="range" min="0" max="100" step="0.5" value="20"><label for="be-sales">Faturamento mensal previsto (R$)</label><input id="be-sales" type="number" min="0" max="1000000000" step="0.01" value="500000" required><div id="be-results" aria-live="polite" aria-atomic="true"><div class="be-main"><span>PONTO DE EQUILÍBRIO ESTIMADO</span><strong id="be-point">R$ 400.000,00</strong><small>Faturamento necessário para cobrir os gastos fixos informados</small></div><div class="be-secondary"><div><span>Resultado operacional estimado</span><strong id="be-result">R$ 20.000,00</strong></div><div><span>Margem de segurança</span><strong id="be-safety">20,0%</strong></div></div><p id="be-explanation">Nas premissas informadas, o faturamento está acima do ponto de equilíbrio.</p></div><button id="be-copy" type="button" class="jt-button">Copiar resultado da simulação</button><p id="be-copy-status" role="status"></p></form><noscript><p>Ative o JavaScript para alterar os valores. Os resultados iniciais acima usam gastos fixos de R$ 80 mil, margem de 20% e vendas de R$ 500 mil.</p></noscript><p class="ed-disclaimer">Cálculo somente neste navegador: os valores não são enviados nem salvos pela calculadora. Considera margem e mix constantes, dentro da mesma capacidade operacional. Não calcula lucro líquido, necessidade de caixa, tributos sobre o lucro ou os ajustes dos pontos de equilíbrio financeiro e econômico.</p><a class="jt-inline-link" href="/contato?interest=consulting">Solicitar diagnóstico de rentabilidade e ponto de equilíbrio →</a></section>`;
+export default {
+ slug:'ponto-de-equilibrio-empresa',path:'/artigos/ponto-de-equilibrio-empresa',
+ aliases:['/blog/ponto-de-equilibrio-empresa','/blog/ponto-de-equilibrio-empresa/','/blog/ponto-de-equilibrio-empresa/index.html'],
+ title:'Ponto de equilíbrio: quanto sua empresa precisa vender para começar a ter lucro?',
+ seoTitle:'Ponto de Equilíbrio: Como Calcular e Aplicar na Empresa',
+ description:'Aprenda a calcular o ponto de equilíbrio contábil, financeiro e econômico. Veja fórmulas, exemplos e descubra quanto sua empresa precisa vender.',
+ primaryKeyword:'ponto de equilíbrio',
+ keywords:['como calcular ponto de equilíbrio','ponto de equilíbrio financeiro','ponto de equilíbrio contábil','ponto de equilíbrio econômico','margem de contribuição','margem de segurança','break-even point','custos fixos e variáveis','planejamento financeiro empresarial'],
+ category:'Margens e planejamento financeiro',series:'O Lucro Invisível',episode:'06',published:'2026-10-31',referencesDate:'2026-10-31',
+ cover:'Quanto vender para equilibrar?',
+ summary:'Descubra quanto sua empresa precisa vender para cobrir os gastos, compare os três pontos de equilíbrio e simule o resultado com uma calculadora prática.',
+ sections:[['calculadora','Calcule o seu ponto de equilíbrio'],...rendered.sections],calculator:true,
+ body:calculator+rendered.html,
+ ctaTitle:'Sua meta de vendas está conectada à rentabilidade?',
+ ctaText:'Uma análise da margem de contribuição, da estrutura de custos e do mix de vendas ajuda a transformar metas comerciais em objetivos financeiros consistentes.',
+ ctaLabel:'Solicitar diagnóstico de rentabilidade →',
+ references:'<li><a href="https://openstax.org/books/principles-managerial-accounting/pages/3-2-calculate-a-break-even-point-in-units-and-dollars" target="_blank" rel="noopener noreferrer">OpenStax — Ponto de equilíbrio em unidades e faturamento</a>.</li><li><a href="https://openstax.org/books/principles-managerial-accounting/pages/3-5-calculate-and-interpret-a-companys-margin-of-safety-and-operating-leverage" target="_blank" rel="noopener noreferrer">OpenStax — Margem de segurança e alavancagem operacional</a>.</li>',
+};

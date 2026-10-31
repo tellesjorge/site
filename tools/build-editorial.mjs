@@ -54,6 +54,7 @@ for(const article of articles){
  const related=articles.filter(item=>item.slug!==article.slug&&item.series===article.series);
  if(related.length)articleBody=articleBody.replace('<a class="ed-back"', '<aside class="ed-callout"><strong>Continue na série O Lucro Invisível</strong><ul>'+related.map(item=>'<li><a href="'+pathFor(item)+'">Episódio '+escape(item.episode)+' — '+escape(item.title)+'</a></li>').join('')+'</ul></aside><a class="ed-back"');
  let html=shell({title:article.title,description:article.description,path,body:articleBody,article});
+ if(article.calculator)html=html.replace('</head>','<link rel="stylesheet" href="/static/jorge-telles-break-even.css?v=1"></head>').replace('</body>','<script src="/static/jorge-telles-break-even.js?v=1" defer></script></body>');
  if(article.seoTitle)html=html.replace(/<title>[\s\S]*?<\/title>/,'<title>'+escape(article.seoTitle)+'</title>').replace(/<meta property="og:title" content="[^"]*">/,'<meta property="og:title" content="'+escape(article.seoTitle)+'">');
  if(article.primaryKeyword)html=html.replace(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/,(_,json)=>{const data=JSON.parse(json);data.keywords=[article.primaryKeyword,...(article.keywords||[])];return '<script type="application/ld+json">'+JSON.stringify(data).replaceAll('<','\\u003c')+'</script>';});
  await writeFile(new URL('index.html',directory),html);
