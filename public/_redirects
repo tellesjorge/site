@@ -7,6 +7,9 @@
 /consultoria /app 200
 # BEGIN EDITORIAL ROUTES
 # Published articles use native Pages directory/index.html routing.
+/artigos/tendencias-gestao-financeira-2027 /tendencias-gestao-financeira-2027 301
+/artigos/tendencias-gestao-financeira-2027/ /tendencias-gestao-financeira-2027 301
+/artigos/tendencias-gestao-financeira-2027/index.html /tendencias-gestao-financeira-2027 301
 /artigos/vende-muito-lucra-pouco /artigos/empresa-vende-muito-e-lucra-pouco 301
 /artigos/vende-muito-lucra-pouco/ /artigos/empresa-vende-muito-e-lucra-pouco 301
 /artigos/vende-muito-lucra-pouco/index.html /artigos/empresa-vende-muito-e-lucra-pouco 301
